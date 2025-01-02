@@ -1,0 +1,304 @@
+# Next.js OneRoster Integration System Requirements
+
+## CRITICAL REQUIREMENTS
+
+- YOU MUST GENERATE A COMPLETE package.json FILE IN EVERY RESPONSE
+- The package.json file is MANDATORY and must be included first
+- For core packages (react, react-dom, next) and their direct dependencies (like react-chartjs-2), use the specific versions shown in the example package.json
+- Only use "latest" for utility packages that don't have direct React version dependencies
+- The app MUST work with: npm install && npm run build && npm run start
+
+## Environment and Framework
+
+- Use Next.js (v13+) with React 18.x
+- Node.js v16.8+ is assumed
+- App must be fully functional and deployable
+- No version conflicts or startup-preventing configurations
+
+## Project Structure
+
+REQUIRED PROJECT FILES:
+
+- package.json:
+  ```json
+  {
+    "name": "oneroster-nextjs-app",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint"
+    },
+    "dependencies": {
+      "@types/node": "18.11.9",
+      "@types/react": "18.0.25",
+      "@types/react-dom": "18.0.9",
+      "next": "13.4.19",
+      "react": "18.2.0",
+      "react-dom": "18.2.0",
+      "typescript": "5.0.4",
+      "react-chartjs-2": "5.2.0",
+      "chart.js": "4.3.0",
+      "tailwindcss": "3.3.0",
+      "autoprefixer": "10.4.14",
+      "postcss": "8.4.21"
+    },
+    "devDependencies": {
+      "eslint": "8.27.0",
+      "eslint-config-next": "13.4.19"
+    }
+  }
+  ```
+
+## API Integration and Proxy Setup
+
+1. API Base URL Configuration:
+
+   ```typescript
+   // Store in .env.local
+   NEXT_PUBLIC_ONEROSTER_BASE_URL=http://oneroster-staging.us-west-2.elasticbeanstalk.com
+   ```
+
+2. Required API Proxy Setup (for CORS handling):
+
+   ```typescript
+   // pages/api/proxy/[...path].ts
+   import type { NextApiRequest, NextApiResponse } from "next";
+
+   export default async function handler(
+     req: NextApiRequest,
+     res: NextApiResponse
+   ) {
+     const { path } = req.query;
+     const apiPath = Array.isArray(path) ? path.join("/") : path;
+     const baseUrl = process.env.NEXT_PUBLIC_ONEROSTER_BASE_URL;
+
+     try {
+       const response = await fetch(`${baseUrl}/${apiPath}`, {
+         method: req.method,
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: req.method !== "GET" ? JSON.stringify(req.body) : undefined,
+       });
+
+       const data = await response.json();
+       res.status(response.status).json(data);
+     } catch (error) {
+       res.status(500).json({ error: "Failed to fetch data" });
+     }
+   }
+   ```
+
+3. API Client Implementation:
+
+   ```typescript
+   // lib/api.ts
+   const BASE_PATH = "/api/proxy";
+
+   export async function fetchStudents() {
+     const response = await fetch(
+       `${BASE_PATH}/ims/oneroster/rostering/v1p2/students`
+     );
+     if (!response.ok) throw new Error("Failed to fetch students");
+     return response.json();
+   }
+   ```
+
+4. Component Usage:
+
+   ```typescript
+   // components/StudentList.tsx
+   import { fetchStudents } from "../lib/api";
+
+   export default function StudentList() {
+     const { data, error } = useSWR("students", fetchStudents);
+     // ... rest of the component
+   }
+   ```
+
+- Pages directory with:
+  - Functional index.tsx with OneRoster API integration
+  - Proper error handling
+  - Loading states
+- Components directory (as needed)
+- Lib directory (as needed)
+
+## OneRoster v1.2 Integration
+
+- API Definitions to Follow:
+
+  - gradebookservice_openapi3_v1p0.yaml
+  - resourcesservice_openapi3_v1p0.yaml
+  - rostersservice_openapi3_v1p0.yaml
+  - diff_doc.txt for extended endpoints
+
+- Environment Configuration:
+
+  - Base API URL in process.env.NEXT_PUBLIC_ONEROSTER_BASE_URL
+  - Example: http://oneroster-staging.us-west-2.elasticbeanstalk.com
+
+- API Proxy Requirements:
+
+  1. Create proxy at pages/api/proxy/[...path].ts
+  2. Must forward requests to OneRoster API
+  3. All client-side calls must use proxy
+  4. Organize API client logic in lib/api.ts with TypeScript typing
+
+- URL Structure:
+  ```
+  /ims/oneroster/gradebook/v1p2
+  /ims/oneroster/resources/v1p2
+  /ims/oneroster/rostering/v1p2
+  ```
+
+## Code Delivery Requirements
+
+- Format:
+
+  - Use Markdown code blocks
+  - Label each file with path comment (e.g., "// pages/index.tsx")
+  - MUST include complete package.json
+  - All code must be functional and complete
+
+- Package Requirements:
+
+  - All necessary scripts (dev, build, start, lint)
+  - Compatible dependencies
+  - Proper TypeScript and ESLint configs
+  - Use "latest" for uncertain versions
+
+- Deployment Verification:
+  - Must work at http://localhost:3000
+  - Must work with standard npm commands
+
+## OneRoster Route Specifications
+
+### Base URL Structure
+
+```json
+{
+  "gradebook": "/ims/oneroster/gradebook/v1p2",
+  "resources": "/ims/oneroster/resources/v1p2",
+  "rostering": "/ims/oneroster/rostering/v1p2"
+}
+```
+
+### Request Patterns
+
+#### Collection Endpoints
+
+- GET returns paginated lists
+- Query Parameters:
+  - limit
+  - offset
+  - sort
+  - orderBy (asc/desc)
+  - filter
+  - fields
+
+#### Single Resource Endpoints
+
+- Uses sourcedId in URL
+- Supported Methods:
+  - GET (retrieve)
+  - POST (create)
+  - PUT (update)
+  - DELETE (remove)
+
+### Key Route Groups
+
+#### Schools
+
+- Base: /ims/oneroster/rostering/v1p2/schools
+- Nested: /schools/{schoolSourcedId}/classes, etc.
+
+#### Classes
+
+- Rostering: /ims/oneroster/rostering/v1p2/classes
+- Gradebook: /ims/oneroster/gradebook/v1p2/classes
+- Features:
+  - Student management
+  - Teacher management
+  - Grade operations
+
+#### Users
+
+- Base Routes:
+  - /ims/oneroster/rostering/v1p2/students
+  - /ims/oneroster/rostering/v1p2/teachers
+- Example: /schools/{schoolSourcedId}/teachers
+
+#### Gradebook
+
+- Main Routes:
+  - /ims/oneroster/gradebook/v1p2/lineItems
+  - /ims/oneroster/gradebook/v1p2/categories
+  - /ims/oneroster/gradebook/v1p2/results
+  - /ims/oneroster/gradebook/v1p2/scoreScales
+- Features:
+  - Supports bulk operations for results
+
+## UI Libraries and Component Guidelines
+
+- Use Tailwind CSS for styling:
+
+  ```json
+  {
+    "dependencies": {
+      "tailwindcss": "3.3.0",
+      "autoprefixer": "10.4.14",
+      "postcss": "8.4.21"
+    }
+  }
+  ```
+
+- Required Tailwind setup:
+
+  1. Create tailwind.config.js:
+
+  ```js
+  module.exports = {
+    content: [
+      "./pages/**/*.{js,ts,jsx,tsx}",
+      "./components/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+      extend: {},
+    },
+    plugins: [],
+  };
+  ```
+
+  2. Add to postcss.config.js:
+
+  ```js
+  module.exports = {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  };
+  ```
+
+  3. Include in globals.css:
+
+  ```css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  ```
+
+- Component Structure:
+  ```tsx
+  export default function ExampleComponent() {
+    return (
+      <div className="flex flex-col space-y-4">
+        <div className="font-bold text-xl">Title</div>
+        <div className="flex items-start space-x-2">Content</div>
+      </div>
+    );
+  }
+  ```
