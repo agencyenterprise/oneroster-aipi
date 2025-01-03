@@ -3,6 +3,7 @@
 ## CRITICAL REQUIREMENTS
 
 - YOU MUST GENERATE A COMPLETE package.json FILE IN EVERY RESPONSE
+- YOU MUST GENERATE A COMPLETE tsconfig.json FILE IN EVERY RESPONSE
 - The package.json file is MANDATORY and must be included first
 - For core packages (react, react-dom, next) and their direct dependencies (like react-chartjs-2), use the specific versions shown in the example package.json
 - Only use "latest" for utility packages that don't have direct React version dependencies
@@ -52,14 +53,52 @@ REQUIRED PROJECT FILES:
   }
   ```
 
+## TypeScript Configuration
+
+- A `tsconfig.json` file MUST be included and meet the following requirements:
+  - `"baseUrl"` set to the project root (e.g., `.`).
+  - `"paths"` must map to actual folder structure, including:
+    - "@/lib/_" -> "lib/_"
+    - "@/components/_" -> "components/_"
+    - "@/pages/_" -> "pages/_"
+  - `"moduleResolution"` must be `"node"`.
+
+## Example `tsconfig.json` File
+
+````json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/lib/*": ["lib/*"],
+      "@/components/*": ["components/*"],
+      "@/pages/*": ["pages/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
+
 ## API Integration and Proxy Setup
 
 1. API Base URL Configuration:
 
    ```typescript
-   // Store in .env.local
+   // Store in .env
    NEXT_PUBLIC_ONEROSTER_BASE_URL=http://oneroster-staging.us-west-2.elasticbeanstalk.com
-   ```
+````
 
 2. Required API Proxy Setup (for CORS handling):
 
@@ -125,6 +164,11 @@ REQUIRED PROJECT FILES:
   - Loading states
 - Components directory (as needed)
 - Lib directory (as needed)
+- Required: Ensure that all path imports use relative paths for example:
+
+```typescript
+import { fetchStudents } from "../lib/api";
+```
 
 ## OneRoster v1.2 Integration
 
@@ -215,21 +259,36 @@ REQUIRED PROJECT FILES:
 - Base: /ims/oneroster/rostering/v1p2/schools
 - Nested: /schools/{schoolSourcedId}/classes, etc.
 
+## example of returned data for schools
+
+```json
+{
+  "orgs": [{}, {}]
+}
+```
+
 #### Classes
 
 - Rostering: /ims/oneroster/rostering/v1p2/classes
-- Gradebook: /ims/oneroster/gradebook/v1p2/classes
 - Features:
-  - Student management
+  - Users management
   - Teacher management
   - Grade operations
 
 #### Users
 
 - Base Routes:
+  - /ims/oneroster/rostering/v1p2/users
   - /ims/oneroster/rostering/v1p2/students
   - /ims/oneroster/rostering/v1p2/teachers
-- Example: /schools/{schoolSourcedId}/teachers
+
+## example response for users (teachers/students)
+
+```json
+{
+  "users": [{}, {}]
+}
+```
 
 #### Gradebook
 
@@ -302,3 +361,53 @@ REQUIRED PROJECT FILES:
     );
   }
   ```
+
+## Required Utility Files for shadcn/ui
+
+When using shadcn/ui components, the following utility file MUST be created:
+
+```typescript:lib/utils.ts
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+Dependencies required for utils.ts:
+
+```json
+{
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^1.14.0"
+  }
+}
+```
+
+This file MUST be created before implementing any shadcn/ui components that use the `cn` utility.
+
+## API Response Structure Requirements
+
+- MUST check OpenAPI YAML files for exact response structure before implementing data handling
+- Response interfaces MUST match the schema definitions in the OpenAPI YAML files
+- Example: When handling /students endpoint, check rostersservice_openapi3_v1p0.yaml for the response schema
+- All data mapping MUST be validated against OpenAPI schema definitions
+- DO NOT assume response structure without consulting YAML specifications
+
+## Component Creation and Reference Rules
+
+- NEVER reference components that have not been created yet
+- When a component requires other components:
+  1. Create all dependency components first
+  2. Then create the component that depends on them
+  3. If referencing @/components/ui/\*, that file MUST exist first
+- Component Creation Order:
+  1. Create base UI components (like table.tsx, card.tsx, input.tsx)
+  2. Create composite components that use the base components
+  3. Create page components that use composite components
+- When showing code that requires multiple components:
+  1. Show the creation of dependency components first
+  2. Then show the component that uses them
+  3. Make it clear which files need to be created in what order
