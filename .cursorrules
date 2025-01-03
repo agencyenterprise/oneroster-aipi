@@ -3,11 +3,20 @@
 ## CRITICAL REQUIREMENTS
 
 - YOU MUST GENERATE A COMPLETE package.json FILE IN EVERY RESPONSE
-- YOU MUST GENERATE A COMPLETE tsconfig.json FILE IN EVERY RESPONSE
 - The package.json file is MANDATORY and must be included first
 - For core packages (react, react-dom, next) and their direct dependencies (like react-chartjs-2), use the specific versions shown in the example package.json
 - Only use "latest" for utility packages that don't have direct React version dependencies
 - The app MUST work with: npm install && npm run build && npm run start
+
+## AI ASSISTANT RULES
+
+1. You MUST read and follow ALL patterns in these rules
+2. You MUST NOT create your own patterns or "improve" existing ones
+3. You MUST check each code block against the patterns shown here
+4. If you find yourself wanting to modify a pattern, STOP and refer back to these rules
+5. When unsure about a pattern, ASK rather than improvise
+6. EVERY response must start by checking compliance with these rules
+7. If a pattern exists in these rules, you MUST use it verbatim
 
 ## Environment and Framework
 
@@ -53,44 +62,6 @@ REQUIRED PROJECT FILES:
   }
   ```
 
-## TypeScript Configuration
-
-- A `tsconfig.json` file MUST be included and meet the following requirements:
-  - `"baseUrl"` set to the project root (e.g., `.`).
-  - `"paths"` must map to actual folder structure, including:
-    - "@/lib/_" -> "lib/_"
-    - "@/components/_" -> "components/_"
-    - "@/pages/_" -> "pages/_"
-  - `"moduleResolution"` must be `"node"`.
-
-## Example `tsconfig.json` File
-
-````json
-{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/lib/*": ["lib/*"],
-      "@/components/*": ["components/*"],
-      "@/pages/*": ["pages/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
-}
-
 ## API Integration and Proxy Setup
 
 1. API Base URL Configuration:
@@ -98,7 +69,7 @@ REQUIRED PROJECT FILES:
    ```typescript
    // Store in .env
    NEXT_PUBLIC_ONEROSTER_BASE_URL=http://oneroster-staging.us-west-2.elasticbeanstalk.com
-````
+   ```
 
 2. Required API Proxy Setup (for CORS handling):
 
@@ -146,7 +117,7 @@ REQUIRED PROJECT FILES:
    }
    ```
 
-4. Component Usage:
+4. Component Usage Example:
 
    ```typescript
    // components/StudentList.tsx
@@ -158,17 +129,26 @@ REQUIRED PROJECT FILES:
    }
    ```
 
+5. TypeScript Requirements
+
+- ALL components, functions, and hooks MUST include explicit type definitions
+- Example Pattern:
+
+  ```typescript
+  interface Props {
+    title: string;
+    items: Item[];
+  }
+
+  export function Component({ title, items }: Props): JSX.Element {
+    // ...
+  }
+  ```
+
 - Pages directory with:
   - Functional index.tsx with OneRoster API integration
-  - Proper error handling
-  - Loading states
 - Components directory (as needed)
 - Lib directory (as needed)
-- Required: Ensure that all path imports use relative paths for example:
-
-```typescript
-import { fetchStudents } from "../lib/api";
-```
 
 ## OneRoster v1.2 Integration
 
@@ -254,35 +234,13 @@ import { fetchStudents } from "../lib/api";
 
 ### Key Route Groups
 
-#### Schools
-
-- Base: /ims/oneroster/rostering/v1p2/schools
-- Nested: /schools/{schoolSourcedId}/classes, etc.
-
-## example of returned data for schools
-
-```json
-{
-  "orgs": [{}, {}]
-}
-```
-
-#### Classes
-
-- Rostering: /ims/oneroster/rostering/v1p2/classes
-- Features:
-  - Users management
-  - Teacher management
-  - Grade operations
-
 #### Users
 
-- Base Routes:
-  - /ims/oneroster/rostering/v1p2/users
-  - /ims/oneroster/rostering/v1p2/students
-  - /ims/oneroster/rostering/v1p2/teachers
+- Base: /ims/oneroster/rostering/v1p2/users
+- Students: /ims/oneroster/rostering/v1p2/students
+- Teachers: /ims/oneroster/rostering/v1p2/teachers
 
-## example response for users (teachers/students)
+## Response Structure (users & teachers & students)
 
 ```json
 {
@@ -290,103 +248,149 @@ import { fetchStudents } from "../lib/api";
 }
 ```
 
-#### Gradebook
+⚠️ IMPORTANT:
 
-- Main Routes:
-  - /ims/oneroster/gradebook/v1p2/lineItems
-  - /ims/oneroster/gradebook/v1p2/categories
-  - /ims/oneroster/gradebook/v1p2/results
-  - /ims/oneroster/gradebook/v1p2/scoreScales
-- Features:
-  - Supports bulk operations for results
+- The response will ALWAYS be wrapped in a "users" array
+- This is true even when calling /students or /teachers
+- NEVER try to access response.students or response.teachers
+
+#### Orgs
+
+- Base: /ims/oneroster/rostering/v1p2/orgs
+- Schools: /ims/oneroster/rostering/v1p2/schools
+
+## Response Structure (orgs & schools)
+
+```json
+{
+  "orgs": [{}, {}]
+}
+```
+
+⚠️ IMPORTANT:
+
+- The response will ALWAYS be wrapped in an "orgs" array
+- This is true even when calling /schools
+- NEVER try to access response.schools
+
+Example:
+
+```typescript
+// CORRECT implementation
+async function fetchAnyUserType(endpoint: string) {
+  const response = await fetch(
+    `/api/proxy/ims/oneroster/rostering/v1p2/${endpoint}`
+  );
+  const data = await response.json();
+  return data.users; // Always use .users regardless of endpoint
+}
+
+// CORRECT implementation
+async function fetchAnyOrgType(endpoint: string) {
+  const response = await fetch(
+    `/api/proxy/ims/oneroster/rostering/v1p2/${endpoint}`
+  );
+  const data = await response.json();
+  return data.orgs; // Always use .orgs regardless of endpoint
+}
+
+// Example usage:
+const students = await fetchAnyUserType("students"); // Still uses data.users
+const schools = await fetchAnyOrgType("schools"); // Still uses data.orgs
+```
 
 ## UI Libraries and Component Guidelines
 
-- Use Tailwind CSS for styling:
+- Use Tailwind CSS with modern accessibility patterns:
 
   ```json
   {
     "dependencies": {
       "tailwindcss": "3.3.0",
       "autoprefixer": "10.4.14",
-      "postcss": "8.4.21"
+      "postcss": "8.4.21",
+      "@headlessui/react": "1.7.17" // For accessible UI primitives
     }
   }
   ```
 
-- Required Tailwind setup:
+- Component Structure Requirements:
 
-  1. Create tailwind.config.js:
+  - Must include ARIA labels and roles where appropriate
+  - Must support keyboard navigation
+  - Must maintain proper color contrast
+  - Must include focus states
+  - Must be responsive by default
 
-  ```js
-  module.exports = {
-    content: [
-      "./pages/**/*.{js,ts,jsx,tsx}",
-      "./components/**/*.{js,ts,jsx,tsx}",
-    ],
-    theme: {
-      extend: {},
-    },
-    plugins: [],
-  };
-  ```
+- Example Component Pattern:
 
-  2. Add to postcss.config.js:
-
-  ```js
-  module.exports = {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  };
-  ```
-
-  3. Include in globals.css:
-
-  ```css
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  ```
-
-- Component Structure:
   ```tsx
-  export default function ExampleComponent() {
+  export function DataTable({ items }: { items: Item[] }) {
     return (
-      <div className="flex flex-col space-y-4">
-        <div className="font-bold text-xl">Title</div>
-        <div className="flex items-start space-x-2">Content</div>
+      <div
+        role="table"
+        aria-label="Data Table"
+        className="w-full divide-y divide-gray-200 rounded-lg shadow-sm"
+      >
+        <div role="rowgroup" className="bg-gray-50">
+          {/* Header */}
+          <div
+            role="row"
+            className="grid grid-cols-3 gap-4 px-4 py-3 text-sm font-medium text-gray-700"
+          >
+            {/* Add column headers */}
+          </div>
+        </div>
+        <div role="rowgroup">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              role="row"
+              className="grid grid-cols-3 gap-4 px-4 py-3 hover:bg-gray-50 focus-within:bg-gray-50"
+              tabIndex={0}
+            >
+              {/* Add row content */}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
   ```
 
-## Required Utility Files for shadcn/ui
+- Required Accessibility Features:
 
-When using shadcn/ui components, the following utility file MUST be created:
+  - Interactive elements must have hover/focus states
+  - Forms must include proper labels and error states
+  - Tables must use proper ARIA roles
+  - Modals must trap focus
+  - Color choices must meet WCAG 2.1 standards
 
-```typescript:lib/utils.ts
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-```
-
-Dependencies required for utils.ts:
-
-```json
-{
-  "dependencies": {
-    "clsx": "^2.0.0",
-    "tailwind-merge": "^1.14.0"
-  }
-}
-```
-
-This file MUST be created before implementing any shadcn/ui components that use the `cn` utility.
+- Common Component Patterns:
+  ```tsx
+  // Button with loading state
+  <button
+    type="button"
+    disabled={isLoading}
+    className={`
+      inline-flex items-center px-4 py-2 rounded-md
+      font-medium text-white bg-blue-600
+      hover:bg-blue-700 focus:outline-none focus:ring-2
+      focus:ring-offset-2 focus:ring-blue-500
+      disabled:opacity-50 disabled:cursor-not-allowed
+      transition-colors duration-150
+    `}
+  >
+    {isLoading ? (
+      <>
+        <LoadingSpinner className="w-4 h-4 mr-2" />
+        Loading...
+      </>
+    ) : (
+      "Submit"
+    )}
+  </button>
+  ```
 
 ## API Response Structure Requirements
 
@@ -398,7 +402,6 @@ This file MUST be created before implementing any shadcn/ui components that use 
 
 ## Component Creation and Reference Rules
 
-- NEVER reference components that have not been created yet
 - When a component requires other components:
   1. Create all dependency components first
   2. Then create the component that depends on them
@@ -411,3 +414,23 @@ This file MUST be created before implementing any shadcn/ui components that use 
   1. Show the creation of dependency components first
   2. Then show the component that uses them
   3. Make it clear which files need to be created in what order
+
+## Styling Requirements
+
+- ALL components MUST include basic Tailwind styling
+- Minimum required styles per component:
+  - Layout (padding, margin, flex/grid)
+  - Colors (background, text)
+  - Responsive design
+- Example Pattern:
+
+```typescript
+export function Component({ title }: Props): JSX.Element {
+  return (
+    <div className="p-4 m-4 bg-white rounded-lg shadow">
+      <h2 className="text-xl font-bold mb-4">{title}</h2>
+      {/* Content */}
+    </div>
+  );
+}
+```
