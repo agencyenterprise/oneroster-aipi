@@ -1,329 +1,241 @@
 # Next.js OneRoster Integration System Requirements
 
+## Summary
+
+The objective is to build a fully functional, deployable Next.js application integrated with the OneRoster API. **All responses must adhere to the following requirements**, including the generation of a complete `package.json` file as the first item in every response. Every code snippet must comply with the provided patterns, file setups, and project structure.
+
+---
+
 ## CRITICAL REQUIREMENTS
 
-- YOU MUST GENERATE A COMPLETE package.json FILE IN EVERY RESPONSE
-- The package.json file is MANDATORY and must be included first
-- For core packages (react, react-dom, next) and their direct dependencies (like react-chartjs-2), use the specific versions shown in the example package.json
-- Only use "latest" for utility packages that don't have direct React version dependencies
-- The app MUST work with: npm install && npm run build && npm run start
+- **`package.json` file:**
+  - MUST be included first in EVERY response.
+  - MUST use specific versions for core dependencies (React, Next.js) as shown in the example below.
+  - Use `"latest"` only for utility packages that do not have direct React version dependencies.
+  - The app MUST build and run with the following commands:
+    ```bash
+    npm install && npm run build && npm run start
+    ```
+
+---
 
 ## AI ASSISTANT RULES
 
-1. You MUST read and follow ALL patterns in these rules
-2. You MUST NOT create your own patterns or "improve" existing ones
-3. You MUST check each code block against the patterns shown here
-4. If you find yourself wanting to modify a pattern, STOP and refer back to these rules
-5. When unsure about a pattern, ASK rather than improvise
-6. EVERY response must start by checking compliance with these rules
-7. If a pattern exists in these rules, you MUST use it verbatim
+1. You MUST read and follow ALL patterns and examples provided in this document.
+2. You MUST NOT create your own patterns or "improve" existing ones.
+3. Validate each code block against the patterns shown in this document before including it.
+4. If a pattern needs clarification, ASK instead of improvising.
+5. EVERY response MUST start by checking compliance with these rules.
+6. If a pattern exists in these rules, you MUST use it verbatim.
 
-## Environment and Framework
+---
 
-- Use Next.js (v13+) with React 18.x
-- Node.js v16.8+ is assumed
-- App must be fully functional and deployable
-- No version conflicts or startup-preventing configurations
+## Environment and Framework Requirements
+
+- **Framework:** Next.js (v13+) with React 18.x.
+- **Environment:** Node.js v20 is assumed.
+- The app must be fully functional, deployable, and free of version conflicts or startup-preventing configurations.
+
+---
 
 ## Project Structure
 
-REQUIRED PROJECT FILES:
+### Required Files
 
-- package.json:
-  ```json
-  {
-    "name": "oneroster-nextjs-app",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-      "dev": "next dev",
-      "build": "next build",
-      "start": "next start",
-      "lint": "next lint"
-    },
-    "dependencies": {
-      "@types/node": "18.11.9",
-      "@types/react": "18.0.25",
-      "@types/react-dom": "18.0.9",
-      "next": "13.4.19",
-      "react": "18.2.0",
-      "react-dom": "18.2.0",
-      "typescript": "5.0.4",
-      "react-chartjs-2": "5.2.0",
-      "chart.js": "4.3.0",
-      "tailwindcss": "3.3.0",
-      "autoprefixer": "10.4.14",
-      "postcss": "8.4.21"
-    },
-    "devDependencies": {
-      "eslint": "8.27.0",
-      "eslint-config-next": "13.4.19"
-    }
-  }
-  ```
+The project MUST include the following files and adhere to their defined structure:
 
-## API Integration and Proxy Setup
+1. **`package.json`:**
 
-1. API Base URL Configuration:
-
-   ```typescript
-   // Store in .env
-   NEXT_PUBLIC_ONEROSTER_BASE_URL=http://oneroster-staging.us-west-2.elasticbeanstalk.com
-   ```
-
-2. Required API Proxy Setup (for CORS handling):
-
-   ```typescript
-   // pages/api/proxy/[...path].ts
-   import type { NextApiRequest, NextApiResponse } from "next";
-
-   export default async function handler(
-     req: NextApiRequest,
-     res: NextApiResponse
-   ) {
-     const { path } = req.query;
-     const apiPath = Array.isArray(path) ? path.join("/") : path;
-     const baseUrl = process.env.NEXT_PUBLIC_ONEROSTER_BASE_URL;
-
-     try {
-       const response = await fetch(`${baseUrl}/${apiPath}`, {
-         method: req.method,
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: req.method !== "GET" ? JSON.stringify(req.body) : undefined,
-       });
-
-       const data = await response.json();
-       res.status(response.status).json(data);
-     } catch (error) {
-       res.status(500).json({ error: "Failed to fetch data" });
+   ```json
+   {
+     "name": "oneroster-nextjs-app",
+     "version": "0.1.0",
+     "private": true,
+     "scripts": {
+       "dev": "next dev",
+       "build": "next build",
+       "start": "next start",
+       "lint": "next lint"
+     },
+     "dependencies": {
+       "@types/node": "18.11.9",
+       "@types/react": "18.0.25",
+       "@types/react-dom": "18.0.9",
+       "next": "13.4.19",
+       "react": "18.2.0",
+       "react-dom": "18.2.0",
+       "typescript": "5.0.4",
+       "react-chartjs-2": "5.2.0",
+       "chart.js": "4.3.0",
+       "tailwindcss": "3.3.0",
+       "autoprefixer": "10.4.14",
+       "postcss": "8.4.21"
+     },
+     "devDependencies": {
+       "eslint": "8.27.0",
+       "eslint-config-next": "13.4.19"
      }
    }
    ```
 
-3. API Client Implementation:
+2. **API Base URL Configuration:**
 
-   ```typescript
-   // lib/api.ts
-   const BASE_PATH = "/api/proxy";
+   - Store in `.env`:
+     ```bash
+     NEXT_PUBLIC_ONEROSTER_BASE_URL=http://oneroster-staging.us-west-2.elasticbeanstalk.com
+     ```
 
-   export async function fetchStudents() {
-     const response = await fetch(
-       `${BASE_PATH}/ims/oneroster/rostering/v1p2/students`
-     );
-     if (!response.ok) throw new Error("Failed to fetch students");
-     return response.json();
-   }
-   ```
+3. **Proxy Handler for API Integration:**
 
-4. Component Usage Example:
+   - File: `pages/api/proxy/[...path].ts`
 
-   ```typescript
-   // components/StudentList.tsx
-   import { fetchStudents } from "../lib/api";
+     ```typescript
+     import type { NextApiRequest, NextApiResponse } from "next";
 
-   export default function StudentList() {
-     const { data, error } = useSWR("students", fetchStudents);
-     // ... rest of the component
-   }
-   ```
+     export default async function handler(
+       req: NextApiRequest,
+       res: NextApiResponse
+     ) {
+       const { path } = req.query;
+       const apiPath = Array.isArray(path) ? path.join("/") : path;
+       const baseUrl = process.env.NEXT_PUBLIC_ONEROSTER_BASE_URL;
 
-5. TypeScript Requirements
+       try {
+         const response = await fetch(`${baseUrl}/${apiPath}`, {
+           method: req.method,
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: req.method !== "GET" ? JSON.stringify(req.body) : undefined,
+         });
 
-- ALL components, functions, and hooks MUST include explicit type definitions
-- Example Pattern:
+         const data = await response.json();
+         res.status(response.status).json(data);
+       } catch (error) {
+         res.status(500).json({ error: "Failed to fetch data" });
+       }
+     }
+     ```
 
-  ```typescript
-  interface Props {
-    title: string;
-    items: Item[];
-  }
+4. **API Client Implementation:**
 
-  export function Component({ title, items }: Props): JSX.Element {
-    // ...
-  }
-  ```
+   - File: `lib/api.ts`
 
-- Pages directory with:
-  - Functional index.tsx with OneRoster API integration
-- Components directory (as needed)
-- Lib directory (as needed)
+     ```typescript
+     const BASE_PATH = "/api/proxy";
 
-## OneRoster v1.2 Integration
+     export async function fetchStudents() {
+       const response = await fetch(
+         `${BASE_PATH}/ims/oneroster/rostering/v1p2/students`
+       );
+       if (!response.ok) throw new Error("Failed to fetch students");
+       return response.json();
+     }
+     ```
 
-- API Definitions to Follow:
+5. **TypeScript Requirements:**
 
-  - gradebookservice_openapi3_v1p0.yaml
-  - resourcesservice_openapi3_v1p0.yaml
-  - rostersservice_openapi3_v1p0.yaml
-  - diff_doc.txt for extended endpoints
+   - ALL components, functions, and hooks MUST include explicit type definitions.
+   - Example pattern:
 
-- Environment Configuration:
+     ```typescript
+     interface Props {
+       title: string;
+       items: Item[];
+     }
 
-  - Base API URL in process.env.NEXT_PUBLIC_ONEROSTER_BASE_URL
-  - Example: http://oneroster-staging.us-west-2.elasticbeanstalk.com
+     export function Component({ title, items }: Props): JSX.Element {
+       // ...
+     }
+     ```
 
-- API Proxy Requirements:
+6. **Component Usage Example:**
 
-  1. Create proxy at pages/api/proxy/[...path].ts
-  2. Must forward requests to OneRoster API
-  3. All client-side calls must use proxy
-  4. Organize API client logic in lib/api.ts with TypeScript typing
+   - File: `components/StudentList.tsx`
 
-- URL Structure:
+     ```typescript
+     import { fetchStudents } from "../lib/api";
+
+     export default function StudentList() {
+       const { data, error } = useSWR("students", fetchStudents);
+       // ... rest of the component
+     }
+     ```
+
+---
+
+## API Integration and Proxy Requirements
+
+### Proxy Setup
+
+- Proxy MUST:
+  - Be located in `pages/api/proxy/[...path].ts`.
+  - Forward requests to the OneRoster API.
+  - Ensure all client-side calls use the proxy.
+
+### OneRoster API URL Structure
+
+- Base Paths:
   ```
   /ims/oneroster/gradebook/v1p2
   /ims/oneroster/resources/v1p2
   /ims/oneroster/rostering/v1p2
   ```
 
-## Code Delivery Requirements
+---
 
-- Format:
+## Response Handling Rules
 
-  - Use Markdown code blocks
-  - Label each file with path comment (e.g., "// pages/index.tsx")
-  - MUST include complete package.json
-  - All code must be functional and complete
+### "Users" Response Structure:
 
-- Package Requirements:
+- Example:
+  ```json
+  {
+    "users": [{}, {}]
+  }
+  ```
+- ALWAYS access data using `.users` regardless of endpoint (e.g., `/students`).
 
-  - All necessary scripts (dev, build, start, lint)
-  - Compatible dependencies
-  - Proper TypeScript and ESLint configs
-  - Use "latest" for uncertain versions
+### "Orgs" Response Structure:
 
-- Deployment Verification:
-  - Must work at http://localhost:3000
-  - Must work with standard npm commands
+- Example:
+  ```json
+  {
+    "orgs": [{}, {}]
+  }
+  ```
+- ALWAYS access data using `.orgs` regardless of endpoint (e.g., `/schools`).
 
-## OneRoster Route Specifications
+- Example implementation:
 
-### Base URL Structure
+  ```typescript
+  async function fetchAnyOrgType(endpoint: string) {
+    const response = await fetch(
+      `/api/proxy/ims/oneroster/rostering/v1p2/${endpoint}`
+    );
+    const data = await response.json();
+    return data.orgs; // Always access data.orgs
+  }
 
-```json
-{
-  "gradebook": "/ims/oneroster/gradebook/v1p2",
-  "resources": "/ims/oneroster/resources/v1p2",
-  "rostering": "/ims/oneroster/rostering/v1p2"
-}
-```
+  const schools = await fetchAnyOrgType("schools");
+  ```
 
-### Request Patterns
-
-#### Collection Endpoints
-
-- GET returns paginated lists
-- Query Parameters:
-  - limit
-  - offset
-  - sort
-  - orderBy (asc/desc)
-  - filter
-  - fields
-
-#### Single Resource Endpoints
-
-- Uses sourcedId in URL
-- Supported Methods:
-  - GET (retrieve)
-  - POST (create)
-  - PUT (update)
-  - DELETE (remove)
-
-### Key Route Groups
-
-#### Users
-
-- Base: /ims/oneroster/rostering/v1p2/users
-- Students: /ims/oneroster/rostering/v1p2/students
-- Teachers: /ims/oneroster/rostering/v1p2/teachers
-
-## Response Structure (users & teachers & students)
-
-```json
-{
-  "users": [{}, {}]
-}
-```
-
-⚠️ IMPORTANT:
-
-- The response will ALWAYS be wrapped in a "users" array
-- This is true even when calling /students or /teachers
-- NEVER try to access response.students or response.teachers
-
-#### Orgs
-
-- Base: /ims/oneroster/rostering/v1p2/orgs
-- Schools: /ims/oneroster/rostering/v1p2/schools
-
-## Response Structure (orgs & schools)
-
-```json
-{
-  "orgs": [{}, {}]
-}
-```
-
-⚠️ IMPORTANT:
-
-- The response will ALWAYS be wrapped in an "orgs" array
-- This is true even when calling /schools
-- NEVER try to access response.schools
-
-Example:
-
-```typescript
-// CORRECT implementation
-async function fetchAnyUserType(endpoint: string) {
-  const response = await fetch(
-    `/api/proxy/ims/oneroster/rostering/v1p2/${endpoint}`
-  );
-  const data = await response.json();
-  return data.users; // Always use .users regardless of endpoint
-}
-
-// CORRECT implementation
-async function fetchAnyOrgType(endpoint: string) {
-  const response = await fetch(
-    `/api/proxy/ims/oneroster/rostering/v1p2/${endpoint}`
-  );
-  const data = await response.json();
-  return data.orgs; // Always use .orgs regardless of endpoint
-}
-
-// Example usage:
-const students = await fetchAnyUserType("students"); // Still uses data.users
-const schools = await fetchAnyOrgType("schools"); // Still uses data.orgs
-```
+---
 
 ## UI Libraries and Component Guidelines
 
-- Use Tailwind CSS with modern accessibility patterns:
+- Use Tailwind CSS for styling and accessibility:
 
   ```json
   {
     "dependencies": {
       "tailwindcss": "3.3.0",
-      "autoprefixer": "10.4.14",
-      "postcss": "8.4.21",
-      "@headlessui/react": "1.7.17" // For accessible UI primitives
+      "@headlessui/react": "1.7.17"
     }
   }
   ```
 
-- Component Structure Requirements:
-
-  - Must include ARIA labels and roles where appropriate
-  - Must support keyboard navigation
-  - Must maintain proper color contrast
-  - Must include focus states
-  - Must be responsive by default
-
-- Example Component Pattern:
-
+- Example Component:
   ```tsx
   export function DataTable({ items }: { items: Item[] }) {
     return (
@@ -334,12 +246,6 @@ const schools = await fetchAnyOrgType("schools"); // Still uses data.orgs
       >
         <div role="rowgroup" className="bg-gray-50">
           {/* Header */}
-          <div
-            role="row"
-            className="grid grid-cols-3 gap-4 px-4 py-3 text-sm font-medium text-gray-700"
-          >
-            {/* Add column headers */}
-          </div>
         </div>
         <div role="rowgroup">
           {items.map((item) => (
@@ -349,7 +255,7 @@ const schools = await fetchAnyOrgType("schools"); // Still uses data.orgs
               className="grid grid-cols-3 gap-4 px-4 py-3 hover:bg-gray-50 focus-within:bg-gray-50"
               tabIndex={0}
             >
-              {/* Add row content */}
+              {/* Row Content */}
             </div>
           ))}
         </div>
@@ -358,79 +264,12 @@ const schools = await fetchAnyOrgType("schools"); // Still uses data.orgs
   }
   ```
 
-- Required Accessibility Features:
+---
 
-  - Interactive elements must have hover/focus states
-  - Forms must include proper labels and error states
-  - Tables must use proper ARIA roles
-  - Modals must trap focus
-  - Color choices must meet WCAG 2.1 standards
+## Deployment Verification
 
-- Common Component Patterns:
-  ```tsx
-  // Button with loading state
-  <button
-    type="button"
-    disabled={isLoading}
-    className={`
-      inline-flex items-center px-4 py-2 rounded-md
-      font-medium text-white bg-blue-600
-      hover:bg-blue-700 focus:outline-none focus:ring-2
-      focus:ring-offset-2 focus:ring-blue-500
-      disabled:opacity-50 disabled:cursor-not-allowed
-      transition-colors duration-150
-    `}
-  >
-    {isLoading ? (
-      <>
-        <LoadingSpinner className="w-4 h-4 mr-2" />
-        Loading...
-      </>
-    ) : (
-      "Submit"
-    )}
-  </button>
+- Validate functionality at `http://localhost:3000`.
+- Ensure compatibility with standard npm commands:
+  ```bash
+  npm install && npm run build && npm run start
   ```
-
-## API Response Structure Requirements
-
-- MUST check OpenAPI YAML files for exact response structure before implementing data handling
-- Response interfaces MUST match the schema definitions in the OpenAPI YAML files
-- Example: When handling /students endpoint, check rostersservice_openapi3_v1p0.yaml for the response schema
-- All data mapping MUST be validated against OpenAPI schema definitions
-- DO NOT assume response structure without consulting YAML specifications
-
-## Component Creation and Reference Rules
-
-- When a component requires other components:
-  1. Create all dependency components first
-  2. Then create the component that depends on them
-  3. If referencing @/components/ui/\*, that file MUST exist first
-- Component Creation Order:
-  1. Create base UI components (like table.tsx, card.tsx, input.tsx)
-  2. Create composite components that use the base components
-  3. Create page components that use composite components
-- When showing code that requires multiple components:
-  1. Show the creation of dependency components first
-  2. Then show the component that uses them
-  3. Make it clear which files need to be created in what order
-
-## Styling Requirements
-
-- ALL components MUST include basic Tailwind styling
-- Minimum required styles per component:
-  - Layout (padding, margin, flex/grid)
-  - Colors (background, text)
-  - Responsive design
-- Example Pattern:
-
-```typescript
-export function Component({ title }: Props): JSX.Element {
-  return (
-    <div className="p-4 m-4 bg-white rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-4">{title}</h2>
-      {/* Content */}
-    </div>
-  );
-}
-```
