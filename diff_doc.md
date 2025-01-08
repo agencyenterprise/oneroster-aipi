@@ -229,55 +229,61 @@ POST for /users
 ```typescript
 {
   "sourcedId": "user-123",              // OPTIONAL: auto-generated if not provided
-  "status": "active",                   // OPTIONAL: defaults to "active"
+  "metadata": {},                       // OPTIONAL
+  "status": "active",                   // REQUIRED: defaults to 'active'
+  "userMasterIdentifier",               // OPTIONAL
   "username": "jsmith",                 // OPTIONAL
-  "enabledUser": true,                  // REQUIRED: boolean converted to string
-  "givenName": "John",                  // REQUIRED
-  "familyName": "Smith",                // REQUIRED
-  "middleName": "Robert",               // OPTIONAL
-  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
-  "roles": [                            // REQUIRED: array of at least one role
-    {
-      "roleType": "primary",            // REQUIRED: must be from RoleType enum
-      "role": "student",                // REQUIRED: must be from Role enum
-      "org": {                          // REQUIRED
-        "sourcedId": "school-123"
-      },
-      "userProfile": "profile-123",     // OPTIONAL
-      "beginDate": "2024-01-15",        // OPTIONAL: ISO date string
-      "endDate": "2024-12-31"          // OPTIONAL: ISO date string
-    }
-  ],
-  "grades": ["9", "10"],               // OPTIONAL: array of strings
-  "password": "hashedpassword123",      // OPTIONAL
-  "sms": "+1234567890",                // OPTIONAL
-  "phone": "+1234567890",              // OPTIONAL
-  "userIds": [                         // OPTIONAL: array of identifiers
+    "userIds": [                         // OPTIONAL: array of identifiers
     {
       "type": "district",
       "identifier": "12345"
     }
   ],
-  "primaryOrg": {                      // OPTIONAL
-    "sourcedId": "org-123"
-  },
-  "agents": [                          // OPTIONAL: array of references
+  "enabledUser": true,                  // REQUIRED: boolean converted to string
+  "givenName": "John",                  // REQUIRED
+  "familyName": "Smith",                // REQUIRED
+  "middleName": "Robert",               // OPTIONAL
+  "roles": [                            // REQUIRED: array, defaults to []
     {
-      "sourcedId": "parent-123"
+      "roleType": "primary",            // REQUIRED: must be from RoleType enum
+      "role": "student",                // REQUIRED: must be from Role enum
+      "org": {                          // REQUIRED
+        "sourcedId": "school-123"       // REQUIRED
+      },
+      "userProfile": "profile-123",     // OPTIONAL
+      "beginDate": "2024-01-15",        // REQUIRED but NULLABLE: ISO date string
+      "endDate": "2024-12-31"          // REQUIRED but NULLABLE: ISO date string
     }
   ],
+  "primaryOrg": {                      // OPTIONAL
+    "sourcedId": "org-123"             // REQUIRED if primaryOrg is included in POST request
+  },
+  "identifier": "jsmithy-ex-1234",      // OPTIONAL string
+  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
+  "agents": [                          // OPTIONAL: array of references
+    {
+      "sourcedId": "parent-123"        // REQUIRED if agents are included
+    }
+  ],
+  "resources": [                       // OPTIONAL
+    "sourcedId": "12345"               // REQUIRED if 'resources' are included in POST request
+  ]
   "preferredFirstName": "Johnny",      // OPTIONAL
   "preferredMiddleName": "Bob",        // OPTIONAL
   "preferredLastName": "Smith",        // OPTIONAL
   "pronouns": "he/him",                // OPTIONAL
-  "userProfiles": [                    // OPTIONAL
+  "grades": ["9", "10"],               // OPTIONAL: array of strings
+  "password": "hashedpassword123",      // OPTIONAL
+  "sms": "+1234567890",                // OPTIONAL
+  "phone": "+1234567890",              // OPTIONAL
+  "userProfiles": [                    // OPTIONAL if included there are REQUIRED key values pairs designated below
     {
-      "profileId": "profile-123",
-      "profileType": "academic",
-      "vendorId": "vendor-123",
-      "applicationId": "app-123",      // OPTIONAL
-      "description": "Academic profile", // OPTIONAL
-      "credentials": []                // REQUIRED: array (can be empty)
+      "profileId": "profile-123",        // REQUIRED only required if userProfiles is included in POST request
+      "profileType": "academic",         // REQUIRED only required if userProfiles is included in POST request
+      "vendorId": "vendor-123",          // REQUIRED only required if userProfiles is included in POST request
+      "applicationId": "app-123",        // REQUIRED only required if userProfiles is included in POST request
+      "description": "Academic profile", // REQUIRED only required if userProfiles is included in POST request
+      "credentials": []                  // REQUIRED: array (can be empty)  only required if userProfiles is included in POST request
     }
   ]
 }
@@ -287,32 +293,62 @@ PUT for /users/{sourcedId}
 
 ```typescript
 {
+  "status": "active",                   // REQUIRED: defaults to 'active'
+  "userMasterIdentifier",               // OPTIONAL
   "username": "jsmith",                 // OPTIONAL
+    "userIds": [                         // OPTIONAL: array of identifiers
+    {
+      "type": "district",
+      "identifier": "12345"
+    }
+  ],
   "enabledUser": true,                  // REQUIRED: boolean converted to string
   "givenName": "John",                  // REQUIRED
   "familyName": "Smith",                // REQUIRED
   "middleName": "Robert",               // OPTIONAL
-  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
-  "roles": [                            // REQUIRED: array of at least one role
+  "roles": [                            // REQUIRED: array, defaults to []
     {
       "roleType": "primary",            // REQUIRED: must be from RoleType enum
       "role": "student",                // REQUIRED: must be from Role enum
       "org": {                          // REQUIRED
-        "sourcedId": "school-123"
+        "sourcedId": "school-123"       // REQUIRED
       },
       "userProfile": "profile-123",     // OPTIONAL
-      "beginDate": "2024-01-15",        // OPTIONAL: ISO date string
-      "endDate": "2024-12-31"          // OPTIONAL: ISO date string
+      "beginDate": "2024-01-15",        // REQUIRED but NULLABLE: ISO date string
+      "endDate": "2024-12-31"          // REQUIRED but NULLABLE: ISO date string
     }
   ],
+  "primaryOrg": {                      // OPTIONAL
+    "sourcedId": "org-123"             // REQUIRED if primaryOrg is included in POST request
+  },
+  "identifier": "jsmithy-ex-1234",     // OPTIONAL string
+  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
+  "agents": [                          // OPTIONAL: array of references
+    {
+      "sourcedId": "parent-123"        // REQUIRED if agents are included
+    }
+  ],
+  "resources": [                       // OPTIONAL
+    "sourcedId": "12345"               // REQUIRED if 'resources' are included in POST request
+  ]
+  "preferredFirstName": "Johnny",      // OPTIONAL
+  "preferredMiddleName": "Bob",        // OPTIONAL
+  "preferredLastName": "Smith",        // OPTIONAL
+  "pronouns": "he/him",                // OPTIONAL
   "grades": ["9", "10"],               // OPTIONAL: array of strings
   "password": "hashedpassword123",      // OPTIONAL
   "sms": "+1234567890",                // OPTIONAL
   "phone": "+1234567890",              // OPTIONAL
-  "preferredFirstName": "Johnny",      // OPTIONAL
-  "preferredMiddleName": "Bob",        // OPTIONAL
-  "preferredLastName": "Smith",        // OPTIONAL
-  "pronouns": "he/him"                 // OPTIONAL
+  "userProfiles": [                    // OPTIONAL if included there are REQUIRED key values pairs designated below
+    {
+      "profileId": "profile-123",        // REQUIRED only required if userProfiles is included in POST request
+      "profileType": "academic",         // REQUIRED only required if userProfiles is included in POST request
+      "vendorId": "vendor-123",          // REQUIRED only required if userProfiles is included in POST request
+      "applicationId": "app-123",        // REQUIRED only required if userProfiles is included in POST request
+      "description": "Academic profile", // REQUIRED only required if userProfiles is included in POST request
+      "credentials": []                  // REQUIRED: array (can be empty)  only required if userProfiles is included in POST request
+    }
+  ]
 }
 ```
 
