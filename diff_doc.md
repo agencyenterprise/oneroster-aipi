@@ -224,11 +224,100 @@ PUT for /courses/{sourcedId}
 DELETE for /courses/{sourcedId}
 The only requirement is the sourcedId in the URL path parameter.
 
-<!-- TODO: IMPLEMENT THESE ROUTES IN THE API
-/users
 POST for /users
-PUT/DELETE for /users/{sourcedId}
--->
+
+```typescript
+{
+  "sourcedId": "user-123",              // OPTIONAL: auto-generated if not provided
+  "status": "active",                   // OPTIONAL: defaults to "active"
+  "username": "jsmith",                 // OPTIONAL
+  "enabledUser": true,                  // REQUIRED: boolean converted to string
+  "givenName": "John",                  // REQUIRED
+  "familyName": "Smith",                // REQUIRED
+  "middleName": "Robert",               // OPTIONAL
+  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
+  "roles": [                            // REQUIRED: array of at least one role
+    {
+      "roleType": "primary",            // REQUIRED: must be from RoleType enum
+      "role": "student",                // REQUIRED: must be from Role enum
+      "org": {                          // REQUIRED
+        "sourcedId": "school-123"
+      },
+      "userProfile": "profile-123",     // OPTIONAL
+      "beginDate": "2024-01-15",        // OPTIONAL: ISO date string
+      "endDate": "2024-12-31"          // OPTIONAL: ISO date string
+    }
+  ],
+  "grades": ["9", "10"],               // OPTIONAL: array of strings
+  "password": "hashedpassword123",      // OPTIONAL
+  "sms": "+1234567890",                // OPTIONAL
+  "phone": "+1234567890",              // OPTIONAL
+  "userIds": [                         // OPTIONAL: array of identifiers
+    {
+      "type": "district",
+      "identifier": "12345"
+    }
+  ],
+  "primaryOrg": {                      // OPTIONAL
+    "sourcedId": "org-123"
+  },
+  "agents": [                          // OPTIONAL: array of references
+    {
+      "sourcedId": "parent-123"
+    }
+  ],
+  "preferredFirstName": "Johnny",      // OPTIONAL
+  "preferredMiddleName": "Bob",        // OPTIONAL
+  "preferredLastName": "Smith",        // OPTIONAL
+  "pronouns": "he/him",                // OPTIONAL
+  "userProfiles": [                    // OPTIONAL
+    {
+      "profileId": "profile-123",
+      "profileType": "academic",
+      "vendorId": "vendor-123",
+      "applicationId": "app-123",      // OPTIONAL
+      "description": "Academic profile", // OPTIONAL
+      "credentials": []                // REQUIRED: array (can be empty)
+    }
+  ]
+}
+```
+
+PUT for /users/{sourcedId}
+
+```typescript
+{
+  "username": "jsmith",                 // OPTIONAL
+  "enabledUser": true,                  // REQUIRED: boolean converted to string
+  "givenName": "John",                  // REQUIRED
+  "familyName": "Smith",                // REQUIRED
+  "middleName": "Robert",               // OPTIONAL
+  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
+  "roles": [                            // REQUIRED: array of at least one role
+    {
+      "roleType": "primary",            // REQUIRED: must be from RoleType enum
+      "role": "student",                // REQUIRED: must be from Role enum
+      "org": {                          // REQUIRED
+        "sourcedId": "school-123"
+      },
+      "userProfile": "profile-123",     // OPTIONAL
+      "beginDate": "2024-01-15",        // OPTIONAL: ISO date string
+      "endDate": "2024-12-31"          // OPTIONAL: ISO date string
+    }
+  ],
+  "grades": ["9", "10"],               // OPTIONAL: array of strings
+  "password": "hashedpassword123",      // OPTIONAL
+  "sms": "+1234567890",                // OPTIONAL
+  "phone": "+1234567890",              // OPTIONAL
+  "preferredFirstName": "Johnny",      // OPTIONAL
+  "preferredMiddleName": "Bob",        // OPTIONAL
+  "preferredLastName": "Smith",        // OPTIONAL
+  "pronouns": "he/him"                 // OPTIONAL
+}
+```
+
+DELETE for /users/{sourcedId}
+The only requirement is the sourcedId in the URL path parameter.
 
 POST for /orgs
 
@@ -378,11 +467,47 @@ PUT for /enrollments/{sourcedId}
 DELETE for /enrollments/{sourcedId}
 The only requirement is the sourcedId in the URL path parameter.
 
-<!-- TODO: IMPLEMENT THESE ENDPOINTS IN THE API
 /gradingPeriods
 POST for /gradingPeriods
-PUT/DELETE for /gradingPeriods/{sourcedId}
--->
+
+```typescript
+{
+  "sourcedId": "gp-123",                // OPTIONAL: auto-generated if not provided
+  "status": "active",                   // OPTIONAL: defaults to "active"
+  "title": "Q1 2024",                  // REQUIRED
+  "type": "gradingPeriod",             // REQUIRED: must be "gradingPeriod"
+  "startDate": "2024-01-15",           // REQUIRED: ISO date string
+  "endDate": "2024-03-15",             // REQUIRED: ISO date string
+  "parent": {                          // OPTIONAL
+    "sourcedId": "term-123"            // REQUIRED if parent object is included
+  },
+  "schoolYear": "2024",                // REQUIRED
+  "org": {                             // REQUIRED
+    "sourcedId": "school-123"          // REQUIRED
+  }
+}
+```
+
+PUT for /gradingPeriods/{sourcedId}
+
+```typescript
+{
+  "title": "Q1 2024",                  // REQUIRED
+  "type": "gradingPeriod",             // REQUIRED: must be "gradingPeriod"
+  "startDate": "2024-01-15",           // REQUIRED: ISO date string
+  "endDate": "2024-03-15",             // REQUIRED: ISO date string
+  "parent": {                          // OPTIONAL
+    "sourcedId": "term-123"            // REQUIRED if parent object is included
+  },
+  "schoolYear": "2024",                // REQUIRED
+  "org": {                             // REQUIRED
+    "sourcedId": "school-123"          // REQUIRED
+  }
+}
+```
+
+DELETE for /gradingPeriods/{sourcedId}
+The only requirement is the sourcedId in the URL path parameter.
 
 Resources Service
 The current OneRoster v1.2 spec for the Resources Service provides the GET method for its defined endpoints. We will layer on top POST, PUT, and DELETE methods.
