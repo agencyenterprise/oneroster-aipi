@@ -46,9 +46,6 @@ PUT for /academicSessions/{sourcedId}
 }
 ```
 
-DELETE for /academicSessions/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST for /terms
 
 ```typescript
@@ -86,9 +83,6 @@ PUT for /terms/{sourcedId}
   }
 }
 ```
-
-DELETE for /terms/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 POST for /terms/{termSourcedId}/gradingPeriods
 
@@ -160,9 +154,6 @@ PUT for /classes/{sourcedId}
 }
 ```
 
-DELETE for /classes/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST for /classes/{classSourcedId}/students
 
 ```typescript
@@ -220,9 +211,6 @@ PUT for /courses/{sourcedId}
   }
 }
 ```
-
-DELETE for /courses/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 POST for /users
 
@@ -352,9 +340,6 @@ PUT for /users/{sourcedId}
 }
 ```
 
-DELETE for /users/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST for /orgs
 
 ```typescript
@@ -383,9 +368,6 @@ PUT for /orgs/{sourcedId}
 }
 ```
 
-DELETE for /orgs/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST for /schools
 
 ```typescript
@@ -413,9 +395,6 @@ PUT for /schools/{sourcedId}
   }
 }
 ```
-
-DELETE for /schools/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 POST for /demographics
 
@@ -459,9 +438,6 @@ PUT for /demographics/{sourcedId}
 }
 ```
 
-DELETE for /demographics/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST for /enrollments
 
 ```typescript
@@ -500,9 +476,6 @@ PUT for /enrollments/{sourcedId}
 }
 ```
 
-DELETE for /enrollments/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST for /gradingPeriods
 
 ```typescript
@@ -540,9 +513,6 @@ PUT for /gradingPeriods/{sourcedId}
   }
 }
 ```
-
-DELETE for /gradingPeriods/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 Resources Service
 The current OneRoster v1.2 spec for the Resources Service provides the GET method for its defined endpoints. We will layer on top POST, PUT, and DELETE methods.
@@ -587,9 +557,6 @@ PUT for /resources/{sourcedId}
   "applicationId": "app-123"            // OPTIONAL
 }
 ```
-
-DELETE for /resources/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 Gradebook Service
 The Gradebook Service was updated in OneRoster v1.2, introducing POST, PUT, and DELETE endpoints, reducing the size of extended endpoints to manage gradebook data. These changes ensure a smaller scope for additional layers.
@@ -651,9 +618,6 @@ PUT for /assessmentLineItems/{sourcedId}
 }
 ```
 
-DELETE for /assessmentLineItems/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST /assessmentResults
 
 ```typescript
@@ -694,9 +658,6 @@ PUT for /assessmentResults/{sourcedId}
 }
 ```
 
-DELETE for /assessmentResults/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST /categories
 
 ```typescript
@@ -732,9 +693,6 @@ PUT for /categories/{sourcedId}
   }
 }
 ```
-
-DELETE for /categories/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 POST /lineItems
 
@@ -788,9 +746,6 @@ PUT for /lineItems/{sourcedId}
 }
 ```
 
-DELETE for /lineItems/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
-
 POST /results
 
 ```typescript
@@ -830,9 +785,6 @@ PUT for /results/{sourcedId}
   "comment": "Excellent analysis!"      // OPTIONAL
 }
 ```
-
-DELETE for /results/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
 
 POST /scoreScales
 
@@ -884,5 +836,4 @@ PUT for /scoreScales/{sourcedId}
 }
 ```
 
-DELETE for /scoreScales/{sourcedId}
-The only requirement is the sourcedId in the URL path parameter.
+ALL DELETE METHODS ONLY REQUIRE A sourceId for /route/{sourcedId}
