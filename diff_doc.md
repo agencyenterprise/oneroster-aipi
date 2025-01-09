@@ -503,7 +503,6 @@ PUT for /enrollments/{sourcedId}
 DELETE for /enrollments/{sourcedId}
 The only requirement is the sourcedId in the URL path parameter.
 
-/gradingPeriods
 POST for /gradingPeriods
 
 ```typescript
