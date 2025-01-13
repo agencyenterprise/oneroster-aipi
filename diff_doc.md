@@ -58,7 +58,7 @@ PUT for /academicSessions/{sourcedId}
 }
 ```
 
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
 
 POST for /terms
 
@@ -80,7 +80,7 @@ POST for /terms
 }
 ```
 
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
 
 PUT for /terms/{sourcedId}
 
@@ -100,7 +100,7 @@ PUT for /terms/{sourcedId}
 }
 ```
 
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
 
 POST for /terms/{termSourcedId}/gradingPeriods
 
@@ -451,7 +451,7 @@ PUT for /schools/{sourcedId}
 }
 ```
 
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
 
 POST for /demographics
 
@@ -475,7 +475,7 @@ POST for /demographics
 }
 ```
 
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
 
 PUT for /demographics/{sourcedId}
 
@@ -539,7 +539,7 @@ PUT for /enrollments/{sourcedId}
 }
 ```
 
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
 
 POST for /gradingPeriods
 
@@ -615,8 +615,6 @@ POST for /resources
 }
 ```
 
-<!-- TODO - PUT REQUIRED UNDER EACH OF THESE -->
-
 PUT for /resources/{sourcedId}
 
 ```typescript
@@ -645,19 +643,11 @@ PUT for /resources/{sourcedId}
 }
 ```
 
-<!-- TODO - PUT REQUIRED UNDER EACH OF THESE -->
-
 Gradebook Service
 The Gradebook Service was updated in OneRoster v1.2, introducing POST, PUT, and DELETE endpoints, reducing the size of extended endpoints to manage gradebook data. These changes ensure a smaller scope for additional layers.
 
 Base Endpoint: /ims/oneroster/gradebook/v1p2
 OneRoster v1.2 Gradebook Service Endpoints Extended
-
-```bash
-    #########################################################
-    # Assessment Line Items POST, PUT
-    #########################################################
-```
 
 POST /assessmentLineItems
 
@@ -749,12 +739,6 @@ PUT for /assessmentLineItems/{sourcedId}
         ]
       }
     }
-```
-
-```bash
-    #########################################################
-    # Assessment Results POST, PUT
-    #########################################################
 ```
 
 POST /assessmentResults
