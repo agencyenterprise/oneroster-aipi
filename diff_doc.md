@@ -538,25 +538,25 @@ POST for /resources
 {
   "resource":
       {
-          "sourcedId": "'$resources_id'",
-          "metadata": {
-              "format": "digits",
-              "type": "textbook",
-              "accessHistory": {
-                  "totalAccesses": 1250,
-                  "averageTimeSpent": "30 minutes",
-                  "lastUpdated": "2025-01-11T00:33:43.629Z"
-              }
-          },
-          "title": "'$resource_title'",
-          "roles": [
-              "primary"
-          ],
-          "importance": "primary",
-          "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",
-          "vendorId": "pearson_ed",
-          "applicationId": "digital_textbook"
-      }
+        "sourcedId": "'$resources_sourcedId'",
+        "metadata": {
+            "format": "digits",
+            "type": "textbook",
+            "accessHistory": {
+                "totalAccesses": 1250,
+                "averageTimeSpent": "30 minutes",
+                "lastUpdated": "2025-01-11T00:33:43.629Z"
+            }
+        },
+        "title": "Algebra I Textbook",
+        "roles": [
+            "primary"
+        ],
+        "importance": "primary",
+        "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",
+        "vendorId": "pearson_ed",
+        "applicationId": "digital_textbook"
+    }
 }
 ```
 
@@ -567,26 +567,26 @@ PUT for /resources/{sourcedId}
 ```typescript
 {
   "resource":
-      {
-          "sourcedId": "'$resources_id'",
-          "metadata": {
-              "format": "digits",
-              "type": "textbook",
-              "accessHistory": {
-                  "totalAccesses": 1250,
-                  "averageTimeSpent": "30 minutes",
-                  "lastUpdated": "2025-01-11T00:33:43.629Z"
-              }
-          },
-          "title": "'$resource_title'",
-          "roles": [
-              "primary"
-          ],
-          "importance": "primary",
-          "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",
-          "vendorId": "pearson_ed",
-          "applicationId": "digital_textbook"
-      }
+    {
+        "sourcedId": "'$resources_sourcedId'",
+        "metadata": {
+            "format": "digits",
+            "type": "textbook",
+            "accessHistory": {
+                "totalAccesses": 1250,
+                "averageTimeSpent": "30 minutes",
+                "lastUpdated": "2025-01-11T00:33:43.629Z"
+            }
+        },
+        "title": "Algebra I Textbook",
+        "roles": [
+            "primary"
+        ],
+        "importance": "primary",
+        "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",
+        "vendorId": "pearson_ed",
+        "applicationId": "digital_textbook"
+    }
 }
 ```
 
@@ -598,49 +598,55 @@ The Gradebook Service was updated in OneRoster v1.2, introducing POST, PUT, and 
 Base Endpoint: /ims/oneroster/gradebook/v1p2
 OneRoster v1.2 Gradebook Service Endpoints Extended
 
+```bash
+    #########################################################
+    # Assessment Line Items POST, PUT
+    #########################################################
+```
+
 POST /assessmentLineItems
 
 ```typescript
 {
-  "assessmentLineItem": {
-    "sourcedId": "'$sourcedId_assessmentLineItem'",
-    "status": "active",
-    "metadata": {
-        "weight": "30",
-        "duration": "120",
-        "allowCalculator": true
-    },
-    "title": "Chapter 1 Test",
-    "description": "End of chapter test",
-    "class": {
-      "sourcedId": "'$class_sourcedId'"
-    },
-    "parentAssessmentLineItem": {
-      "sourcedId": "'$assessmentLineItem_sourcedId'"
-    },
-    "scoreScale": {
-      "sourcedId": "'$scoreScale_sourcedId'"
-    },
-    "resultValueMin": 0,
-    "resultValueMax": 100,
-    "learningObjectiveSet": [
-      {
-        "source": "Common Core",
-        "learningObjectiveIds": [
-          {
-            "learningObjectiveId": "12345",
-            "score": 89,
-            "textScore": "89"
-          },
-          {
-            "learningObjectiveId": "as12345",
-            "score": 89,
-            "textScore": "89"
-          }
-        ]
-      }
-    ]
-  }
+        "assessmentLineItem": {
+            "sourcedId": "'$sourcedId_assessmentLineItem'",
+            "status": "active",
+            "metadata": {
+                "weight": "30",
+                "duration": "120",
+                "allowCalculator": true
+            },
+            "title": "Chapter 1 Test",
+            "description": "End of chapter test",
+            "class": {
+            "sourcedId": "'$class_sourcedId'"
+            },
+            "parentAssessmentLineItem": {
+            "sourcedId": "'$assessmentLineItem_sourcedId'"
+            },
+            "scoreScale": {
+            "sourcedId": "'$scoreScale_sourcedId'"
+            },
+            "resultValueMin": 0,
+            "resultValueMax": 100,
+            "learningObjectiveSet": [
+            {
+                "source": "Common Core",
+                "learningObjectiveIds": [
+                {
+                    "learningObjectiveId": "12345",
+                    "score": 89,
+                    "textScore": "89"
+                },
+                {
+                    "learningObjectiveId": "as12345",
+                    "score": 89,
+                    "textScore": "89"
+                }
+                ]
+            }
+            ]
+        }
 }
 ```
 
@@ -648,46 +654,52 @@ PUT for /assessmentLineItems/{sourcedId}
 
 ```typescript
 {
-  "assessmentLineItem": {
-    "sourcedId": "'$sourcedId_assessmentLineItem'",
-    "status": "active",
-    "metadata": {
-        "weight": "30",
-        "duration": "120",
-        "allowCalculator": true
-    },
-    "title": "Chapter 1 Test",
-    "description": "End of chapter test",
-    "class": {
-      "sourcedId": "'$class_sourcedId'"
-    },
-    "parentAssessmentLineItem": {
-      "sourcedId": "'$assessmentLineItem_sourcedId'"
-    },
-    "scoreScale": {
-      "sourcedId": "'$scoreScale_sourcedId'"
-    },
-    "resultValueMin": 0,
-    "resultValueMax": 100,
-    "learningObjectiveSet": [
-      {
-        "source": "Common Core",
-        "learningObjectiveIds": [
+      "assessmentLineItem": {
+        "sourcedId": "'$sourcedId_assessmentLineItem'",
+        "status": "active",
+        "metadata": {
+            "weight": "30",
+            "duration": "120",
+            "allowCalculator": true
+        },
+        "title": "Chapter 3 Test",
+        "description": "End of chapter test",
+        "class": {
+          "sourcedId": "'$class_sourcedId'"
+        },
+        "parentAssessmentLineItem": {
+          "sourcedId": "'$assessmentLineItem_sourcedId'"
+        },
+        "scoreScale": {
+          "sourcedId": "'$scoreScale_sourcedId'"
+        },
+        "resultValueMin": 20,
+        "resultValueMax": 100,
+        "learningObjectiveSet": [
           {
-            "learningObjectiveId": "12345",
-            "score": 89,
-            "textScore": "89"
-          },
-          {
-            "learningObjectiveId": "as12345",
-            "score": 89,
-            "textScore": "89"
+            "source": "Common Core",
+            "learningObjectiveIds": [
+              {
+                "learningObjectiveId": "12345",
+                "score": 88,
+                "textScore": "88"
+              },
+              {
+                "learningObjectiveId": "as12345",
+                "score": 88,
+                "textScore": "89"
+              }
+            ]
           }
         ]
       }
-    ]
-  }
-}
+    }
+```
+
+```bash
+    #########################################################
+    # Assessment Results POST, PUT
+    #########################################################
 ```
 
 POST /assessmentResults
@@ -729,217 +741,339 @@ POST /assessmentResults
       "incomplete": false,
       "late": false,
       "missing": false
-    }
-}
+      }
+  }
 ```
 
 PUT for /assessmentResults/{sourcedId}
 
 ```typescript
 {
-  "assessmentResult": {
-      "sourcedId": "'$sourcedId_assessmentResults'",
-      "status": "active",
-      "metadata": {
-          "weight": "30",
-          "duration": "120",
-          "allowCalculator": true
-      },
-      "assessmentLineItemSourcedId": {
-          "sourcedId": "'$assessmentLineItem_sourcedId'"
-      },
-      "studentSourcedId": {
-          "sourcedId": "'$student_sourcedId'"
-      },
-      "score": 90,
-      "textScore": "90",
-      "scoreDate": "2023-12-15T00:00:00.000Z",
-      "scoreScaleSourcedId": {
-          "sourcedId": "'$scoreScale_sourcedId'"
-      },
-      "scorePercentile": 85,
-      "scoreStatus": "fully graded",
-      "comment": "Good work!",
-      "learningObjectiveSet": [{
-          "source": "Common Core",
-          "learningObjectiveIds": [{
-              "learningObjectiveId": "12345",
-              "score": 88,
-              "textScore": "88"
-          }]
-      }],
-      "inProgress": true,
-      "incomplete": false,
-      "late": false,
-      "missing": false
+        "assessmentResult": {
+        "sourcedId": "'$sourcedId_assessmentResults'",
+        "status": "active",
+        "metadata": {
+            "weight": "30",
+            "duration": "120",
+            "allowCalculator": true
+        },
+        "assessmentLineItemSourcedId": {
+            "sourcedId": "'$assessmentLineItem_sourcedId'"
+        },
+        "studentSourcedId": {
+            "sourcedId": "'$student_sourcedId'"
+        },
+        "score": 90,
+        "textScore": "90",
+        "scoreDate": "2023-12-15T00:00:00.000Z",
+        "scoreScaleSourcedId": {
+            "sourcedId": "'$scoreScale_sourcedId'"
+        },
+        "scorePercentile": 85,
+        "scoreStatus": "fully graded",
+        "comment": "Updated comment for PUT",
+        "learningObjectiveSet": [{
+            "source": "Common Core",
+            "learningObjectiveIds": [{
+                "learningObjectiveId": "12345",
+                "score": 88,
+                "textScore": "88"
+            }]
+        }],
+        "inProgress": true,
+        "incomplete": false,
+        "late": false,
+        "missing": false
+        }
     }
-}
 ```
 
 POST /categories
 
 ```typescript
 {
-    "category":
+        "category":
         {
+            "sourcedId": "'$sourcedId_categories'",
+            "status": "active",
+            "metadata": {
+                "type": "category",
+                "weight": 0.5
+            },
             "title": "Participation",
             "weight": 0.5
         }
-}
+        }
 ```
 
 PUT for /categories/{sourcedId}
 
 ```typescript
 {
-    "category":
-        {
-            "title": "Participation",
-            "weight": 0.5
+        "category":
+            {
+                "sourcedId": "'$sourcedId_categories'",
+                "status": "active",
+                "metadata": {
+                    "type": "category",
+                    "weight": 0.8
+                },
+                "title": "Participation PUT request",
+                "weight": 0.8
+            }
         }
-}
 ```
 
 POST /lineItems
 
 ```typescript
 {
-  "sourcedId": "li-123",                // OPTIONAL: auto-generated if not provided
-  "status": "active",                   // OPTIONAL: defaults to "active"
-  "dateLastModified": "2024-03-21T00:00:00Z", // REQUIRED: ISO datetime string
-  "metadata": {                         // OPTIONAL
-    "key": "value"
-  },
-  "title": "Midterm Essay",            // REQUIRED
-  "description": "5-page essay",        // OPTIONAL
-  "assignDate": "2024-03-15T00:00:00Z", // OPTIONAL: ISO datetime string
-  "dueDate": "2024-03-30T00:00:00Z",   // OPTIONAL: ISO datetime string
-  "class": {                           // REQUIRED
-    "sourcedId": "class-123"
-  },
-  "category": {                        // OPTIONAL
-    "sourcedId": "cat-123"
-  },
-  "gradingPeriod": {                   // OPTIONAL
-    "sourcedId": "gp-123"
-  },
-  "resultValueMin": 0,                 // OPTIONAL: minimum score value
-  "resultValueMax": 100,               // OPTIONAL: maximum score value
-  "weight": 15.0                       // OPTIONAL: percentage weight as number
-}
+        "lineItem": {
+            "sourcedId": "'$soucredId_lineItem'",
+            "metadata": {
+                "weight": "10",
+                "isExtraCredit": false
+            },
+            "title": "Homework Standard 2",
+            "description": "Practice problems from Chapter 1",
+            "assignDate": "2023-09-05T00:00:00.000Z",
+            "dueDate": "2023-09-07T00:00:00.000Z",
+            "class": {
+                "sourcedId": "'$class_sourcedId'"
+            },
+            "school": {
+                "sourcedId": "'$school_sourcedId'"
+            },
+            "category": {
+                "sourcedId": "'$category_sourcedId'"
+            },
+            "gradingPeriod": {
+                "sourcedId": "'$gradingPeriod_sourcedId'"
+            },
+            "academicSession": {
+                "sourcedId": "'$academicSession_sourcedId'"
+            },
+            "resultValueMin": 0,
+            "resultValueMax": 100,
+            "learningObjectiveSet": [
+                {
+                    "source": "State Standards",
+                    "learningObjectiveIds": [
+                        {
+                            "learningObjectiveId": "MA.ALG.1",
+                            "score": 91,
+                            "textScore": "28"
+                        },
+                        {
+                            "learningObjectiveId": "MA.ALG.2",
+                            "score": 64,
+                            "textScore": "28"
+                        },
+                        {
+                            "learningObjectiveId": "MA.ALG.3",
+                            "score": 87,
+                            "textScore": "28"
+                        }
+                    ]
+                }
+            ]
+        }
+        }
 ```
 
 PUT for /lineItems/{sourcedId}
 
 ```typescript
 {
-  "title": "Midterm Essay",            // REQUIRED
-  "description": "5-page essay",        // OPTIONAL
-  "assignDate": "2024-03-15T00:00:00Z", // OPTIONAL: ISO datetime string
-  "dueDate": "2024-03-30T00:00:00Z",   // OPTIONAL: ISO datetime string
-  "class": {                           // REQUIRED
-    "sourcedId": "class-123"
-  },
-  "category": {                        // OPTIONAL
-    "sourcedId": "cat-123"
-  },
-  "gradingPeriod": {                   // OPTIONAL
-    "sourcedId": "gp-123"
-  },
-  "resultValueMin": 0,                 // OPTIONAL: minimum score value
-  "resultValueMax": 100,               // OPTIONAL: maximum score value
-  "weight": 15.0                       // OPTIONAL: percentage weight as number
-}
+        "lineItem": {
+            "sourcedId": "'$soucredId_lineItem'",
+            "metadata": {
+                "weight": "10",
+                "isExtraCredit": false
+            },
+            "title": "Updated Homework Assignment 12",
+            "description": "Practice problems from Chapter 1",
+            "assignDate": "2023-09-05T00:00:00.000Z",
+            "dueDate": "2023-09-07T00:00:00.000Z",
+            "class": {
+                "sourcedId": "'$class_sourcedId'"
+            },
+            "school": {
+                "sourcedId": "'$school_sourcedId'"
+            },
+            "category": {
+                "sourcedId": "'$category_sourcedId'"
+            },
+            "gradingPeriod": {
+                "sourcedId": "'$gradingPeriod_sourcedId'"
+            },
+            "academicSession": {
+                "sourcedId": "'$academicSession_sourcedId'"
+            },
+            "resultValueMin": 0,
+            "resultValueMax": 100,
+            "learningObjectiveSet": [
+                {
+                    "source": "State Standards",
+                    "learningObjectiveIds": [
+                        {
+                            "learningObjectiveId": "MA.ALG.1",
+                            "score": 91,
+                            "textScore": "28"
+                        },
+                        {
+                            "learningObjectiveId": "MA.ALG.2",
+                            "score": 64,
+                            "textScore": "28"
+                        },
+                        {
+                            "learningObjectiveId": "MA.ALG.3",
+                            "score": 87,
+                            "textScore": "28"
+                        }
+                    ]
+                }
+            ]
+        }
+        }
 ```
 
 POST /results
 
 ```typescript
 {
-  "title": "Midterm Essay",            // REQUIRED
-  "description": "5-page essay",        // OPTIONAL
-  "assignDate": "2024-03-15T00:00:00Z", // OPTIONAL: ISO datetime string
-  "dueDate": "2024-03-30T00:00:00Z",   // OPTIONAL: ISO datetime string
-  "class": {                           // REQUIRED
-    "sourcedId": "class-123"
-  },
-  "category": {                        // OPTIONAL
-    "sourcedId": "cat-123"
-  },
-  "gradingPeriod": {                   // OPTIONAL
-    "sourcedId": "gp-123"
-  },
-  "resultValueMin": 0,                 // OPTIONAL: minimum score value
-  "resultValueMax": 100,               // OPTIONAL: maximum score value
-  "weight": 15.0                       // OPTIONAL: percentage weight as number
-}
+        "result": {
+            "sourcedId": "'$sourcedId_results'",
+            "lineItem": {
+                "sourcedId": "'$lineItem_sourcedId'"
+            },
+            "student": {
+                "sourcedId": "'$student_sourcedId'"
+            },
+            "class": {
+                "sourcedId": "'$class_sourcedId'"
+            },
+            "scoreStatus": "fully graded",
+            "score": 85,
+            "scoreDate": "2023-09-10T00:00:00.000Z",
+            "comment": "Good work!",
+            "learningObjectiveSet": [],
+            "inProgress": false,
+            "incomplete": false,
+            "late": false,
+            "missing": false
+            }
+        }
 ```
 
 PUT for /results/{sourcedId}
 
 ```typescript
 {
-  "lineItem": {                        // REQUIRED
-    "sourcedId": "li-123"
-  },
-  "student": {                         // REQUIRED
-    "sourcedId": "student-123"
-  },
-  "scoreStatus": "fully_graded",       // REQUIRED: must be one of the ScoreStatus enum values
-  "score": "95",                       // REQUIRED if scoreStatus is "fully_graded"
-  "scoreDate": "2024-03-21T00:00:00Z", // REQUIRED: ISO datetime string
-  "comment": "Excellent analysis!"      // OPTIONAL
-}
+        "result": {
+            "sourcedId": "'$sourcedId_results'",
+            "lineItem": {
+                "sourcedId": "'$lineItem_sourcedId'"
+            },
+            "student": {
+                "sourcedId": "'$student_sourcedId'"
+            },
+            "class": {
+                "sourcedId": "'$class_sourcedId'"
+            },
+            "scoreStatus": "fully graded",
+            "score": 85,
+            "scoreDate": "2023-09-10T00:00:00.000Z",
+            "comment": "Updated - Excellent work!",
+            "learningObjectiveSet": [],
+            "inProgress": false,
+            "incomplete": false,
+            "late": false,
+            "missing": false
+            }
+        }
 ```
 
 POST /scoreScales
 
 ```typescript
 {
-  "sourcedId": "scale-123",             // OPTIONAL: auto-generated if not provided
-  "status": "active",                   // OPTIONAL: defaults to "active"
-  "dateLastModified": "2024-03-21T00:00:00Z", // REQUIRED: ISO datetime string
-  "metadata": {                         // OPTIONAL
-    "key": "value"
-  },
-  "title": "Letter Grades",             // REQUIRED
-  "scaleValues": [                      // REQUIRED: array of at least one value
-    {
-      "numericValue": 4.0,             // REQUIRED: numeric value
-      "letterGrade": "A",              // OPTIONAL: letter grade
-      "description": "Excellent",       // OPTIONAL: description of grade
-      "percentage": 90                  // OPTIONAL: percentage equivalent
-    },
-    {
-      "numericValue": 3.0,
-      "letterGrade": "B",
-      "description": "Good",
-      "percentage": 80
-    }
-  ]
-}
+          "scoreScale": {
+              "sourcedId": "'$sourcedId_scoreScales'",
+              "status": "active",
+              "title": "Standard Letter Grades",
+              "type": "letter",
+              "class": {
+                  "sourcedId": "'$class_sourcedId'"
+              },
+              "course": {
+                  "sourcedId": "'$course_sourcedId'"
+              },
+              "scoreScaleValue": [
+                  {
+                      "itemValueLHS": "90",
+                      "itemValueRHS": "100"
+                  },
+                  {
+                      "itemValueLHS": "80",
+                      "itemValueRHS": "89"
+                  },
+                  {
+                      "itemValueLHS": "70",
+                      "itemValueRHS": "79"
+                  },
+                  {
+                      "itemValueLHS": "60",
+                      "itemValueRHS": "69"
+                  },
+                  {
+                      "itemValueLHS": "0",
+                      "itemValueRHS": "59"
+                  }
+              ]
+          }
+      }
 ```
 
 PUT for /scoreScales/{sourcedId}
 
 ```typescript
 {
-  "title": "Letter Grades",             // REQUIRED
-  "scaleValues": [                      // REQUIRED: array of at least one value
-    {
-      "numericValue": 4.0,             // REQUIRED: numeric value
-      "letterGrade": "A",              // OPTIONAL: letter grade
-      "description": "Excellent",       // OPTIONAL: description of grade
-      "percentage": 90                  // OPTIONAL: percentage equivalent
-    },
-    {
-      "numericValue": 3.0,
-      "letterGrade": "B",
-      "description": "Good",
-      "percentage": 80
-    }
-  ]
-}
+          "scoreScale": {
+              "sourcedId": "'$sourcedId_scoreScales'",
+              "status": "active",
+              "title": "Updated Standard Letter Grades",
+              "type": "letter",
+              "class": {
+                  "sourcedId": "'$class_sourcedId'"
+              },
+              "course": {
+                  "sourcedId": "'$course_sourcedId'"
+              },
+              "scoreScaleValue": [
+                  {
+                      "itemValueLHS": "90",
+                      "itemValueRHS": "100"
+                  },
+                  {
+                      "itemValueLHS": "80",
+                      "itemValueRHS": "89"
+                  },
+                  {
+                      "itemValueLHS": "70",
+                      "itemValueRHS": "79"
+                  },
+                  {
+                      "itemValueLHS": "60",
+                      "itemValueRHS": "69"
+                  },
+                  {
+                      "itemValueLHS": "0",
+                      "itemValueRHS": "59"
+                  }
+              ]
+          }
+      }
 ```
 
 ALL DELETE METHODS ONLY REQUIRE A sourceId for /route/{sourcedId}
