@@ -33,7 +33,7 @@ POST for /academicSessions
 }
 ```
 
-PUT for /academicSessions/{sourcedId}
+PUT for /academicSessions/{sourcedId_academicSession}
 
 ```typescript
 {
@@ -168,7 +168,7 @@ POST for /classes
 }
 ```
 
-PUT for /classes/{sourcedId}
+PUT for /classes/{sourcedId_class}
 
 ```typescript
 {
@@ -275,7 +275,7 @@ POST for /courses
 }
 ```
 
-PUT for /courses/{sourcedId}
+PUT for /courses/{sourcedId_course}
 
 ```typescript
 {
@@ -338,7 +338,7 @@ POST for /users
         }}
 ```
 
-PUT for /users/{sourcedId}
+PUT for /users/{sourcedId_user}
 
 ```typescript
 {
@@ -400,7 +400,7 @@ POST for /orgs
 }
 ```
 
-PUT for /orgs/{sourcedId}
+PUT for /orgs/{sourcedId_org}
 
 ```typescript
 {
@@ -434,7 +434,7 @@ POST for /schools
 }
 ```
 
-PUT for /schools/{sourcedId}
+PUT for /schools/{sourcedId_school}
 
 ```typescript
 {
@@ -518,7 +518,7 @@ POST for /enrollments
 }
 ```
 
-PUT for /enrollments/{sourcedId}
+PUT for /enrollments/{sourcedId_enrollment}
 
 ```typescript
 {
@@ -615,7 +615,7 @@ POST for /resources
 }
 ```
 
-PUT for /resources/{sourcedId}
+PUT for /resources/{resources_sourcedId}
 
 ```typescript
 {
@@ -695,7 +695,7 @@ POST /assessmentLineItems
 }
 ```
 
-PUT for /assessmentLineItems/{sourcedId}
+PUT for /assessmentLineItems/{sourcedId_assessmentLineItem}
 
 ```typescript
 {
@@ -784,7 +784,7 @@ POST /assessmentResults
   }
 ```
 
-PUT for /assessmentResults/{sourcedId}
+PUT for /assessmentResults/{sourcedId_assessmentResults}
 
 ```typescript
 {
@@ -845,7 +845,7 @@ POST /categories
         }
 ```
 
-PUT for /categories/{sourcedId}
+PUT for /categories/{sourcedId_categories}
 
 ```typescript
 {
@@ -920,12 +920,12 @@ POST /lineItems
         }
 ```
 
-PUT for /lineItems/{sourcedId}
+PUT for /lineItems/{sourcedId_lineItem}
 
 ```typescript
 {
         "lineItem": {
-            "sourcedId": "'$soucredId_lineItem'",
+            "sourcedId": "'$sourcedId_lineItem'",
             "metadata": {
                 "weight": "10",
                 "isExtraCredit": false
@@ -1005,7 +1005,7 @@ POST /results
         }
 ```
 
-PUT for /results/{sourcedId}
+PUT for /results/{sourcedId_results}
 
 ```typescript
 {
@@ -1074,7 +1074,7 @@ POST /scoreScales
       }
 ```
 
-PUT for /scoreScales/{sourcedId}
+PUT for /scoreScales/{sourcedId_scoreScales}
 
 ```typescript
 {
