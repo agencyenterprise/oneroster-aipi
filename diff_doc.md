@@ -12,92 +12,100 @@ POST for /academicSessions
 
 ```typescript
 {
-  "academicSession":
-      {
-          "sourcedId": "'$sourcedId_academicSession'",
-          "title": "2023-2024 School Year",
-          "startDate": "2023-08-15T00:00:00.000Z",
-          "endDate": "2024-05-30T00:00:00.000Z",
-          "type": "schoolYear",
-          "schoolYear": "2023",
-          "orgSourcedId": {
-              "sourcedId": "'$org_sourcedId'"
-          },
-          "classSourcedId": {
-              "sourcedId": "'$class_sourcedId'"
-          },
-          "parentSourcedId": {
-              "sourcedId": "'$parent_academicSession_sourcedId'"
-          }
+  "academicSession": {
+      "sourcedId": "'$sourcedId_academicSession'",        // string - OPTIONAL
+      "title": "2023-2024 School Year",                   // string - REQUIRED
+      "startDate": "2023-08-15T00:00:00.000Z",           // string - REQUIRED
+      "endDate": "2024-05-30T00:00:00.000Z",             // string - REQUIRED
+      "type": "schoolYear",                               // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+      "schoolYear": "2023",                               // string - REQUIRED
+      "orgSourcedId": {                                   // object - REQUIRED
+          "sourcedId": "'$org_sourcedId'"                 // string - REQUIRED
+      },
+      "classSourcedId": {                                 // object - OPTIONAL
+          "sourcedId": "'$class_sourcedId'"               // string - REQUIRED
+      },
+      "parentSourcedId": {                                // object - OPTIONAL
+          "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED
       }
+  }
 }
+
+// Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
 ```
 
 PUT for /academicSessions/{sourcedId_academicSession}
 
 ```typescript
 {
-  "academicSession":
-      {
-          "sourcedId": "'$sourcedId_academicSession'",
-          "title": "2024-2025 School Year",
-          "startDate": "2024-08-15T00:00:00.000Z",
-          "endDate": "2025-05-30T00:00:00.000Z",
-          "type": "schoolYear",
-          "schoolYear": "2024",
-          "orgSourcedId": {
-              "sourcedId": "'$org_sourcedId'"
-          },
-          "classSourcedId": {
-              "sourcedId": "'$class_sourcedId'"
-          },
-          "parentSourcedId": {
-              "sourcedId": "'$parent_academicSession_id'"
-          }
+  "academicSession": {
+      "sourcedId": "'$sourcedId_academicSession'",        // string - OPTIONAL
+      "title": "2023-2024 School Year",                   // string - REQUIRED
+      "startDate": "2023-08-15T00:00:00.000Z",           // string - REQUIRED
+      "endDate": "2024-05-30T00:00:00.000Z",             // string - REQUIRED
+      "type": "schoolYear",                               // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+      "schoolYear": "2023",                               // string - REQUIRED
+      "orgSourcedId": {                                   // object - REQUIRED
+          "sourcedId": "'$org_sourcedId'"                 // string - REQUIRED
+      },
+      "classSourcedId": {                                 // object - OPTIONAL
+          "sourcedId": "'$class_sourcedId'"               // string - REQUIRED
+      },
+      "parentSourcedId": {                                // object - OPTIONAL
+          "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED
       }
+  }
 }
-```
 
-<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
+// Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
+```
 
 POST for /terms
 
 ```typescript
 {
-  "sourcedId": "2024-spring-term",        // OPTIONAL: auto-generated if not provided
-  "status": "active",                     // OPTIONAL: defaults to "active"
-  "title": "Spring Term 2024",            // REQUIRED
-  "type": "term",                         // REQUIRED: must be "term"
-  "startDate": "2024-01-15",              // REQUIRED: ISO date string
-  "endDate": "2024-05-30",                // REQUIRED: ISO date string
-  "parent": {                             // OPTIONAL
-    "sourcedId": "2024-school-year"       // REQUIRED if parent object is included
-  },
-  "schoolYear": "2024",                   // REQUIRED
-  "org": {                                // REQUIRED
-    "sourcedId": "school-123"             // REQUIRED
-  }
-}
+            "academicSession": {
+                "sourcedId": "'$sourcedId_term'",         // string - OPTIONAL
+                "status": "active",                       // string - OPTIONAL (enum: ["active", "tobedeleted"])
+                "title": "Term 1 2024",                   // string - REQUIRED
+                "type": "term",                           // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+                "startDate": "2024-01-15",                // string - REQUIRED
+                "endDate": "2024-05-30",                  // string - REQUIRED
+                "parent": {                               // object - OPTIONAL
+                    "sourcedId": "'$parent_academicSession_sourcedId'"  // string - REQUIRED
+                },
+                "schoolYear": "2024",                     // string - REQUIRED
+                "orgSourcedId": {                         // object - REQUIRED
+                    "sourcedId": "'$org_sourcedId'"       // string - REQUIRED
+                }
+            }
+        }
+
+// Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
 ```
 
-<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
-
-PUT for /terms/{sourcedId}
+PUT for /terms/{sourcedId_term}
 
 ```typescript
 {
-  "title": "Spring Term 2024",            // REQUIRED
-  "type": "term",                         // REQUIRED: must be "term"
-  "startDate": "2024-01-15",              // REQUIRED: ISO date string
-  "endDate": "2024-05-30",                // REQUIRED: ISO date string
-  "parent": {                             // OPTIONAL
-    "sourcedId": "2024-school-year"       // REQUIRED if parent object is included
-  },
-  "schoolYear": "2024",                   // REQUIRED
-  "org": {                                // REQUIRED
-    "sourcedId": "school-123"             // REQUIRED
-  }
-}
+            "academicSession": {
+                "sourcedId": "'$sourcedId_term'",         // string - OPTIONAL
+                "status": "active",                       // string - OPTIONAL (enum: ["active", "tobedeleted"])
+                "title": "Term 1 2024",                   // string - REQUIRED
+                "type": "term",                           // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+                "startDate": "2024-01-15",                // string - REQUIRED
+                "endDate": "2024-05-30",                  // string - REQUIRED
+                "parent": {                               // object - OPTIONAL
+                    "sourcedId": "'$parent_academicSession_sourcedId'"  // string - REQUIRED
+                },
+                "schoolYear": "2024",                     // string - REQUIRED
+                "orgSourcedId": {                         // object - REQUIRED
+                    "sourcedId": "'$org_sourcedId'"       // string - REQUIRED
+                }
+            }
+        }
+
+// Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
 ```
 
 <!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
@@ -127,45 +135,47 @@ POST for /classes
 ```typescript
 {
   "class": {
-      "sourcedId": "'$sourcedId_class'",
-      "status": "active",
-      "metadata": {
+      "sourcedId": "'$sourcedId_class'",                 // string - OPTIONAL
+      "status": "active",                                // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "metadata": {                                      // object - OPTIONAL
           "test": "test"
       },
-      "title": "Algebra I PUT EDIT",
-      "classCode": "ALG101-01",
-      "classType": "scheduled",
-      "location": "Room 204",
-      "grades": ["9"],
-      "subjects": ["Mathematics"],
-      "subjectCodes": ["MATH"],
-      "periods": ["1", "2"],
-      "resources": [
+      "title": "Algebra I PUT EDIT",                     // string - REQUIRED
+      "classCode": "ALG101-01",                         // string - OPTIONAL
+      "classType": "scheduled",                         // string - OPTIONAL (enum: ClassType values)
+      "location": "Room 204",                           // string - OPTIONAL
+      "grades": ["9"],                                  // string[] - OPTIONAL
+      "subjects": ["Mathematics"],                      // string[] - OPTIONAL
+      "subjectCodes": ["MATH"],                        // string[] - OPTIONAL
+      "periods": ["1", "2"],                           // string[] - OPTIONAL
+      "resources": [                                    // array - OPTIONAL
           {
-              "sourcedId": "'$resources_sourcedId'"
+              "sourcedId": "'$resources_sourcedId'"     // string - REQUIRED
           }
       ],
-      "course": {
-          "sourcedId": "'$course_sourcedId'"
+      "course": {                                      // object - REQUIRED
+          "sourcedId": "'$course_sourcedId'"           // string - REQUIRED
       },
-      "school": {
-          "sourcedId": "'$school_sourcedId'"
+      "school": {                                      // object - REQUIRED
+          "sourcedId": "'$school_sourcedId'"           // string - REQUIRED
       },
-      "session": {
-          "sourcedId": "'$term_sourcedId'"
+      "session": {                                     // object - OPTIONAL
+          "sourcedId": "'$term_sourcedId'"             // string - REQUIRED
       },
-      "terms": [
+      "terms": [                                       // array - REQUIRED
           {
-              "sourcedId": "'$term_sourcedId'"
+              "sourcedId": "'$term_sourcedId'"         // string - REQUIRED
           }
       ],
-      "academicSessions": [
+      "academicSessions": [                            // array - REQUIRED (min: 1)
           {
-              "sourcedId": "'$parent_academicSession_sourcedId'"
+              "sourcedId": "'$parent_academicSession_sourcedId'" // string - OPTIONAL
           }
       ]
   }
 }
+
+// Required fields: ["title", "course", "school", "terms", "academicSessions"]
 ```
 
 PUT for /classes/{sourcedId_class}
@@ -173,45 +183,47 @@ PUT for /classes/{sourcedId_class}
 ```typescript
 {
   "class": {
-      "sourcedId": "'$sourcedId_class'",
-      "status": "active",
-      "metadata": {
+      "sourcedId": "'$sourcedId_class'",                 // string - OPTIONAL
+      "status": "active",                                // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "metadata": {                                      // object - OPTIONAL
           "test": "test"
       },
-      "title": "Algebra I PUT EDIT",
-      "classCode": "ALG101-01",
-      "classType": "scheduled",
-      "location": "Room 204",
-      "grades": ["9"],
-      "subjects": ["Mathematics"],
-      "subjectCodes": ["MATH"],
-      "periods": ["1", "2"],
-      "resources": [
+      "title": "Algebra I PUT EDIT",                     // string - REQUIRED
+      "classCode": "ALG101-01",                         // string - OPTIONAL
+      "classType": "scheduled",                         // string - OPTIONAL (enum: ClassType values)
+      "location": "Room 204",                           // string - OPTIONAL
+      "grades": ["9"],                                  // string[] - OPTIONAL
+      "subjects": ["Mathematics"],                      // string[] - OPTIONAL
+      "subjectCodes": ["MATH"],                        // string[] - OPTIONAL
+      "periods": ["1", "2"],                           // string[] - OPTIONAL
+      "resources": [                                    // array - OPTIONAL
           {
-              "sourcedId": "'$resources_sourcedId'"
+              "sourcedId": "'$resources_sourcedId'"     // string - REQUIRED
           }
       ],
-      "course": {
-          "sourcedId": "'$course_sourcedId'"
+      "course": {                                      // object - REQUIRED
+          "sourcedId": "'$course_sourcedId'"           // string - REQUIRED
       },
-      "school": {
-          "sourcedId": "'$school_sourcedId'"
+      "school": {                                      // object - REQUIRED
+          "sourcedId": "'$school_sourcedId'"           // string - REQUIRED
       },
-      "session": {
-          "sourcedId": "'$term_sourcedId'"
+      "session": {                                     // object - OPTIONAL
+          "sourcedId": "'$term_sourcedId'"             // string - REQUIRED
       },
-      "terms": [
+      "terms": [                                       // array - REQUIRED
           {
-              "sourcedId": "'$term_sourcedId'"
+              "sourcedId": "'$term_sourcedId'"         // string - REQUIRED
           }
       ],
-      "academicSessions": [
+      "academicSessions": [                            // array - REQUIRED (min: 1)
           {
-              "sourcedId": "'$parent_academicSession_sourcedId'"
+              "sourcedId": "'$parent_academicSession_sourcedId'" // string - OPTIONAL
           }
       ]
   }
 }
+
+// Required fields: ["title", "course", "school", "terms", "academicSessions"]
 ```
 
 POST for /classes/{classSourcedId}/students
@@ -539,46 +551,48 @@ PUT for /enrollments/{sourcedId_enrollment}
 }
 ```
 
-<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
-
 POST for /gradingPeriods
 
 ```typescript
 {
-  "sourcedId": "gp-123",                // OPTIONAL: auto-generated if not provided
-  "status": "active",                   // OPTIONAL: defaults to "active"
-  "title": "Q1 2024",                  // REQUIRED
-  "type": "gradingPeriod",             // REQUIRED: must be "gradingPeriod"
-  "startDate": "2024-01-15",           // REQUIRED: ISO date string
-  "endDate": "2024-03-15",             // REQUIRED: ISO date string
-  "parent": {                          // OPTIONAL
-    "sourcedId": "term-123"            // REQUIRED if parent object is included
-  },
-  "schoolYear": "2024",                // REQUIRED
-  "org": {                             // REQUIRED
-    "sourcedId": "school-123"          // REQUIRED
-  }
-}
+        "academicSession": {
+            "sourcedId": "'$sourcedId_gradingPeriod'",
+            "status": "active",
+            "title": "Q1 2024",
+            "type": "gradingPeriod",
+            "startDate": "2024-01-15",
+            "endDate": "2024-03-15",
+            "parent": {
+                "sourcedId": "'$parent_academicSession_sourcedId'"
+            },
+            "schoolYear": "2024",
+            "orgSourcedId": {
+                "sourcedId": "'$org_sourcedId'"
+            }
+        }
+        }
 ```
-
-<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 PUT for /gradingPeriods/{sourcedId}
 
 ```typescript
 {
-  "title": "Q1 2024",                  // REQUIRED
-  "type": "gradingPeriod",             // REQUIRED: must be "gradingPeriod"
-  "startDate": "2024-01-15",           // REQUIRED: ISO date string
-  "endDate": "2024-03-15",             // REQUIRED: ISO date string
-  "parent": {                          // OPTIONAL
-    "sourcedId": "term-123"            // REQUIRED if parent object is included
-  },
-  "schoolYear": "2024",                // REQUIRED
-  "org": {                             // REQUIRED
-    "sourcedId": "school-123"          // REQUIRED
-  }
-}
+        "academicSession": {
+            "sourcedId": "'$sourcedId_gradingPeriod'",
+            "status": "active",
+            "title": "Q1 2024",
+            "type": "gradingPeriod",
+            "startDate": "2024-01-15",
+            "endDate": "2024-03-15",
+            "parent": {
+                "sourcedId": "'$parent_academicSession_sourcedId'"
+            },
+            "schoolYear": "2024",
+            "orgSourcedId": {
+                "sourcedId": "'$org_sourcedId'"
+            }
+        }
+        }
 ```
 
 Resources Service
