@@ -12,24 +12,24 @@ POST for /academicSessions
 
 ```typescript
 {
-    "academicSession":
-        {
-            "sourcedId": "'$academicSession_id'",
-            "title": "2023-2024 School Year",
-            "startDate": "2023-08-15T00:00:00.000Z",
-            "endDate": "2024-05-30T00:00:00.000Z",
-            "type": "schoolYear",
-            "schoolYear": "2023",
-            "orgSourcedId": {
-                "sourcedId": "'$org_id'"
-            },
-            "classSourcedId": {
-                "sourcedId": "'$class_id'"
-            },
-            "parentSourcedId": {
-                "sourcedId": "'$parent_academicSession_id'"
-            }
-        }
+  "academicSession":
+      {
+          "sourcedId": "'$sourcedId_academicSession'",
+          "title": "2023-2024 School Year",
+          "startDate": "2023-08-15T00:00:00.000Z",
+          "endDate": "2024-05-30T00:00:00.000Z",
+          "type": "schoolYear",
+          "schoolYear": "2023",
+          "orgSourcedId": {
+              "sourcedId": "'$org_sourcedId'"
+          },
+          "classSourcedId": {
+              "sourcedId": "'$class_sourcedId'"
+          },
+          "parentSourcedId": {
+              "sourcedId": "'$parent_academicSession_sourcedId'"
+          }
+      }
 }
 ```
 
@@ -37,26 +37,28 @@ PUT for /academicSessions/{sourcedId}
 
 ```typescript
 {
-    "academicSession":
-        {
-            "sourcedId": "'$academicSession_id'",
-            "title": "2024-2025 School Year",
-            "startDate": "2024-08-15T00:00:00.000Z",
-            "endDate": "2025-05-30T00:00:00.000Z",
-            "type": "schoolYear",
-            "schoolYear": "2024",
-            "orgSourcedId": {
-                "sourcedId": "'$org_id'"
-            },
-            "classSourcedId": {
-                "sourcedId": "'$class_id'"
-            },
-            "parentSourcedId": {
-                "sourcedId": "'$parent_academicSession_id'"
-            }
-        }
+  "academicSession":
+      {
+          "sourcedId": "'$sourcedId_academicSession'",
+          "title": "2024-2025 School Year",
+          "startDate": "2024-08-15T00:00:00.000Z",
+          "endDate": "2025-05-30T00:00:00.000Z",
+          "type": "schoolYear",
+          "schoolYear": "2024",
+          "orgSourcedId": {
+              "sourcedId": "'$org_sourcedId'"
+          },
+          "classSourcedId": {
+              "sourcedId": "'$class_sourcedId'"
+          },
+          "parentSourcedId": {
+              "sourcedId": "'$parent_academicSession_id'"
+          }
+      }
 }
 ```
+
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 POST for /terms
 
@@ -78,6 +80,8 @@ POST for /terms
 }
 ```
 
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
+
 PUT for /terms/{sourcedId}
 
 ```typescript
@@ -95,6 +99,8 @@ PUT for /terms/{sourcedId}
   }
 }
 ```
+
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 POST for /terms/{termSourcedId}/gradingPeriods
 
@@ -120,24 +126,44 @@ POST for /classes
 
 ```typescript
 {
-  "sourcedId": "class-123",              // OPTIONAL: auto-generated if not provided
-  "status": "active",                    // OPTIONAL: defaults to "active"
-  "title": "Algebra 101",                // REQUIRED
-  "classCode": "ALG101-01",              // OPTIONAL
-  "classType": "scheduled",              // REQUIRED: must be one of ClassType enum values
-  "location": "Room 204",                // OPTIONAL
-  "grades": "9",                         // OPTIONAL
-  "subjects": "Mathematics",             // OPTIONAL
-  "subjectCodes": "MATH",                // OPTIONAL
-  "periods": ["1", "2"],                 // OPTIONAL
-  "course": {                            // OPTIONAL
-    "sourcedId": "course-123"
-  },
-  "school": {                            // REQUIRED
-    "sourcedId": "school-123"
-  },
-  "session": {                           // OPTIONAL
-    "sourcedId": "term-123"
+  "class": {
+      "sourcedId": "'$sourcedId_class'",
+      "status": "active",
+      "metadata": {
+          "test": "test"
+      },
+      "title": "Algebra I PUT EDIT",
+      "classCode": "ALG101-01",
+      "classType": "scheduled",
+      "location": "Room 204",
+      "grades": ["9"],
+      "subjects": ["Mathematics"],
+      "subjectCodes": ["MATH"],
+      "periods": ["1", "2"],
+      "resources": [
+          {
+              "sourcedId": "'$resources_sourcedId'"
+          }
+      ],
+      "course": {
+          "sourcedId": "'$course_sourcedId'"
+      },
+      "school": {
+          "sourcedId": "'$school_sourcedId'"
+      },
+      "session": {
+          "sourcedId": "'$term_sourcedId'"
+      },
+      "terms": [
+          {
+              "sourcedId": "'$term_sourcedId'"
+          }
+      ],
+      "academicSessions": [
+          {
+              "sourcedId": "'$parent_academicSession_sourcedId'"
+          }
+      ]
   }
 }
 ```
@@ -146,22 +172,44 @@ PUT for /classes/{sourcedId}
 
 ```typescript
 {
-  "title": "Algebra 101",                // REQUIRED
-  "classType": "scheduled",              // REQUIRED: must be one of ClassType enum values
-  "school": {                            // REQUIRED
-    "sourcedId": "school-123"
-  },
-  "classCode": "ALG101-01",              // OPTIONAL
-  "location": "Room 204",                // OPTIONAL
-  "grades": "9",                         // OPTIONAL
-  "subjects": "Mathematics",             // OPTIONAL
-  "subjectCodes": "MATH",                // OPTIONAL
-  "periods": ["1", "2"],                 // OPTIONAL
-  "course": {                            // OPTIONAL
-    "sourcedId": "course-123"
-  },
-  "session": {                           // OPTIONAL
-    "sourcedId": "term-123"
+  "class": {
+      "sourcedId": "'$sourcedId_class'",
+      "status": "active",
+      "metadata": {
+          "test": "test"
+      },
+      "title": "Algebra I PUT EDIT",
+      "classCode": "ALG101-01",
+      "classType": "scheduled",
+      "location": "Room 204",
+      "grades": ["9"],
+      "subjects": ["Mathematics"],
+      "subjectCodes": ["MATH"],
+      "periods": ["1", "2"],
+      "resources": [
+          {
+              "sourcedId": "'$resources_sourcedId'"
+          }
+      ],
+      "course": {
+          "sourcedId": "'$course_sourcedId'"
+      },
+      "school": {
+          "sourcedId": "'$school_sourcedId'"
+      },
+      "session": {
+          "sourcedId": "'$term_sourcedId'"
+      },
+      "terms": [
+          {
+              "sourcedId": "'$term_sourcedId'"
+          }
+      ],
+      "academicSessions": [
+          {
+              "sourcedId": "'$parent_academicSession_sourcedId'"
+          }
+      ]
   }
 }
 ```
@@ -170,12 +218,20 @@ POST for /classes/{classSourcedId}/students
 
 ```typescript
 {
-  "student": {                           // REQUIRED
-    "sourcedId": "student-123"
-  },
-  "primary": true,                       // OPTIONAL: defaults to true
-  "beginDate": "2024-01-15T00:00:00Z",  // OPTIONAL: ISO datetime string
-  "endDate": "2024-05-30T00:00:00Z"     // OPTIONAL: ISO datetime string
+  "enrollment": {
+      "sourcedId": "'$sourcedId_enrollment'",
+      "status": "active",
+      "metadata": {
+          "test": "test"
+      },
+      "role": "student",
+      "student":{
+          "sourcedId": "'$student_sourcedId'"
+      },
+      "primary": true,
+      "beginDate": "2024-08-26",
+      "endDate": "2025-05-15"
+  }
 }
 ```
 
@@ -183,12 +239,20 @@ POST for /classes/{classSourcedId}/teachers
 
 ```typescript
 {
-  "teacher": {                           // REQUIRED
-    "sourcedId": "teacher-123"
-  },
-  "primary": true,                       // OPTIONAL: defaults to true
-  "beginDate": "2024-01-15T00:00:00Z",  // OPTIONAL: ISO datetime string
-  "endDate": "2024-05-30T00:00:00Z"     // OPTIONAL: ISO datetime string
+  "enrollment": {
+    "sourcedId": "'$sourcedId_enrollment'",
+    "status": "active",
+    "metadata": {
+        "test": "test"
+    },
+    "role": "teacher",
+    "teacher":{
+        "sourcedId": "'$teacher_sourcedId'"
+    },
+    "primary": true,
+    "beginDate": "2024-08-26",
+    "endDate": "2025-05-15"
+  }
 }
 ```
 
@@ -196,16 +260,18 @@ POST for /courses
 
 ```typescript
 {
-  "sourcedId": "course-123",              // OPTIONAL: auto-generated if not provided
-  "status": "active",                     // OPTIONAL: defaults to "active"
-  "title": "Advanced Mathematics",        // REQUIRED
-  "courseCode": "MATH301",               // OPTIONAL
-  "grades": "11,12",                     // OPTIONAL: comma-separated string
-  "subjects": "Mathematics,Calculus",    // OPTIONAL: comma-separated string
-  "subjectCodes": "MATH,CALC",          // OPTIONAL: comma-separated string
-  "org": {                              // REQUIRED
-    "sourcedId": "school-123"           // REQUIRED
-  }
+  "course": {
+    "sourcedId": "'$sourcedId_course'",
+    "status": "active",
+    "title": "Algebra I Course",
+    "courseCode": "ALG101",
+    "grades": "9",
+    "subjects": "Mathematics",
+    "subjectCodes": "MATH",
+    "org": {
+            "sourcedId": "'$school_sourcedId'"
+        }
+    }
 }
 ```
 
@@ -213,14 +279,18 @@ PUT for /courses/{sourcedId}
 
 ```typescript
 {
-  "title": "Advanced Mathematics",        // REQUIRED
-  "courseCode": "MATH301",               // OPTIONAL
-  "grades": "11,12",                     // OPTIONAL: comma-separated string
-  "subjects": "Mathematics,Calculus",    // OPTIONAL: comma-separated string
-  "subjectCodes": "MATH,CALC",          // OPTIONAL: comma-separated string
-  "org": {                              // REQUIRED
-    "sourcedId": "school-123"           // REQUIRED
-  }
+  "course": {
+    "sourcedId": "'$sourcedId_course'",
+    "status": "active",
+    "title": "Algebra I Course",
+    "courseCode": "ALG101",
+    "grades": "9",
+    "subjects": "Mathematics",
+    "subjectCodes": "MATH",
+    "org": {
+            "sourcedId": "'$school_sourcedId'"
+        }
+    }
 }
 ```
 
@@ -228,141 +298,104 @@ POST for /users
 
 ```typescript
 {
-  "sourcedId": "user-123",              // OPTIONAL: auto-generated if not provided
-  "metadata": {},                       // OPTIONAL
-  "status": "active",                   // REQUIRED: defaults to 'active'
-  "userMasterIdentifier",               // OPTIONAL
-  "username": "jsmith",                 // OPTIONAL
-    "userIds": [                         // OPTIONAL: array of identifiers
-    {
-      "type": "district",
-      "identifier": "12345"
-    }
-  ],
-  "enabledUser": true,                  // REQUIRED: boolean converted to string
-  "givenName": "John",                  // REQUIRED
-  "familyName": "Smith",                // REQUIRED
-  "middleName": "Robert",               // OPTIONAL
-  "roles": [                            // REQUIRED: array, defaults to []
-    {
-      "roleType": "primary",            // REQUIRED: must be from RoleType enum
-      "role": "student",                // REQUIRED: must be from Role enum
-      "org": {                          // REQUIRED
-        "sourcedId": "school-123"       // REQUIRED
+        "user": {
+      "sourcedId": "'$sourcedId_user'",
+      "status": "active",
+      "username": "jsmith",
+      "enabledUser": true,
+      "givenName": "John",
+      "familyName": "Smith",
+      "middleName": "Robert",
+      "roles": [
+        {
+          "roleType": "primary",
+          "role": "student",
+          "org": {
+            "sourcedId": "'$org_sourcedId'"
+          },
+          "beginDate": "2024-01-15",
+          "endDate": "2024-12-31"
+        }
+      ],
+      "primaryOrg": {
+        "sourcedId": "'$org_sourcedId'"
       },
-      "userProfile": "profile-123",     // OPTIONAL
-      "beginDate": "2024-01-15",        // REQUIRED but NULLABLE: ISO date string
-      "endDate": "2024-12-31"           // REQUIRED but NULLABLE: ISO date string
-    }
-  ],
-  "primaryOrg": {                       // OPTIONAL
-    "sourcedId": "org-123"              // REQUIRED if primaryOrg is included in POST request
-  },
-  "identifier": "jsmithy-ex-1234",      // OPTIONAL string
-  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
-  "agents": [                           // OPTIONAL: array of references
-    {
-      "sourcedId": "parent-123"        // REQUIRED if agents are included
-    }
-  ],
-  "resources": [                       // OPTIONAL
-    "sourcedId": "12345"               // REQUIRED if 'resources' are included in POST request
-  ]
-  "preferredFirstName": "Johnny",      // OPTIONAL
-  "preferredMiddleName": "Bob",        // OPTIONAL
-  "preferredLastName": "Smith",        // OPTIONAL
-  "pronouns": "he/him",                // OPTIONAL
-  "grades": ["9", "10"],               // OPTIONAL: array of strings
-  "password": "hashedpassword123",      // OPTIONAL
-  "sms": "+1234567890",                // OPTIONAL
-  "phone": "+1234567890",              // OPTIONAL
-  "userProfiles": [                    // OPTIONAL if included there are REQUIRED key values pairs designated below
-    {
-      "profileId": "profile-123",        // REQUIRED only required if userProfiles is included in POST request
-      "profileType": "academic",         // REQUIRED only required if userProfiles is included in POST request
-      "vendorId": "vendor-123",          // REQUIRED only required if userProfiles is included in POST request
-      "applicationId": "app-123",        // REQUIRED only required if userProfiles is included in POST request
-      "description": "Academic profile", // REQUIRED only required if userProfiles is included in POST request
-      "credentials": []                  // REQUIRED: array (can be empty)  only required if userProfiles is included in POST request
-    }
-  ]
-}
+      "identifier": "jsmithy-ex-1234",
+      "email": "john.smith@school.edu",
+      "preferredFirstName": "Johnny",
+      "grades": ["9", "10"],
+      "phone": "+1234567890",
+      "userProfiles": [
+        {
+          "profileId": "profile-123",
+          "profileType": "academic",
+          "vendorId": "vendor-123",
+          "applicationId": "app-123",
+          "description": "Academic profile",
+          "credentials": []
+        }
+      ]
+        }}
 ```
 
 PUT for /users/{sourcedId}
 
 ```typescript
 {
-  "status": "active",                   // REQUIRED: defaults to 'active'
-  "userMasterIdentifier",               // OPTIONAL
-  "username": "jsmith",                 // OPTIONAL
-    "userIds": [                         // OPTIONAL: array of identifiers
-    {
-      "type": "district",
-      "identifier": "12345"
-    }
-  ],
-  "enabledUser": true,                  // REQUIRED: boolean converted to string
-  "givenName": "John",                  // REQUIRED
-  "familyName": "Smith",                // REQUIRED
-  "middleName": "Robert",               // OPTIONAL
-  "roles": [                            // REQUIRED: array, defaults to []
-    {
-      "roleType": "primary",            // REQUIRED: must be from RoleType enum
-      "role": "student",                // REQUIRED: must be from Role enum
-      "org": {                          // REQUIRED
-        "sourcedId": "school-123"       // REQUIRED
-      },
-      "userProfile": "profile-123",     // OPTIONAL
-      "beginDate": "2024-01-15",        // REQUIRED but NULLABLE: ISO date string
-      "endDate": "2024-12-31"          // REQUIRED but NULLABLE: ISO date string
-    }
-  ],
-  "primaryOrg": {                      // OPTIONAL
-    "sourcedId": "org-123"             // REQUIRED if primaryOrg is included in POST request
-  },
-  "identifier": "jsmithy-ex-1234",     // OPTIONAL string
-  "email": "john.smith@school.edu",     // OPTIONAL: must be valid email if provided
-  "agents": [                          // OPTIONAL: array of references
-    {
-      "sourcedId": "parent-123"        // REQUIRED if agents are included
-    }
-  ],
-  "resources": [                       // OPTIONAL
-    "sourcedId": "12345"               // REQUIRED if 'resources' are included in POST request
-  ]
-  "preferredFirstName": "Johnny",      // OPTIONAL
-  "preferredMiddleName": "Bob",        // OPTIONAL
-  "preferredLastName": "Smith",        // OPTIONAL
-  "pronouns": "he/him",                // OPTIONAL
-  "grades": ["9", "10"],               // OPTIONAL: array of strings
-  "password": "hashedpassword123",      // OPTIONAL
-  "sms": "+1234567890",                // OPTIONAL
-  "phone": "+1234567890",              // OPTIONAL
-  "userProfiles": [                    // OPTIONAL if included there are REQUIRED key values pairs designated below
-    {
-      "profileId": "profile-123",        // REQUIRED only required if userProfiles is included in POST request
-      "profileType": "academic",         // REQUIRED only required if userProfiles is included in POST request
-      "vendorId": "vendor-123",          // REQUIRED only required if userProfiles is included in POST request
-      "applicationId": "app-123",        // REQUIRED only required if userProfiles is included in POST request
-      "description": "Academic profile", // REQUIRED only required if userProfiles is included in POST request
-      "credentials": []                  // REQUIRED: array (can be empty)  only required if userProfiles is included in POST request
-    }
-  ]
-}
+        "user": {
+        "sourcedId": "'$sourcedId_user'",
+        "status": "active",
+        "username": "jsmith",
+        "enabledUser": true,
+        "givenName": "Jonathan",
+        "familyName": "Smithson",
+        "middleName": "Robert",
+        "roles": [
+            {
+            "roleType": "primary",
+            "role": "student",
+            "org": {
+                "sourcedId": "'$org_sourcedId'"
+            },
+            "beginDate": "2024-01-15",
+            "endDate": "2024-12-31"
+            }
+        ],
+        "primaryOrg": {
+            "sourcedId": "'$org_sourcedId'"
+        },
+        "identifier": "jsmithy-ex-1234",
+        "email": "john.smith@school.edu",
+        "preferredFirstName": "Johnny",
+        "grades": ["9", "10"],
+        "phone": "+1234567890",
+        "userProfiles": [
+            {
+            "profileId": "profile-123",
+            "profileType": "academic",
+            "vendorId": "vendor-123",
+            "applicationId": "app-123",
+            "description": "Academic profile",
+            "credentials": []
+            }
+        ]
+        }
+  }
 ```
 
 POST for /orgs
 
 ```typescript
 {
-  "sourcedId": "org-123",                // OPTIONAL: auto-generated if not provided
-  "status": "active",                    // OPTIONAL: defaults to "active"
-  "name": "District 100",               // REQUIRED
-  "type": "district",                   // REQUIRED: must be one of OrgType enum values
-  "identifier": "D100",                 // OPTIONAL
-  "parent": {                           // OPTIONAL
-    "sourcedId": "parent-org-123"       // REQUIRED if parent object is included
+  "org": {
+      "sourcedId": "'$sourcedId_org'",
+      "status": "active",
+      "name": "District 100",
+      "type": "district",
+      "identifier": "D100",
+      "parent": {
+          "sourcedId": "'$org_sourcedId'"
+      }
   }
 }
 ```
@@ -371,11 +404,15 @@ PUT for /orgs/{sourcedId}
 
 ```typescript
 {
-  "name": "District 100",               // REQUIRED
-  "type": "district",                   // REQUIRED: must be one of OrgType enum values
-  "identifier": "D100",                 // OPTIONAL
-  "parent": {                           // OPTIONAL
-    "sourcedId": "parent-org-123"       // REQUIRED if parent object is included
+  "org": {
+      "sourcedId": "'$sourcedId_org'",
+      "status": "active",
+      "name": "District 100",
+      "type": "district",
+      "identifier": "D100",
+      "parent": {
+          "sourcedId": "'$org_sourcedId'"
+      }
   }
 }
 ```
@@ -384,13 +421,15 @@ POST for /schools
 
 ```typescript
 {
-  "sourcedId": "school-123",            // OPTIONAL: auto-generated if not provided
-  "status": "active",                   // OPTIONAL: defaults to "active"
-  "name": "Lincoln High School",        // REQUIRED
-  "type": "school",                     // REQUIRED: must be "school"
-  "identifier": "LHS",                  // OPTIONAL
-  "parent": {                           // OPTIONAL
-    "sourcedId": "district-123"         // REQUIRED if parent object is included
+  "org": {
+      "sourcedId": "'$sourcedId_school'",
+      "status": "active",
+      "name": "Lincoln High School",
+      "type": "school",
+      "identifier": "LHS",
+      "parent": {
+          "sourcedId": "'$org_sourcedId'"
+      }
   }
 }
 ```
@@ -399,14 +438,20 @@ PUT for /schools/{sourcedId}
 
 ```typescript
 {
-  "name": "Lincoln High School",        // REQUIRED
-  "type": "school",                     // REQUIRED: must be "school"
-  "identifier": "LHS",                  // OPTIONAL
-  "parent": {                           // OPTIONAL
-    "sourcedId": "district-123"         // REQUIRED if parent object is included
+  "org": {
+      "sourcedId": "'$sourcedId_school'",
+      "status": "active",
+      "name": "Lincoln High School",
+      "type": "school",
+      "identifier": "LHS",
+      "parent": {
+          "sourcedId": "'$org_sourcedId'"
+      }
   }
 }
 ```
+
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 POST for /demographics
 
@@ -429,6 +474,8 @@ POST for /demographics
   "publicSchoolResidenceStatus": "resident" // OPTIONAL
 }
 ```
+
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 PUT for /demographics/{sourcedId}
 
@@ -454,17 +501,19 @@ POST for /enrollments
 
 ```typescript
 {
-  "sourcedId": "enrollment-123",          // OPTIONAL: auto-generated if not provided
-  "status": "active",                     // OPTIONAL: defaults to "active"
-  "role": "student",                      // REQUIRED: must be one of student/teacher/aide/guardian/relative/proctor
-  "primary": true,                        // OPTIONAL: defaults to false
-  "beginDate": "2024-01-15T00:00:00Z",   // OPTIONAL: ISO datetime string
-  "endDate": "2024-05-30T00:00:00Z",     // OPTIONAL: ISO datetime string
-  "user": {                              // REQUIRED
-    "sourcedId": "user-123"              // REQUIRED
-  },
-  "class": {                             // REQUIRED
-    "sourcedId": "class-123"             // REQUIRED
+  "enrollment": {
+      "sourcedId": "'$sourcedId_enrollment'",
+      "status": "active",
+      "role": "student",
+      "primary": true,
+      "beginDate": "2024-08-26T00:00:00Z",
+      "endDate": "2025-05-15T00:00:00Z",
+      "user": {
+          "sourcedId": "'$student_sourcedId'"
+      },
+      "class": {
+          "sourcedId": "'$class_sourcedId'"
+      }
   }
 }
 ```
@@ -473,20 +522,24 @@ PUT for /enrollments/{sourcedId}
 
 ```typescript
 {
-  "sourcedId": "enrollment-123",          // REQUIRED: must match URL parameter
-  "status": "active",                     // REQUIRED: must be active/tobedeleted
-  "role": "student",                      // REQUIRED: must be one of student/teacher/aide/guardian/relative/proctor
-  "primary": true,                        // OPTIONAL: defaults to false
-  "beginDate": "2024-01-15T00:00:00Z",   // OPTIONAL: ISO datetime string
-  "endDate": "2024-05-30T00:00:00Z",     // OPTIONAL: ISO datetime string
-  "user": {                              // REQUIRED
-    "sourcedId": "user-123"              // REQUIRED
-  },
-  "class": {                             // REQUIRED
-    "sourcedId": "class-123"             // REQUIRED
+  "enrollment": {
+      "sourcedId": "'$sourcedId_enrollment'",
+      "status": "active",
+      "role": "student",
+      "primary": true,
+      "beginDate": "2024-08-26T00:00:00Z",
+      "endDate": "2025-05-15T00:00:00Z",
+      "user": {
+          "sourcedId": "'$student_sourcedId'"
+      },
+      "class": {
+          "sourcedId": "'$class_sourcedId'"
+      }
   }
 }
 ```
+
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 POST for /gradingPeriods
 
@@ -507,6 +560,8 @@ POST for /gradingPeriods
   }
 }
 ```
+
+<!-- // TODO: ADD THIS TO TESTING SCRIPT, FIX BODY - DO NOT USE THIS AS AN EXAMPLE FOR DEMOGRAPHIC DATA -->
 
 PUT for /gradingPeriods/{sourcedId}
 
