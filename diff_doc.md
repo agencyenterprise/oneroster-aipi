@@ -277,18 +277,20 @@ POST for /courses
 ```typescript
 {
   "course": {
-    "sourcedId": "'$sourcedId_course'",
-    "status": "active",
-    "title": "Algebra I Course",
-    "courseCode": "ALG101",
-    "grades": "9",
-    "subjects": "Mathematics",
-    "subjectCodes": "MATH",
-    "org": {
-            "sourcedId": "'$school_sourcedId'"
+    "sourcedId": "'$sourcedId_course'",             // string - OPTIONAL
+    "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"])
+    "title": "Algebra I Course",                    // string - REQUIRED
+    "courseCode": "ALG101",                         // string - OPTIONAL
+    "grades": "9",                                  // string - OPTIONAL
+    "subjects": "Mathematics",                      // string - OPTIONAL
+    "subjectCodes": "MATH",                         // string - OPTIONAL
+    "org": {                                        // object - REQUIRED
+            "sourcedId": "'$school_sourcedId'"      // string - REQUIRED
         }
     }
 }
+
+// Required fields: ["title", "org"]
 ```
 
 PUT for /courses/{sourcedId_course}
@@ -296,18 +298,20 @@ PUT for /courses/{sourcedId_course}
 ```typescript
 {
   "course": {
-    "sourcedId": "'$sourcedId_course'",
-    "status": "active",
-    "title": "Algebra I Course",
-    "courseCode": "ALG101",
-    "grades": "9",
-    "subjects": "Mathematics",
-    "subjectCodes": "MATH",
-    "org": {
-            "sourcedId": "'$school_sourcedId'"
+    "sourcedId": "'$sourcedId_course'",             // string - OPTIONAL
+    "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"])
+    "title": "Algebra I Course",                    // string - REQUIRED
+    "courseCode": "ALG101",                         // string - OPTIONAL
+    "grades": "9",                                  // string - OPTIONAL
+    "subjects": "Mathematics",                      // string - OPTIONAL
+    "subjectCodes": "MATH",                         // string - OPTIONAL
+    "org": {                                        // object - REQUIRED
+            "sourcedId": "'$school_sourcedId'"      // string - REQUIRED
         }
     }
 }
+
+// Required fields: ["title", "org"]
 ```
 
 POST for /users
@@ -315,43 +319,45 @@ POST for /users
 ```typescript
 {
         "user": {
-      "sourcedId": "'$sourcedId_user'",
-      "status": "active",
-      "username": "jsmith",
-      "enabledUser": true,
-      "givenName": "John",
-      "familyName": "Smith",
-      "middleName": "Robert",
-      "roles": [
+      "sourcedId": "'$sourcedId_user'",                // string - OPTIONAL
+      "status": "active",                              // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "username": "jsmith",                            // string - OPTIONAL
+      "enabledUser": true,                             // boolean - REQUIRED
+      "givenName": "John",                             // string - REQUIRED
+      "familyName": "Smith",                           // string - REQUIRED
+      "middleName": "Robert",                          // string - OPTIONAL
+      "roles": [                                       // array - REQUIRED (min: 1)
         {
-          "roleType": "primary",
-          "role": "student",
-          "org": {
-            "sourcedId": "'$org_sourcedId'"
+          "roleType": "primary",                       // string - REQUIRED (enum: RoleType values)
+          "role": "student",                           // string - REQUIRED (enum: Role values)
+          "org": {                                     // object - REQUIRED
+            "sourcedId": "'$org_sourcedId'"           // string - REQUIRED
           },
-          "beginDate": "2024-01-15",
-          "endDate": "2024-12-31"
+          "beginDate": "2024-01-15",                  // string - OPTIONAL
+          "endDate": "2024-12-31"                     // string - OPTIONAL
         }
       ],
-      "primaryOrg": {
-        "sourcedId": "'$org_sourcedId'"
+      "primaryOrg": {                                 // object - OPTIONAL
+        "sourcedId": "'$org_sourcedId'"              // string - REQUIRED
       },
-      "identifier": "jsmithy-ex-1234",
-      "email": "john.smith@school.edu",
-      "preferredFirstName": "Johnny",
-      "grades": ["9", "10"],
-      "phone": "+1234567890",
-      "userProfiles": [
+      "identifier": "jsmithy-ex-1234",               // string - OPTIONAL
+      "email": "john.smith@school.edu",              // string - OPTIONAL (must be valid email)
+      "preferredFirstName": "Johnny",                // string - OPTIONAL
+      "grades": ["9", "10"],                         // string[] - OPTIONAL
+      "phone": "+1234567890",                        // string - OPTIONAL
+      "userProfiles": [                              // array - OPTIONAL
         {
-          "profileId": "profile-123",
-          "profileType": "academic",
-          "vendorId": "vendor-123",
-          "applicationId": "app-123",
-          "description": "Academic profile",
-          "credentials": []
+          "profileId": "profile-123",                // string - REQUIRED
+          "profileType": "academic",                 // string - REQUIRED
+          "vendorId": "vendor-123",                  // string - REQUIRED
+          "applicationId": "app-123",                // string - OPTIONAL
+          "description": "Academic profile",         // string - OPTIONAL
+          "credentials": []                          // array - OPTIONAL
         }
       ]
         }}
+
+// Required fields: ["enabledUser", "givenName", "familyName", "roles"]
 ```
 
 PUT for /users/{sourcedId_user}
@@ -359,44 +365,45 @@ PUT for /users/{sourcedId_user}
 ```typescript
 {
         "user": {
-        "sourcedId": "'$sourcedId_user'",
-        "status": "active",
-        "username": "jsmith",
-        "enabledUser": true,
-        "givenName": "Jonathan",
-        "familyName": "Smithson",
-        "middleName": "Robert",
-        "roles": [
-            {
-            "roleType": "primary",
-            "role": "student",
-            "org": {
-                "sourcedId": "'$org_sourcedId'"
-            },
-            "beginDate": "2024-01-15",
-            "endDate": "2024-12-31"
-            }
-        ],
-        "primaryOrg": {
-            "sourcedId": "'$org_sourcedId'"
-        },
-        "identifier": "jsmithy-ex-1234",
-        "email": "john.smith@school.edu",
-        "preferredFirstName": "Johnny",
-        "grades": ["9", "10"],
-        "phone": "+1234567890",
-        "userProfiles": [
-            {
-            "profileId": "profile-123",
-            "profileType": "academic",
-            "vendorId": "vendor-123",
-            "applicationId": "app-123",
-            "description": "Academic profile",
-            "credentials": []
-            }
-        ]
+      "sourcedId": "'$sourcedId_user'",                // string - OPTIONAL
+      "status": "active",                              // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "username": "jsmith",                            // string - OPTIONAL
+      "enabledUser": true,                             // boolean - REQUIRED
+      "givenName": "John",                             // string - REQUIRED
+      "familyName": "Smith",                           // string - REQUIRED
+      "middleName": "Robert",                          // string - OPTIONAL
+      "roles": [                                       // array - REQUIRED (min: 1)
+        {
+          "roleType": "primary",                       // string - REQUIRED (enum: RoleType values)
+          "role": "student",                           // string - REQUIRED (enum: Role values)
+          "org": {                                     // object - REQUIRED
+            "sourcedId": "'$org_sourcedId'"           // string - REQUIRED
+          },
+          "beginDate": "2024-01-15",                  // string - OPTIONAL
+          "endDate": "2024-12-31"                     // string - OPTIONAL
         }
-  }
+      ],
+      "primaryOrg": {                                 // object - OPTIONAL
+        "sourcedId": "'$org_sourcedId'"              // string - REQUIRED
+      },
+      "identifier": "jsmithy-ex-1234",               // string - OPTIONAL
+      "email": "john.smith@school.edu",              // string - OPTIONAL (must be valid email)
+      "preferredFirstName": "Johnny",                // string - OPTIONAL
+      "grades": ["9", "10"],                         // string[] - OPTIONAL
+      "phone": "+1234567890",                        // string - OPTIONAL
+      "userProfiles": [                              // array - OPTIONAL
+        {
+          "profileId": "profile-123",                // string - REQUIRED
+          "profileType": "academic",                 // string - REQUIRED
+          "vendorId": "vendor-123",                  // string - REQUIRED
+          "applicationId": "app-123",                // string - OPTIONAL
+          "description": "Academic profile",         // string - OPTIONAL
+          "credentials": []                          // array - OPTIONAL
+        }
+      ]
+        }}
+
+// Required fields: ["enabledUser", "givenName", "familyName", "roles"]
 ```
 
 POST for /orgs
@@ -438,16 +445,18 @@ POST for /schools
 ```typescript
 {
   "org": {
-      "sourcedId": "'$sourcedId_school'",
-      "status": "active",
-      "name": "Lincoln High School",
-      "type": "school",
-      "identifier": "LHS",
-      "parent": {
-          "sourcedId": "'$org_sourcedId'"
+      "sourcedId": "'$sourcedId_org'",               // string - OPTIONAL
+      "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "name": "District 100",                        // string - REQUIRED
+      "type": "district",                           // string - REQUIRED (enum: OrgType values)
+      "identifier": "D100",                         // string - OPTIONAL
+      "parent": {                                   // object - OPTIONAL
+          "sourcedId": "'$org_sourcedId'"          // string - REQUIRED
       }
   }
 }
+
+// Required fields: ["name", "type"]
 ```
 
 PUT for /schools/{sourcedId_school}
@@ -455,16 +464,18 @@ PUT for /schools/{sourcedId_school}
 ```typescript
 {
   "org": {
-      "sourcedId": "'$sourcedId_school'",
-      "status": "active",
-      "name": "Lincoln High School",
-      "type": "school",
-      "identifier": "LHS",
-      "parent": {
-          "sourcedId": "'$org_sourcedId'"
+      "sourcedId": "'$sourcedId_school'",           // string - OPTIONAL
+      "status": "active",                           // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "name": "Lincoln High School",                // string - REQUIRED
+      "type": "school",                            // string - REQUIRED (fixed as "school")
+      "identifier": "LHS",                         // string - OPTIONAL
+      "parent": {                                  // object - OPTIONAL
+          "sourcedId": "'$org_sourcedId'"         // string - REQUIRED
       }
   }
 }
+
+// Required fields: ["name", "type"]
 ```
 
 <!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
@@ -518,20 +529,22 @@ POST for /enrollments
 ```typescript
 {
   "enrollment": {
-      "sourcedId": "'$sourcedId_enrollment'",
-      "status": "active",
-      "role": "student",
-      "primary": true,
-      "beginDate": "2024-08-26T00:00:00Z",
-      "endDate": "2025-05-15T00:00:00Z",
-      "user": {
-          "sourcedId": "'$student_sourcedId'"
+      "sourcedId": "'$sourcedId_enrollment'",           // string - OPTIONAL
+      "status": "active",                               // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "role": "student",                                // string - REQUIRED (enum: EnrollmentRole values)
+      "primary": true,                                  // boolean - OPTIONAL (default: false)
+      "beginDate": "2024-08-26T00:00:00Z",             // string - OPTIONAL (datetime)
+      "endDate": "2025-05-15T00:00:00Z",               // string - OPTIONAL (datetime)
+      "user": {                                         // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"          // string - REQUIRED
       },
-      "class": {
-          "sourcedId": "'$class_sourcedId'"
+      "class": {                                        // object - REQUIRED
+          "sourcedId": "'$class_sourcedId'"            // string - REQUIRED
       }
   }
 }
+
+// Required fields: ["role", "user", "class"]
 ```
 
 PUT for /enrollments/{sourcedId_enrollment}
@@ -539,20 +552,22 @@ PUT for /enrollments/{sourcedId_enrollment}
 ```typescript
 {
   "enrollment": {
-      "sourcedId": "'$sourcedId_enrollment'",
-      "status": "active",
-      "role": "student",
-      "primary": true,
-      "beginDate": "2024-08-26T00:00:00Z",
-      "endDate": "2025-05-15T00:00:00Z",
-      "user": {
-          "sourcedId": "'$student_sourcedId'"
+      "sourcedId": "'$sourcedId_enrollment'",           // string - OPTIONAL
+      "status": "active",                               // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "role": "student",                                // string - REQUIRED (enum: EnrollmentRole values)
+      "primary": true,                                  // boolean - OPTIONAL (default: false)
+      "beginDate": "2024-08-26T00:00:00Z",             // string - OPTIONAL (datetime)
+      "endDate": "2025-05-15T00:00:00Z",               // string - OPTIONAL (datetime)
+      "user": {                                         // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"          // string - REQUIRED
       },
-      "class": {
-          "sourcedId": "'$class_sourcedId'"
+      "class": {                                        // object - REQUIRED
+          "sourcedId": "'$class_sourcedId'"            // string - REQUIRED
       }
   }
 }
+
+// Required fields: ["role", "user", "class"]
 ```
 
 POST for /gradingPeriods
@@ -560,21 +575,23 @@ POST for /gradingPeriods
 ```typescript
 {
         "academicSession": {
-            "sourcedId": "'$sourcedId_gradingPeriod'",
-            "status": "active",
-            "title": "Q1 2024",
-            "type": "gradingPeriod",
-            "startDate": "2024-01-15",
-            "endDate": "2024-03-15",
-            "parent": {
-                "sourcedId": "'$parent_academicSession_sourcedId'"
+            "sourcedId": "'$sourcedId_gradingPeriod'",     // string - OPTIONAL
+            "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"])
+            "title": "Q1 2024",                            // string - REQUIRED
+            "type": "gradingPeriod",                       // string - REQUIRED (fixed as "gradingPeriod")
+            "startDate": "2024-01-15",                     // string - REQUIRED (ISO date)
+            "endDate": "2024-03-15",                       // string - REQUIRED (ISO date)
+            "parent": {                                     // object - OPTIONAL
+                "sourcedId": "'$parent_academicSession_sourcedId'"  // string - REQUIRED
             },
-            "schoolYear": "2024",
-            "orgSourcedId": {
-                "sourcedId": "'$org_sourcedId'"
+            "schoolYear": "2024",                          // string - REQUIRED
+            "orgSourcedId": {                              // object - REQUIRED
+                "sourcedId": "'$org_sourcedId'"            // string - REQUIRED
             }
         }
-        }
+}
+
+// Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
 ```
 
 PUT for /gradingPeriods/{sourcedId}
@@ -582,21 +599,23 @@ PUT for /gradingPeriods/{sourcedId}
 ```typescript
 {
         "academicSession": {
-            "sourcedId": "'$sourcedId_gradingPeriod'",
-            "status": "active",
-            "title": "Q1 2024",
-            "type": "gradingPeriod",
-            "startDate": "2024-01-15",
-            "endDate": "2024-03-15",
-            "parent": {
-                "sourcedId": "'$parent_academicSession_sourcedId'"
+            "sourcedId": "'$sourcedId_gradingPeriod'",     // string - OPTIONAL
+            "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"])
+            "title": "Q1 2024",                            // string - REQUIRED
+            "type": "gradingPeriod",                       // string - REQUIRED (fixed as "gradingPeriod")
+            "startDate": "2024-01-15",                     // string - REQUIRED (ISO date)
+            "endDate": "2024-03-15",                       // string - REQUIRED (ISO date)
+            "parent": {                                     // object - OPTIONAL
+                "sourcedId": "'$parent_academicSession_sourcedId'"  // string - REQUIRED
             },
-            "schoolYear": "2024",
-            "orgSourcedId": {
-                "sourcedId": "'$org_sourcedId'"
+            "schoolYear": "2024",                          // string - REQUIRED
+            "orgSourcedId": {                              // object - REQUIRED
+                "sourcedId": "'$org_sourcedId'"            // string - REQUIRED
             }
         }
-        }
+}
+
+// Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
 ```
 
 Resources Service
