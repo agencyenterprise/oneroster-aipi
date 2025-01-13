@@ -892,252 +892,220 @@ POST /lineItems
 
 ```typescript
 {
-        "lineItem": {
-            "sourcedId": "'$soucredId_lineItem'",
-            "metadata": {
-                "weight": "10",
-                "isExtraCredit": false
-            },
-            "title": "Homework Standard 2",
-            "description": "Practice problems from Chapter 1",
-            "assignDate": "2023-09-05T00:00:00.000Z",
-            "dueDate": "2023-09-07T00:00:00.000Z",
-            "class": {
-                "sourcedId": "'$class_sourcedId'"
-            },
-            "school": {
-                "sourcedId": "'$school_sourcedId'"
-            },
-            "category": {
-                "sourcedId": "'$category_sourcedId'"
-            },
-            "gradingPeriod": {
-                "sourcedId": "'$gradingPeriod_sourcedId'"
-            },
-            "academicSession": {
-                "sourcedId": "'$academicSession_sourcedId'"
-            },
-            "resultValueMin": 0,
-            "resultValueMax": 100,
-            "learningObjectiveSet": [
-                {
-                    "source": "State Standards",
-                    "learningObjectiveIds": [
-                        {
-                            "learningObjectiveId": "MA.ALG.1",
-                            "score": 91,
-                            "textScore": "28"
-                        },
-                        {
-                            "learningObjectiveId": "MA.ALG.2",
-                            "score": 64,
-                            "textScore": "28"
-                        },
-                        {
-                            "learningObjectiveId": "MA.ALG.3",
-                            "score": 87,
-                            "textScore": "28"
-                        }
-                    ]
-                }
-            ]
-        }
-        }
+  "lineItem": {
+      "sourcedId": "'$sourcedId_lineItem'",           // string - OPTIONAL
+      "metadata": {                                   // object - OPTIONAL
+          "weight": "10",
+          "isExtraCredit": false
+      },
+      "title": "Homework Standard 2",                 // string - REQUIRED
+      "description": "Practice problems from Chapter 1", // string - OPTIONAL
+      "assignDate": "2023-09-05T00:00:00.000Z",      // string - OPTIONAL (datetime)
+      "dueDate": "2023-09-07T00:00:00.000Z",         // string - OPTIONAL (datetime)
+      "class": {                                      // object - REQUIRED
+          "sourcedId": "'$class_sourcedId'"          // string - REQUIRED
+      },
+      "school": {                                     // object - OPTIONAL
+          "sourcedId": "'$school_sourcedId'"         // string - REQUIRED
+      },
+      "category": {                                   // object - OPTIONAL
+          "sourcedId": "'$category_sourcedId'"       // string - REQUIRED
+      },
+      "gradingPeriod": {                             // object - OPTIONAL
+          "sourcedId": "'$gradingPeriod_sourcedId'"  // string - REQUIRED
+      },
+      "academicSession": {                           // object - OPTIONAL
+          "sourcedId": "'$academicSession_sourcedId'" // string - REQUIRED
+      },
+      "resultValueMin": 0,                           // number - OPTIONAL
+      "resultValueMax": 100,                         // number - OPTIONAL
+      "learningObjectiveSet": [                      // array - OPTIONAL
+          {
+              "source": "State Standards",           // string - REQUIRED
+              "learningObjectiveIds": [              // array - REQUIRED
+                  {
+                      "learningObjectiveId": "MA.ALG.1", // string - REQUIRED
+                      "score": 91,                       // number - OPTIONAL
+                      "textScore": "28"                  // string - OPTIONAL
+                  }
+              ]
+          }
+      ]
+  }
+}
+
+// Required fields: ["title", "class"]
 ```
 
 PUT for /lineItems/{sourcedId_lineItem}
 
 ```typescript
 {
-        "lineItem": {
-            "sourcedId": "'$sourcedId_lineItem'",
-            "metadata": {
-                "weight": "10",
-                "isExtraCredit": false
-            },
-            "title": "Updated Homework Assignment 12",
-            "description": "Practice problems from Chapter 1",
-            "assignDate": "2023-09-05T00:00:00.000Z",
-            "dueDate": "2023-09-07T00:00:00.000Z",
-            "class": {
-                "sourcedId": "'$class_sourcedId'"
-            },
-            "school": {
-                "sourcedId": "'$school_sourcedId'"
-            },
-            "category": {
-                "sourcedId": "'$category_sourcedId'"
-            },
-            "gradingPeriod": {
-                "sourcedId": "'$gradingPeriod_sourcedId'"
-            },
-            "academicSession": {
-                "sourcedId": "'$academicSession_sourcedId'"
-            },
-            "resultValueMin": 0,
-            "resultValueMax": 100,
-            "learningObjectiveSet": [
-                {
-                    "source": "State Standards",
-                    "learningObjectiveIds": [
-                        {
-                            "learningObjectiveId": "MA.ALG.1",
-                            "score": 91,
-                            "textScore": "28"
-                        },
-                        {
-                            "learningObjectiveId": "MA.ALG.2",
-                            "score": 64,
-                            "textScore": "28"
-                        },
-                        {
-                            "learningObjectiveId": "MA.ALG.3",
-                            "score": 87,
-                            "textScore": "28"
-                        }
-                    ]
-                }
-            ]
-        }
-        }
+  "lineItem": {
+      "sourcedId": "'$sourcedId_lineItem'",           // string - OPTIONAL
+      "metadata": {                                   // object - OPTIONAL
+          "weight": "10",
+          "isExtraCredit": false
+      },
+      "title": "Homework Standard 2",                 // string - REQUIRED
+      "description": "Practice problems from Chapter 1", // string - OPTIONAL
+      "assignDate": "2023-09-05T00:00:00.000Z",      // string - OPTIONAL (datetime)
+      "dueDate": "2023-09-07T00:00:00.000Z",         // string - OPTIONAL (datetime)
+      "class": {                                      // object - REQUIRED
+          "sourcedId": "'$class_sourcedId'"          // string - REQUIRED
+      },
+      "school": {                                     // object - OPTIONAL
+          "sourcedId": "'$school_sourcedId'"         // string - REQUIRED
+      },
+      "category": {                                   // object - OPTIONAL
+          "sourcedId": "'$category_sourcedId'"       // string - REQUIRED
+      },
+      "gradingPeriod": {                             // object - OPTIONAL
+          "sourcedId": "'$gradingPeriod_sourcedId'"  // string - REQUIRED
+      },
+      "academicSession": {                           // object - OPTIONAL
+          "sourcedId": "'$academicSession_sourcedId'" // string - REQUIRED
+      },
+      "resultValueMin": 0,                           // number - OPTIONAL
+      "resultValueMax": 100,                         // number - OPTIONAL
+      "learningObjectiveSet": [                      // array - OPTIONAL
+          {
+              "source": "State Standards",           // string - REQUIRED
+              "learningObjectiveIds": [              // array - REQUIRED
+                  {
+                      "learningObjectiveId": "MA.ALG.1", // string - REQUIRED
+                      "score": 91,                       // number - OPTIONAL
+                      "textScore": "28"                  // string - OPTIONAL
+                  }
+              ]
+          }
+      ]
+  }
+}
+
+// Required fields: ["title", "class"]
 ```
 
 POST /results
 
 ```typescript
 {
-        "result": {
-            "sourcedId": "'$sourcedId_results'",
-            "lineItem": {
-                "sourcedId": "'$lineItem_sourcedId'"
-            },
-            "student": {
-                "sourcedId": "'$student_sourcedId'"
-            },
-            "class": {
-                "sourcedId": "'$class_sourcedId'"
-            },
-            "scoreStatus": "fully graded",
-            "score": 85,
-            "scoreDate": "2023-09-10T00:00:00.000Z",
-            "comment": "Good work!",
-            "learningObjectiveSet": [],
-            "inProgress": false,
-            "incomplete": false,
-            "late": false,
-            "missing": false
-            }
-        }
+  "result": {
+      "sourcedId": "'$sourcedId_results'",           // string - OPTIONAL
+      "lineItem": {                                  // object - REQUIRED
+          "sourcedId": "'$lineItem_sourcedId'"       // string - REQUIRED
+      },
+      "student": {                                   // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"        // string - REQUIRED
+      },
+      "class": {                                     // object - OPTIONAL
+          "sourcedId": "'$class_sourcedId'"          // string - REQUIRED
+      },
+      "scoreStatus": "fully graded",                 // string - REQUIRED (enum: ScoreStatus)
+      "score": 85,                                   // number - OPTIONAL
+      "scoreDate": "2023-09-10T00:00:00.000Z",      // string - REQUIRED (datetime)
+      "comment": "Good work!",                       // string - OPTIONAL
+      "learningObjectiveSet": [],                    // array - OPTIONAL
+      "inProgress": false,                           // boolean - OPTIONAL
+      "incomplete": false,                           // boolean - OPTIONAL
+      "late": false,                                 // boolean - OPTIONAL
+      "missing": false                               // boolean - OPTIONAL
+  }
+}
+
+// Required fields: ["lineItem", "student", "scoreStatus", "scoreDate"]
 ```
 
 PUT for /results/{sourcedId_results}
 
 ```typescript
 {
-        "result": {
-            "sourcedId": "'$sourcedId_results'",
-            "lineItem": {
-                "sourcedId": "'$lineItem_sourcedId'"
-            },
-            "student": {
-                "sourcedId": "'$student_sourcedId'"
-            },
-            "class": {
-                "sourcedId": "'$class_sourcedId'"
-            },
-            "scoreStatus": "fully graded",
-            "score": 85,
-            "scoreDate": "2023-09-10T00:00:00.000Z",
-            "comment": "Updated - Excellent work!",
-            "learningObjectiveSet": [],
-            "inProgress": false,
-            "incomplete": false,
-            "late": false,
-            "missing": false
-            }
-        }
+  "result": {
+      "sourcedId": "'$sourcedId_results'",           // string - OPTIONAL
+      "lineItem": {                                  // object - REQUIRED
+          "sourcedId": "'$lineItem_sourcedId'"       // string - REQUIRED
+      },
+      "student": {                                   // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"        // string - REQUIRED
+      },
+      "class": {                                     // object - OPTIONAL
+          "sourcedId": "'$class_sourcedId'"          // string - REQUIRED
+      },
+      "scoreStatus": "fully graded",                 // string - REQUIRED (enum: ScoreStatus)
+      "score": 85,                                   // number - OPTIONAL
+      "scoreDate": "2023-09-10T00:00:00.000Z",      // string - REQUIRED (datetime)
+      "comment": "Good work!",                       // string - OPTIONAL
+      "learningObjectiveSet": [],                    // array - OPTIONAL
+      "inProgress": false,                           // boolean - OPTIONAL
+      "incomplete": false,                           // boolean - OPTIONAL
+      "late": false,                                 // boolean - OPTIONAL
+      "missing": false                               // boolean - OPTIONAL
+  }
+}
+
+// Required fields: ["lineItem", "student", "scoreStatus", "scoreDate"]
 ```
 
 POST /scoreScales
 
 ```typescript
 {
-          "scoreScale": {
-              "sourcedId": "'$sourcedId_scoreScales'",
-              "status": "active",
-              "title": "Standard Letter Grades",
-              "type": "letter",
-              "class": {
-                  "sourcedId": "'$class_sourcedId'"
-              },
-              "course": {
-                  "sourcedId": "'$course_sourcedId'"
-              },
-              "scoreScaleValue": [
-                  {
-                      "itemValueLHS": "90",
-                      "itemValueRHS": "100"
-                  },
-                  {
-                      "itemValueLHS": "80",
-                      "itemValueRHS": "89"
-                  },
-                  {
-                      "itemValueLHS": "70",
-                      "itemValueRHS": "79"
-                  },
-                  {
-                      "itemValueLHS": "60",
-                      "itemValueRHS": "69"
-                  },
-                  {
-                      "itemValueLHS": "0",
-                      "itemValueRHS": "59"
-                  }
-              ]
-          }
-      }
+  "scoreScale": {
+      "sourcedId": "'$sourcedId_scoreScales'",           // string - OPTIONAL
+      "status": "active",                                // string - OPTIONAL (enum: StatusType)
+      "title": "Standard Letter Grades",                 // string - REQUIRED
+      "type": "letter",                                  // string - REQUIRED
+      "class": {                                         // object - REQUIRED
+          "sourcedId": "'$class_sourcedId'"             // string - REQUIRED
+      },
+      "course": {                                        // object - OPTIONAL
+          "sourcedId": "'$course_sourcedId'"            // string - REQUIRED
+      },
+      "scoreScaleValue": [                              // array - REQUIRED
+          {
+              "itemValueLHS": "90",                      // string - REQUIRED
+              "itemValueRHS": "100",                     // string - REQUIRED
+              "value": "A",                              // string - OPTIONAL
+              "description": "Excellent"                 // string - OPTIONAL
+          },
+          // ... additional scale values ...
+      ]
+  }
+}
+
+// Required fields: ["title", "type", "class", "scoreScaleValue"]
+// Each scoreScaleValue requires: ["itemValueLHS", "itemValueRHS"]
 ```
 
 PUT for /scoreScales/{sourcedId_scoreScales}
 
 ```typescript
 {
-          "scoreScale": {
-              "sourcedId": "'$sourcedId_scoreScales'",
-              "status": "active",
-              "title": "Updated Standard Letter Grades",
-              "type": "letter",
-              "class": {
-                  "sourcedId": "'$class_sourcedId'"
-              },
-              "course": {
-                  "sourcedId": "'$course_sourcedId'"
-              },
-              "scoreScaleValue": [
-                  {
-                      "itemValueLHS": "90",
-                      "itemValueRHS": "100"
-                  },
-                  {
-                      "itemValueLHS": "80",
-                      "itemValueRHS": "89"
-                  },
-                  {
-                      "itemValueLHS": "70",
-                      "itemValueRHS": "79"
-                  },
-                  {
-                      "itemValueLHS": "60",
-                      "itemValueRHS": "69"
-                  },
-                  {
-                      "itemValueLHS": "0",
-                      "itemValueRHS": "59"
-                  }
-              ]
-          }
-      }
+  "scoreScale": {
+      "sourcedId": "'$sourcedId_scoreScales'",           // string - OPTIONAL
+      "status": "active",                                // string - OPTIONAL (enum: StatusType)
+      "title": "Standard Letter Grades",                 // string - REQUIRED
+      "type": "letter",                                  // string - REQUIRED
+      "class": {                                         // object - REQUIRED
+          "sourcedId": "'$class_sourcedId'"             // string - REQUIRED
+      },
+      "course": {                                        // object - OPTIONAL
+          "sourcedId": "'$course_sourcedId'"            // string - REQUIRED
+      },
+      "scoreScaleValue": [                              // array - REQUIRED
+          {
+              "itemValueLHS": "90",                      // string - REQUIRED
+              "itemValueRHS": "100",                     // string - REQUIRED
+              "value": "A",                              // string - OPTIONAL
+              "description": "Excellent"                 // string - OPTIONAL
+          },
+          // ... additional scale values ...
+      ]
+  }
+}
+
+// Required fields: ["title", "type", "class", "scoreScaleValue"]
+// Each scoreScaleValue requires: ["itemValueLHS", "itemValueRHS"]
 ```
 
 ALL DELETE METHODS ONLY REQUIRE A sourceId for /route/{sourcedId}
