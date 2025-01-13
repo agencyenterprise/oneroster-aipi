@@ -231,20 +231,22 @@ POST for /classes/{classSourcedId}/students
 ```typescript
 {
   "enrollment": {
-      "sourcedId": "'$sourcedId_enrollment'",
-      "status": "active",
-      "metadata": {
+      "sourcedId": "'$sourcedId_enrollment'",        // string - OPTIONAL
+      "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "metadata": {                                  // object - OPTIONAL
           "test": "test"
       },
-      "role": "student",
-      "student":{
-          "sourcedId": "'$student_sourcedId'"
+      "role": "student",                            // string - REQUIRED (fixed as "student" for this endpoint)
+      "student": {                                  // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"       // string - REQUIRED
       },
-      "primary": true,
-      "beginDate": "2024-08-26",
-      "endDate": "2025-05-15"
+      "primary": true,                              // boolean - OPTIONAL (default: false)
+      "beginDate": "2024-08-26",                    // string - OPTIONAL (datetime)
+      "endDate": "2025-05-15"                       // string - OPTIONAL (datetime)
   }
 }
+
+// Required fields: ["student"]
 ```
 
 POST for /classes/{classSourcedId}/teachers
@@ -252,20 +254,22 @@ POST for /classes/{classSourcedId}/teachers
 ```typescript
 {
   "enrollment": {
-    "sourcedId": "'$sourcedId_enrollment'",
-    "status": "active",
-    "metadata": {
-        "test": "test"
-    },
-    "role": "teacher",
-    "teacher":{
-        "sourcedId": "'$teacher_sourcedId'"
-    },
-    "primary": true,
-    "beginDate": "2024-08-26",
-    "endDate": "2025-05-15"
+      "sourcedId": "'$sourcedId_enrollment'",        // string - OPTIONAL
+      "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "metadata": {                                  // object - OPTIONAL
+          "test": "test"
+      },
+      "role": "teacher",                            // string - REQUIRED (fixed as "teacher" for this endpoint)
+      "teacher": {                                  // object - REQUIRED
+          "sourcedId": "'$teacher_sourcedId'"       // string - REQUIRED
+      },
+      "primary": true,                              // boolean - OPTIONAL (default: false)
+      "beginDate": "2024-08-26",                    // string - OPTIONAL (datetime)
+      "endDate": "2025-05-15"                       // string - OPTIONAL (datetime)
   }
 }
+
+// Required fields: ["teacher"]
 ```
 
 POST for /courses
