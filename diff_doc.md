@@ -628,10 +628,9 @@ POST for /resources
 
 ```typescript
 {
-  "resource":
-      {
-        "sourcedId": "'$resources_sourcedId'",
-        "metadata": {
+  "resource": {
+        "sourcedId": "'$resources_sourcedId'",           // string - OPTIONAL
+        "metadata": {                                    // object - OPTIONAL
             "format": "digits",
             "type": "textbook",
             "accessHistory": {
@@ -640,26 +639,27 @@ POST for /resources
                 "lastUpdated": "2025-01-11T00:33:43.629Z"
             }
         },
-        "title": "Algebra I Textbook",
-        "roles": [
-            "primary"
+        "title": "Algebra I Textbook",                                  // string - REQUIRED
+        "roles": [                                                      // array - OPTIONAL
+            "primary"                                                   // string - enum: ["primary", "secondary"]
         ],
-        "importance": "primary",
-        "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",
-        "vendorId": "pearson_ed",
-        "applicationId": "digital_textbook"
+        "importance": "primary",                                        // string - OPTIONAL (enum: ["primary", "secondary"])
+        "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",     // string - REQUIRED
+        "vendorId": "pearson_ed",                                       // string - OPTIONAL
+        "applicationId": "digital_textbook"                             // string - OPTIONAL
     }
 }
+
+// Required fields: ["title", "vendorResourceId"]
 ```
 
 PUT for /resources/{resources_sourcedId}
 
 ```typescript
 {
-  "resource":
-    {
-        "sourcedId": "'$resources_sourcedId'",
-        "metadata": {
+  "resource": {
+        "sourcedId": "'$resources_sourcedId'",           // string - OPTIONAL
+        "metadata": {                                    // object - OPTIONAL
             "format": "digits",
             "type": "textbook",
             "accessHistory": {
@@ -668,16 +668,18 @@ PUT for /resources/{resources_sourcedId}
                 "lastUpdated": "2025-01-11T00:33:43.629Z"
             }
         },
-        "title": "Algebra I Textbook",
-        "roles": [
-            "primary"
+        "title": "Algebra I Textbook",                                  // string - REQUIRED
+        "roles": [                                                      // array - OPTIONAL
+            "primary"                                                   // string - enum: ["primary", "secondary"]
         ],
-        "importance": "primary",
-        "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",
-        "vendorId": "pearson_ed",
-        "applicationId": "digital_textbook"
+        "importance": "primary",                                        // string - OPTIONAL (enum: ["primary", "secondary"])
+        "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785",     // string - REQUIRED
+        "vendorId": "pearson_ed",                                       // string - OPTIONAL
+        "applicationId": "digital_textbook"                             // string - OPTIONAL
     }
 }
+
+// Required fields: ["title", "vendorResourceId"]
 ```
 
 Gradebook Service
@@ -690,92 +692,86 @@ POST /assessmentLineItems
 
 ```typescript
 {
-        "assessmentLineItem": {
-            "sourcedId": "'$sourcedId_assessmentLineItem'",
-            "status": "active",
-            "metadata": {
-                "weight": "30",
-                "duration": "120",
-                "allowCalculator": true
-            },
-            "title": "Chapter 1 Test",
-            "description": "End of chapter test",
-            "class": {
-            "sourcedId": "'$class_sourcedId'"
-            },
-            "parentAssessmentLineItem": {
-            "sourcedId": "'$assessmentLineItem_sourcedId'"
-            },
-            "scoreScale": {
-            "sourcedId": "'$scoreScale_sourcedId'"
-            },
-            "resultValueMin": 0,
-            "resultValueMax": 100,
-            "learningObjectiveSet": [
-            {
-                "source": "Common Core",
-                "learningObjectiveIds": [
-                {
-                    "learningObjectiveId": "12345",
-                    "score": 89,
-                    "textScore": "89"
-                },
-                {
-                    "learningObjectiveId": "as12345",
-                    "score": 89,
-                    "textScore": "89"
-                }
-                ]
-            }
-            ]
-        }
+  "assessmentLineItem": {
+      "sourcedId": "'$sourcedId_assessmentLineItem'",     // string - OPTIONAL
+      "status": "active",                                 // string - OPTIONAL (enum: StatusType)
+      "metadata": {                                       // object - OPTIONAL
+          "weight": "30",
+          "duration": "120",
+          "allowCalculator": true
+      },
+      "title": "Chapter 1 Test",                         // string - REQUIRED
+      "description": "End of chapter test",              // string - OPTIONAL
+      "class": {                                         // object - OPTIONAL
+          "sourcedId": "'$class_sourcedId'"             // string - REQUIRED
+      },
+      "parentAssessmentLineItem": {                      // object - OPTIONAL
+          "sourcedId": "'$assessmentLineItem_sourcedId'" // string - REQUIRED
+      },
+      "scoreScale": {                                    // object - OPTIONAL
+          "sourcedId": "'$scoreScale_sourcedId'"        // string - REQUIRED
+      },
+      "resultValueMin": 0,                               // number - OPTIONAL
+      "resultValueMax": 100,                             // number - OPTIONAL
+      "learningObjectiveSet": [                          // array - OPTIONAL
+          {
+              "source": "Common Core",                   // string - REQUIRED
+              "learningObjectiveIds": [                  // array - REQUIRED
+                  {
+                      "learningObjectiveId": "12345",    // string - REQUIRED
+                      "score": 89,                       // number - OPTIONAL
+                      "textScore": "89"                  // string - OPTIONAL
+                  }
+              ]
+          }
+      ]
+  }
 }
+
+// Required fields: ["title"]
 ```
 
 PUT for /assessmentLineItems/{sourcedId_assessmentLineItem}
 
 ```typescript
 {
-      "assessmentLineItem": {
-        "sourcedId": "'$sourcedId_assessmentLineItem'",
-        "status": "active",
-        "metadata": {
-            "weight": "30",
-            "duration": "120",
-            "allowCalculator": true
-        },
-        "title": "Chapter 3 Test",
-        "description": "End of chapter test",
-        "class": {
-          "sourcedId": "'$class_sourcedId'"
-        },
-        "parentAssessmentLineItem": {
-          "sourcedId": "'$assessmentLineItem_sourcedId'"
-        },
-        "scoreScale": {
-          "sourcedId": "'$scoreScale_sourcedId'"
-        },
-        "resultValueMin": 20,
-        "resultValueMax": 100,
-        "learningObjectiveSet": [
+  "assessmentLineItem": {
+      "sourcedId": "'$sourcedId_assessmentLineItem'",     // string - OPTIONAL
+      "status": "active",                                 // string - OPTIONAL (enum: StatusType)
+      "metadata": {                                       // object - OPTIONAL
+          "weight": "30",
+          "duration": "120",
+          "allowCalculator": true
+      },
+      "title": "Chapter 1 Test",                         // string - REQUIRED
+      "description": "End of chapter test",              // string - OPTIONAL
+      "class": {                                         // object - OPTIONAL
+          "sourcedId": "'$class_sourcedId'"             // string - REQUIRED
+      },
+      "parentAssessmentLineItem": {                      // object - OPTIONAL
+          "sourcedId": "'$assessmentLineItem_sourcedId'" // string - REQUIRED
+      },
+      "scoreScale": {                                    // object - OPTIONAL
+          "sourcedId": "'$scoreScale_sourcedId'"        // string - REQUIRED
+      },
+      "resultValueMin": 0,                               // number - OPTIONAL
+      "resultValueMax": 100,                             // number - OPTIONAL
+      "learningObjectiveSet": [                          // array - OPTIONAL
           {
-            "source": "Common Core",
-            "learningObjectiveIds": [
-              {
-                "learningObjectiveId": "12345",
-                "score": 88,
-                "textScore": "88"
-              },
-              {
-                "learningObjectiveId": "as12345",
-                "score": 88,
-                "textScore": "89"
-              }
-            ]
+              "source": "Common Core",                   // string - REQUIRED
+              "learningObjectiveIds": [                  // array - REQUIRED
+                  {
+                      "learningObjectiveId": "12345",    // string - REQUIRED
+                      "score": 89,                       // number - OPTIONAL
+                      "textScore": "89"                  // string - OPTIONAL
+                  }
+              ]
           }
-        ]
-      }
-    }
+      ]
+  }
+}
+
+// Required fields: ["title"]
 ```
 
 POST /assessmentResults
@@ -783,121 +779,113 @@ POST /assessmentResults
 ```typescript
 {
   "assessmentResult": {
-      "sourcedId": "'$sourcedId_assessmentResults'",
-      "status": "active",
-      "metadata": {
+      "sourcedId": "'$sourcedId_assessmentResults'",     // string - OPTIONAL
+      "status": "active",                                // string - OPTIONAL (enum: StatusType)
+      "metadata": {                                      // object - OPTIONAL
           "weight": "30",
           "duration": "120",
           "allowCalculator": true
       },
-      "assessmentLineItemSourcedId": {
-          "sourcedId": "'$assessmentLineItem_sourcedId'"
+      "assessmentLineItemSourcedId": {                   // object - REQUIRED
+          "sourcedId": "'$assessmentLineItem_sourcedId'" // string - REQUIRED
       },
-      "studentSourcedId": {
-          "sourcedId": "'$student_sourcedId'"
+      "studentSourcedId": {                              // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"           // string - REQUIRED
       },
-      "score": 90,
-      "textScore": "90",
-      "scoreDate": "2023-12-15T00:00:00.000Z",
-      "scoreScaleSourcedId": {
-          "sourcedId": "'$scoreScale_sourcedId'"
+      "score": 90,                                       // number - OPTIONAL
+      "textScore": "90",                                // string - OPTIONAL
+      "scoreDate": "2023-12-15T00:00:00.000Z",          // string - REQUIRED (datetime)
+      "scoreScaleSourcedId": {                          // object - OPTIONAL
+          "sourcedId": "'$scoreScale_sourcedId'"        // string - REQUIRED
       },
-      "scorePercentile": 85,
-      "scoreStatus": "fully graded",
-      "comment": "Good work!",
-      "learningObjectiveSet": [{
-          "source": "Common Core",
-          "learningObjectiveIds": [{
-              "learningObjectiveId": "12345",
-              "score": 88,
-              "textScore": "88"
-          }]
-      }],
-      "inProgress": true,
-      "incomplete": false,
-      "late": false,
-      "missing": false
-      }
+      "scorePercentile": 85,                            // number - OPTIONAL
+      "scoreStatus": "fully graded",                    // string - REQUIRED (enum: ScoreStatus)
+      "comment": "Good work!",                          // string - OPTIONAL
+      "learningObjectiveSet": [...],                    // array - OPTIONAL
+      "inProgress": true,                               // boolean - OPTIONAL
+      "incomplete": false,                              // boolean - OPTIONAL
+      "late": false,                                    // boolean - OPTIONAL
+      "missing": false                                  // boolean - OPTIONAL
   }
+}
+
+// Required fields: ["assessmentLineItemSourcedId", "studentSourcedId", "scoreDate", "scoreStatus"]
 ```
 
 PUT for /assessmentResults/{sourcedId_assessmentResults}
 
 ```typescript
 {
-        "assessmentResult": {
-        "sourcedId": "'$sourcedId_assessmentResults'",
-        "status": "active",
-        "metadata": {
-            "weight": "30",
-            "duration": "120",
-            "allowCalculator": true
-        },
-        "assessmentLineItemSourcedId": {
-            "sourcedId": "'$assessmentLineItem_sourcedId'"
-        },
-        "studentSourcedId": {
-            "sourcedId": "'$student_sourcedId'"
-        },
-        "score": 90,
-        "textScore": "90",
-        "scoreDate": "2023-12-15T00:00:00.000Z",
-        "scoreScaleSourcedId": {
-            "sourcedId": "'$scoreScale_sourcedId'"
-        },
-        "scorePercentile": 85,
-        "scoreStatus": "fully graded",
-        "comment": "Updated comment for PUT",
-        "learningObjectiveSet": [{
-            "source": "Common Core",
-            "learningObjectiveIds": [{
-                "learningObjectiveId": "12345",
-                "score": 88,
-                "textScore": "88"
-            }]
-        }],
-        "inProgress": true,
-        "incomplete": false,
-        "late": false,
-        "missing": false
-        }
-    }
+  "assessmentResult": {
+      "sourcedId": "'$sourcedId_assessmentResults'",     // string - OPTIONAL
+      "status": "active",                                // string - OPTIONAL (enum: StatusType)
+      "metadata": {                                      // object - OPTIONAL
+          "weight": "30",
+          "duration": "120",
+          "allowCalculator": true
+      },
+      "assessmentLineItemSourcedId": {                   // object - REQUIRED
+          "sourcedId": "'$assessmentLineItem_sourcedId'" // string - REQUIRED
+      },
+      "studentSourcedId": {                              // object - REQUIRED
+          "sourcedId": "'$student_sourcedId'"           // string - REQUIRED
+      },
+      "score": 90,                                       // number - OPTIONAL
+      "textScore": "90",                                // string - OPTIONAL
+      "scoreDate": "2023-12-15T00:00:00.000Z",          // string - REQUIRED (datetime)
+      "scoreScaleSourcedId": {                          // object - OPTIONAL
+          "sourcedId": "'$scoreScale_sourcedId'"        // string - REQUIRED
+      },
+      "scorePercentile": 85,                            // number - OPTIONAL
+      "scoreStatus": "fully graded",                    // string - REQUIRED (enum: ScoreStatus)
+      "comment": "Good work!",                          // string - OPTIONAL
+      "learningObjectiveSet": [...],                    // array - OPTIONAL
+      "inProgress": true,                               // boolean - OPTIONAL
+      "incomplete": false,                              // boolean - OPTIONAL
+      "late": false,                                    // boolean - OPTIONAL
+      "missing": false                                  // boolean - OPTIONAL
+  }
+}
+
+// Required fields: ["assessmentLineItemSourcedId", "studentSourcedId", "scoreDate", "scoreStatus"]
 ```
 
 POST /categories
 
 ```typescript
 {
-        "category":
-        {
-            "sourcedId": "'$sourcedId_categories'",
-            "status": "active",
-            "metadata": {
-                "type": "category",
-                "weight": 0.5
-            },
-            "title": "Participation",
-            "weight": 0.5
-        }
-        }
+  "category": {
+      "sourcedId": "'$sourcedId_categories'",           // string - OPTIONAL
+      "status": "active",                               // string - OPTIONAL (enum: StatusType)
+      "metadata": {                                     // object - OPTIONAL
+          "type": "category",
+          "weight": 0.5
+      },
+      "title": "Participation",                         // string - REQUIRED
+      "weight": 0.5                                     // number - OPTIONAL
+  }
+}
+
+// Required fields: ["title"]
 ```
 
 PUT for /categories/{sourcedId_categories}
 
 ```typescript
 {
-        "category":
-            {
-                "sourcedId": "'$sourcedId_categories'",
-                "status": "active",
-                "metadata": {
-                    "type": "category",
-                    "weight": 0.8
-                },
-                "title": "Participation PUT request",
-                "weight": 0.8
-            }
-        }
+  "category": {
+      "sourcedId": "'$sourcedId_categories'",           // string - OPTIONAL
+      "status": "active",                               // string - OPTIONAL (enum: StatusType)
+      "metadata": {                                     // object - OPTIONAL
+          "type": "category",
+          "weight": 0.5
+      },
+      "title": "Participation",                         // string - REQUIRED
+      "weight": 0.5                                     // number - OPTIONAL
+  }
+}
+
+// Required fields: ["title"]
 ```
 
 POST /lineItems
