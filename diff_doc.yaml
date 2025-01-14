@@ -139,42 +139,46 @@ paths:
                 "class": {
                   "sourcedId": "'$sourcedId_class'",              // string - OPTIONAL
                   "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",    // string - OPTIONAL (datetime)
                   "metadata": {                                   // object - OPTIONAL
-                      "test": "test"                              // any
+                    "test": "test"
                   },
-                  "title": "Algebra I PUT EDIT",                 // string - REQUIRED
+                  "title": "Algebra I PUT EDIT",                  // string - REQUIRED
                   "classCode": "ALG101-01",                      // string - OPTIONAL
                   "classType": "scheduled",                      // string - OPTIONAL (enum: ClassType.enumValues, default: "scheduled")
                   "location": "Room 204",                        // string - OPTIONAL
-                  "grades": ["9"],                              // string[] - OPTIONAL
-                  "subjects": ["Mathematics"],                   // string[] - OPTIONAL
-                  "subjectCodes": ["MATH"],                     // string[] - OPTIONAL
-                  "periods": ["1", "2"],                        // string[] - OPTIONAL
+                  "grades": ["9"],                              // array<string> - OPTIONAL
+                  "subjects": ["Mathematics"],                   // array<string> - OPTIONAL
+                  "subjectCodes": ["MATH"],                     // array<string> - OPTIONAL
+                  "periods": ["1", "2"],                        // array<string> - OPTIONAL
                   "resources": [                                // array - OPTIONAL
-                      {
-                          "sourcedId": "'$resources_sourcedId'"   // string - REQUIRED if resources included
-                      }
+                    {
+                      "sourcedId": "'$resources_sourcedId'"      // string - REQUIRED if resources included
+                    }
                   ],
                   "course": {                                   // object - REQUIRED
-                      "sourcedId": "'$course_sourcedId'"         // string - REQUIRED
+                    "sourcedId": "'$course_sourcedId'"          // string - REQUIRED
                   },
-                  "org": {                                      // object - REQUIRED
-                      "sourcedId": "'$school_sourcedId'"         // string - REQUIRED
+                  "org": {                                     // object - REQUIRED
+                    "sourcedId": "'$school_sourcedId'"          // string - REQUIRED
                   },
-                  "terms": [                                    // array - REQUIRED
-                      {
-                          "sourcedId": "'$term_sourcedId'"       // string - REQUIRED
-                      }
-                  ],
-                  "academicSessions": [                         // array - REQUIRED (min: 1)
-                      {
-                          "sourcedId": "'$parent_academicSession_sourcedId'"  // string - OPTIONAL
-                      }
+                  "session": {                                 // object - OPTIONAL
+                    "sourcedId": "'$term_sourcedId'"           // string - REQUIRED if session included
+                  },
+                  "academicSessions": [                        // array - REQUIRED (min: 1)
+                    {
+                      "title": "2023-2024 School Year",        // string - REQUIRED
+                      "startDate": "2023-08-15",              // string - REQUIRED (YYYY-MM-DD)
+                      "endDate": "2024-05-30",                // string - REQUIRED (YYYY-MM-DD)
+                      "type": "term",                         // string - REQUIRED (enum: SessionType.enumValues)
+                      "schoolYear": "2023"                    // string - REQUIRED
+                    }
                   ]
                 }
               }
               
-              // Required fields: ["title", "course.sourcedId", "org.sourcedId", "terms", "academicSessions"]
+              // Required fields: ["title", "course", "org", "academicSessions"]
+              // Required fields for each academicSession: ["title", "startDate", "endDate", "type", "schoolYear"]
   /classes/{sourcedId_class}:
     put:
       requestBody:
@@ -185,42 +189,46 @@ paths:
                 "class": {
                   "sourcedId": "'$sourcedId_class'",              // string - OPTIONAL
                   "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",    // string - OPTIONAL (datetime)
                   "metadata": {                                   // object - OPTIONAL
-                      "test": "test"                              // any
+                    "test": "test"
                   },
-                  "title": "Algebra I PUT EDIT",                 // string - REQUIRED
+                  "title": "Algebra I PUT EDIT",                  // string - REQUIRED
                   "classCode": "ALG101-01",                      // string - OPTIONAL
                   "classType": "scheduled",                      // string - OPTIONAL (enum: ClassType.enumValues, default: "scheduled")
                   "location": "Room 204",                        // string - OPTIONAL
-                  "grades": ["9"],                              // string[] - OPTIONAL
-                  "subjects": ["Mathematics"],                   // string[] - OPTIONAL
-                  "subjectCodes": ["MATH"],                     // string[] - OPTIONAL
-                  "periods": ["1", "2"],                        // string[] - OPTIONAL
+                  "grades": ["9"],                              // array<string> - OPTIONAL
+                  "subjects": ["Mathematics"],                   // array<string> - OPTIONAL
+                  "subjectCodes": ["MATH"],                     // array<string> - OPTIONAL
+                  "periods": ["1", "2"],                        // array<string> - OPTIONAL
                   "resources": [                                // array - OPTIONAL
-                      {
-                          "sourcedId": "'$resources_sourcedId'"   // string - REQUIRED if resources included
-                      }
+                    {
+                      "sourcedId": "'$resources_sourcedId'"      // string - REQUIRED if resources included
+                    }
                   ],
                   "course": {                                   // object - REQUIRED
-                      "sourcedId": "'$course_sourcedId'"         // string - REQUIRED
+                    "sourcedId": "'$course_sourcedId'"          // string - REQUIRED
                   },
-                  "org": {                                      // object - REQUIRED
-                      "sourcedId": "'$school_sourcedId'"         // string - REQUIRED
+                  "org": {                                     // object - REQUIRED
+                    "sourcedId": "'$school_sourcedId'"          // string - REQUIRED
                   },
-                  "terms": [                                    // array - REQUIRED
-                      {
-                          "sourcedId": "'$term_sourcedId'"       // string - REQUIRED
-                      }
-                  ],
-                  "academicSessions": [                         // array - REQUIRED (min: 1)
-                      {
-                          "sourcedId": "'$parent_academicSession_sourcedId'"  // string - OPTIONAL
-                      }
+                  "session": {                                 // object - OPTIONAL
+                    "sourcedId": "'$term_sourcedId'"           // string - REQUIRED if session included
+                  },
+                  "academicSessions": [                        // array - REQUIRED (min: 1)
+                    {
+                      "title": "2023-2024 School Year",        // string - REQUIRED
+                      "startDate": "2023-08-15",              // string - REQUIRED (YYYY-MM-DD)
+                      "endDate": "2024-05-30",                // string - REQUIRED (YYYY-MM-DD)
+                      "type": "term",                         // string - REQUIRED (enum: SessionType.enumValues)
+                      "schoolYear": "2023"                    // string - REQUIRED
+                    }
                   ]
                 }
               }
               
-              // Required fields: ["title", "course.sourcedId", "org.sourcedId", "terms", "academicSessions"]
+              // Required fields: ["title", "course", "org", "academicSessions"]
+              // Required fields for each academicSession: ["title", "startDate", "endDate", "type", "schoolYear"]
   /classes/{classSourcedId}/students:
     post:
       requestBody:

@@ -30,6 +30,20 @@ The objective is to build a fully functional, deployable Next.js application int
 
 ---
 
+1. For ALL endpoints:
+
+   - GET endpoints: MUST reference oneroster.yaml
+   - POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml first
+   - NEVER attempt to guess payload structure
+   - NEVER proceed without checking the relevant yaml file
+
+2. When implementing endpoints:
+   - First state which yaml file and section you're referencing
+   - Copy the exact schema from the yaml file
+   - Implement based on that schema only
+
+---
+
 ## Environment and Framework Requirements
 
 - **Framework:** Next.js (v13+) with React 18.x.
