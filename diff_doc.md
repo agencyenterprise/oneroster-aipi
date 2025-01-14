@@ -108,26 +108,32 @@ PUT for /terms/{sourcedId_term}
 // Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "orgSourcedId"]
 ```
 
-<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
-
 POST for /terms/{termSourcedId}/gradingPeriods
 
 ```typescript
 {
-  "sourcedId": "2024-q1",                 // OPTIONAL: auto-generated if not provided
-  "status": "active",                     // OPTIONAL: defaults to "active"
-  "title": "Q1 2024",                     // REQUIRED
-  "type": "gradingPeriod",                // REQUIRED: must be "gradingPeriod"
-  "startDate": "2024-01-15",              // REQUIRED: ISO date string
-  "endDate": "2024-03-15",                // REQUIRED: ISO date string
-  "parent": {                             // REQUIRED for grading periods
-    "sourcedId": "{termSourcedId}"        // REQUIRED: must match URL parameter
+  "params": {
+      "termSourcedId": "'$term_sourcedId'"          // string - REQUIRED (URL param)
   },
-  "schoolYear": "2024",                   // REQUIRED
-  "org": {                                // REQUIRED
-    "sourcedId": "school-123"             // REQUIRED
+  "academicSession": {
+      "sourcedId": "'$sourcedId_gradingPeriod'",    // string - OPTIONAL
+      "status": "active",                           // string - OPTIONAL (enum: StatusType)
+      "title": "Q1 2024",                          // string - REQUIRED
+      "type": "gradingPeriod",                     // string - REQUIRED (fixed as "gradingPeriod")
+      "startDate": "2024-01-15",                   // string - REQUIRED (ISO date)
+      "endDate": "2024-03-15",                     // string - REQUIRED (ISO date)
+      "parentSourcedId": {                         // object - OPTIONAL
+          "sourcedId": "'$parent_academicSession_sourcedId'"  // string - REQUIRED
+      },
+      "schoolYear": "2024",                        // string - REQUIRED
+      "orgSourcedId": {                            // object - REQUIRED
+          "sourcedId": "'$org_sourcedId'"          // string - REQUIRED
+      }
   }
 }
+
+// Required fields: ["title", "type", "startDate", "endDate", "schoolYear", "orgSourcedId"]
+// Note: type must be "gradingPeriod"
 ```
 
 POST for /classes
@@ -255,21 +261,22 @@ POST for /classes/{classSourcedId}/teachers
 {
   "enrollment": {
       "sourcedId": "'$sourcedId_enrollment'",        // string - OPTIONAL
-      "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "status": "active",                            // string - OPTIONAL - (enum: ["active", "tobedeleted"])
       "metadata": {                                  // object - OPTIONAL
           "test": "test"
       },
-      "role": "teacher",                            // string - REQUIRED (fixed as "teacher" for this endpoint)
+      "role": "teacher",                            // string - REQUIRED - Must be "teacher" for this endpoint
       "teacher": {                                  // object - REQUIRED
           "sourcedId": "'$teacher_sourcedId'"       // string - REQUIRED
       },
-      "primary": true,                              // boolean - OPTIONAL (default: false)
-      "beginDate": "2024-08-26",                    // string - OPTIONAL (datetime)
-      "endDate": "2025-05-15"                       // string - OPTIONAL (datetime)
+      "primary": true,                              // boolean - OPTIONAL
+      "beginDate": "2024-08-26T00:00:00Z",         // string - OPTIONAL
+      "endDate": "2025-05-15T00:00:00Z"            // string - OPTIONAL
   }
 }
 
 // Required fields: ["teacher"]
+// Note: beginDate and endDate should use ISO 8601 format
 ```
 
 POST for /courses
@@ -278,19 +285,20 @@ POST for /courses
 {
   "course": {
     "sourcedId": "'$sourcedId_course'",             // string - OPTIONAL
-    "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"])
+    "status": "active",                             // string - OPTIONAL -(enum: ["active", "tobedeleted"])
     "title": "Algebra I Course",                    // string - REQUIRED
     "courseCode": "ALG101",                         // string - OPTIONAL
-    "grades": "9",                                  // string - OPTIONAL
-    "subjects": "Mathematics",                      // string - OPTIONAL
-    "subjectCodes": "MATH",                         // string - OPTIONAL
+    "grades": ["9"],                                // string[] - OPTIONAL
+    "subjects": ["Mathematics"],                    // string[] - OPTIONAL
+    "subjectCodes": ["MATH"],                      // string[] - OPTIONAL
     "org": {                                        // object - REQUIRED
-            "sourcedId": "'$school_sourcedId'"      // string - REQUIRED
-        }
+        "sourcedId": "'$school_sourcedId'"          // string - REQUIRED
     }
+  }
 }
 
 // Required fields: ["title", "org"]
+// Note: grades and subjects should use vocabulary defined in deployment process
 ```
 
 PUT for /courses/{sourcedId_course}
@@ -318,7 +326,7 @@ POST for /users
 
 ```typescript
 {
-        "user": {
+    "user": {
       "sourcedId": "'$sourcedId_user'",                // string - OPTIONAL
       "status": "active",                              // string - OPTIONAL (enum: ["active", "tobedeleted"])
       "username": "jsmith",                            // string - OPTIONAL
@@ -411,16 +419,18 @@ POST for /orgs
 ```typescript
 {
   "org": {
-      "sourcedId": "'$sourcedId_org'",
-      "status": "active",
-      "name": "District 100",
-      "type": "district",
-      "identifier": "D100",
-      "parent": {
-          "sourcedId": "'$org_sourcedId'"
+      "sourcedId": "'$sourcedId_org'",               // string - OPTIONAL
+      "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "name": "District 100",                        // string - REQUIRED
+      "type": "district",                           // string - REQUIRED (enum: OrgType values)
+      "identifier": "D100",                         // string - OPTIONAL
+      "parent": {                                   // object - OPTIONAL
+          "sourcedId": "'$org_sourcedId'"          // string - REQUIRED
       }
   }
 }
+
+// Required fields: ["name", "type"]
 ```
 
 PUT for /orgs/{sourcedId_org}
@@ -428,16 +438,18 @@ PUT for /orgs/{sourcedId_org}
 ```typescript
 {
   "org": {
-      "sourcedId": "'$sourcedId_org'",
-      "status": "active",
-      "name": "District 100",
-      "type": "district",
-      "identifier": "D100",
-      "parent": {
-          "sourcedId": "'$org_sourcedId'"
+      "sourcedId": "'$sourcedId_org'",               // string - OPTIONAL
+      "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"])
+      "name": "District 100",                        // string - REQUIRED
+      "type": "district",                           // string - REQUIRED (enum: OrgType values)
+      "identifier": "D100",                         // string - OPTIONAL
+      "parent": {                                   // object - OPTIONAL
+          "sourcedId": "'$org_sourcedId'"          // string - REQUIRED
       }
   }
 }
+
+// Required fields: ["name", "type"]
 ```
 
 POST for /schools
@@ -476,52 +488,6 @@ PUT for /schools/{sourcedId_school}
 }
 
 // Required fields: ["name", "type"]
-```
-
-<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
-
-POST for /demographics
-
-```typescript
-{
-  "sourcedId": "demo-123",                // OPTIONAL: auto-generated if not provided
-  "status": "active",                     // OPTIONAL: defaults to "active"
-  "birthDate": "2006-03-15",             // OPTIONAL: YYYY-MM-DD format
-  "sex": "female",                        // OPTIONAL: must be male/female/other/unspecified
-  "americanIndianOrAlaskaNative": "true", // OPTIONAL: string "true"/"false"
-  "asian": "false",                       // OPTIONAL: string "true"/"false"
-  "blackOrAfricanAmerican": "false",      // OPTIONAL: string "true"/"false"
-  "nativeHawaiianOrOtherPacificIslander": "false", // OPTIONAL: string "true"/"false"
-  "white": "true",                        // OPTIONAL: string "true"/"false"
-  "demographicRaceTwoOrMoreRaces": "false", // OPTIONAL: string "true"/"false"
-  "hispanicOrLatinoEthnicity": "true",    // OPTIONAL: string "true"/"false"
-  "countryOfBirthCode": "US",            // OPTIONAL
-  "stateOfBirthAbbreviation": "CA",      // OPTIONAL
-  "cityOfBirth": "Los Angeles",          // OPTIONAL
-  "publicSchoolResidenceStatus": "resident" // OPTIONAL
-}
-```
-
-<!-- // TODO: ADD CORRECT REQUEST BODY HERE - DO NOT USE THIS AS AN EXAMPLE  -->
-
-PUT for /demographics/{sourcedId}
-
-```typescript
-{
-  "birthDate": "2006-03-15",             // OPTIONAL: YYYY-MM-DD format
-  "sex": "female",                        // OPTIONAL: must be male/female/other/unspecified
-  "americanIndianOrAlaskaNative": "true", // OPTIONAL: string "true"/"false"
-  "asian": "false",                       // OPTIONAL: string "true"/"false"
-  "blackOrAfricanAmerican": "false",      // OPTIONAL: string "true"/"false"
-  "nativeHawaiianOrOtherPacificIslander": "false", // OPTIONAL: string "true"/"false"
-  "white": "true",                        // OPTIONAL: string "true"/"false"
-  "demographicRaceTwoOrMoreRaces": "false", // OPTIONAL: string "true"/"false"
-  "hispanicOrLatinoEthnicity": "true",    // OPTIONAL: string "true"/"false"
-  "countryOfBirthCode": "US",            // OPTIONAL
-  "stateOfBirthAbbreviation": "CA",      // OPTIONAL
-  "cityOfBirth": "Los Angeles",          // OPTIONAL
-  "publicSchoolResidenceStatus": "resident" // OPTIONAL
-}
 ```
 
 POST for /enrollments
