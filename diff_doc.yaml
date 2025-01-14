@@ -1,1355 +1,983 @@
 paths:
   /academicSessions:
     post:
-      operationId: postAcademicSession
-      summary: The REST create request message for the postAcademicSession() API call.
-      tags:
-        - AcademicSessionsManagement
-      description: |
-        To create a new academic session. The responding system must return the sourcedId that has been allocated to the newly created academic session record.
-        If the corresponding organization cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/academicsession.createpost
       requestBody:
-        description: |
-          The academic session record to be created in response to this request. This includes an initial assignment of sourcedId so that the mapping between this and the actually assigned sourcedId can be reported.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                academicSession:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - startDate (ISO 8601)
-                    - endDate (ISO 8601)
-                    - type (one of: schoolYear, term, semester, gradingPeriod)
-                    - schoolYear
-                    - org.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                      description: Optional sourcedId for academic session
-                    title:
-                      type: string
-                      description: Required - e.g. "2023-2024 School Year"
-                      example: "2023-2024 School Year"
-                    startDate:
-                      type: string
-                      format: date-time
-                      example: "2023-08-15T00:00:00.000Z"
-                    endDate:
-                      type: string
-                      format: date-time
-                      example: "2024-05-30T00:00:00.000Z"
-                    type:
-                      type: string
-                      enum: ["schoolYear", "term", "semester", "gradingPeriod"]
-                    schoolYear:
-                      type: string
-                      example: "2023"
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    class:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - title
-                    - startDate
-                    - endDate
-                    - type
-                    - schoolYear
-                    - org
-        required: true
-
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_academicSession'",        // string - OPTIONAL
+                  "title": "2023-2024 School Year",                   // string - REQUIRED
+                  "startDate": "2023-08-15T00:00:00.000Z",           // string (ISO 8601) - REQUIRED
+                  "endDate": "2024-05-30T00:00:00.000Z",             // string (ISO 8601) - REQUIRED
+                  "type": "schoolYear",                               // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+                  "schoolYear": "2023",                               // string - REQUIRED
+                  "org": {                                            // object - REQUIRED
+                      "sourcedId": "'$org_sourcedId'"                 // string - REQUIRED
+                  },
+                  "class": {                                          // object - OPTIONAL
+                      "sourcedId": "'$class_sourcedId'"               // string - REQUIRED if parent object included
+                  },
+                  "parent": {                                         // object - OPTIONAL
+                      "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent object included
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "org.sourcedId"]
   /academicSessions/{sourcedId_academicSession}:
     put:
-      operationId: putAcademicSession
-      summary: The REST update request message for the putAcademicSession() API call.
-      tags:
-        - AcademicSessionsManagement
-      parameters:
-        - name: sourcedId_academicSession
-          in: path
-          description: The unique identifier for the academic session.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing academic session. If the academic session cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/academicsession.put
       requestBody:
-        description: |
-          The academic session record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                academicSession:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - startDate (ISO 8601)
-                    - endDate (ISO 8601)
-                    - type (one of: schoolYear, term, semester, gradingPeriod)
-                    - schoolYear
-                    - org.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    title:
-                      type: string
-                      example: "2023-2024 School Year"
-                    startDate:
-                      type: string
-                      format: date-time
-                      example: "2023-08-15T00:00:00.000Z"
-                    endDate:
-                      type: string
-                      format: date-time
-                      example: "2024-05-30T00:00:00.000Z"
-                    type:
-                      type: string
-                      enum: ["schoolYear", "term", "semester", "gradingPeriod"]
-                    schoolYear:
-                      type: string
-                      example: "2023"
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    class:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - title
-                    - startDate
-                    - endDate
-                    - type
-                    - schoolYear
-                    - org
-        required: true
-
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_academicSession'",        // string - OPTIONAL
+                  "title": "2023-2024 School Year",                   // string - REQUIRED
+                  "startDate": "2023-08-15T00:00:00.000Z",           // string (ISO 8601) - REQUIRED
+                  "endDate": "2024-05-30T00:00:00.000Z",             // string (ISO 8601) - REQUIRED
+                  "type": "schoolYear",                               // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+                  "schoolYear": "2023",                               // string - REQUIRED
+                  "org": {                                            // object - REQUIRED
+                      "sourcedId": "'$org_sourcedId'"                 // string - REQUIRED
+                  },
+                  "class": {                                          // object - OPTIONAL
+                      "sourcedId": "'$class_sourcedId'"               // string - REQUIRED if parent object included
+                  },
+                  "parent": {                                         // object - OPTIONAL
+                      "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent object included
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "org.sourcedId"]
   /terms:
     post:
-      operationId: postTerm
-      summary: The REST create request message for the postTerm() API call.
-      tags:
-        - AcademicSessionsManagement
-      description: |
-        To create a new term. The responding system must return the sourcedId that has been allocated to the newly created term record.
-        If the corresponding parent academic session or organization cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/academicsession.createpost
       requestBody:
-        description: |
-          The term record to be created in response to this request. This includes an initial assignment of sourcedId so that the mapping between this and the actually assigned sourcedId can be reported.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                academicSession:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - type (must be "term")
-                    - startDate (ISO 8601)
-                    - endDate (ISO 8601)
-                    - schoolYear
-                    - org.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    title:
-                      type: string
-                      example: "Term 1 2024"
-                    type:
-                      type: string
-                      enum: ["term"]
-                    startDate:
-                      type: string
-                      format: date-time
-                      example: "2024-01-15T00:00:00.000Z"
-                    endDate:
-                      type: string
-                      format: date-time
-                      example: "2024-05-30T00:00:00.000Z"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                    schoolYear:
-                      type: string
-                      example: "2024"
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - title
-                    - type
-                    - startDate
-                    - endDate
-                    - schoolYear
-                    - org
-        required: true
-
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_term'",                   // string - OPTIONAL
+                  "status": "active",                                 // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "title": "Term 1 2024",                            // string - REQUIRED
+                  "type": "term",                                    // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+                  "startDate": "2024-01-15",                         // string (ISO 8601) - REQUIRED
+                  "endDate": "2024-05-30",                           // string (ISO 8601) - REQUIRED
+                  "parent": {                                        // object - OPTIONAL
+                      "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent object included
+                  },
+                  "schoolYear": "2024",                              // string - REQUIRED
+                  "org": {                                           // object - REQUIRED
+                      "sourcedId": "'$org_sourcedId'"                // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "org.sourcedId"]
+  /terms/{sourcedId_term}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_term'",                   // string - OPTIONAL
+                  "status": "active",                                 // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "title": "Term 1 2024",                            // string - REQUIRED
+                  "type": "term",                                    // string - REQUIRED (enum: ["schoolYear", "term", "semester", "gradingPeriod"])
+                  "startDate": "2024-01-15",                         // string (ISO 8601) - REQUIRED
+                  "endDate": "2024-05-30",                           // string (ISO 8601) - REQUIRED
+                  "parent": {                                        // object - OPTIONAL
+                      "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent object included
+                  },
+                  "schoolYear": "2024",                              // string - REQUIRED
+                  "org": {                                           // object - REQUIRED
+                      "sourcedId": "'$org_sourcedId'"                // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "org.sourcedId"]
   /terms/{termSourcedId}/gradingPeriods:
     post:
-      operationId: postGradingPeriodsForTerm
-      summary: The REST create request message for the postGradingPeriodsForTerm() API call.
-      tags:
-        - AcademicSessionsManagement
-      parameters:
-        - name: termSourcedId
-          in: path
-          description: The unique identifier for the term.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To create a new grading period within a term. The responding system must return the sourcedId that has been allocated to the newly created grading period record.
-        If the corresponding term cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/academicsession.createpost
       requestBody:
-        description: |
-          The grading period record to be created in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                academicSession:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - type (must be "gradingPeriod")
-                    - startDate (ISO 8601)
-                    - endDate (ISO 8601)
-                    - schoolYear
-                    - org.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    title:
-                      type: string
-                      example: "Q1 2024"
-                    type:
-                      type: string
-                      enum: ["gradingPeriod"]
-                    startDate:
-                      type: string
-                      format: date-time
-                      example: "2024-01-15T00:00:00.000Z"
-                    endDate:
-                      type: string
-                      format: date-time
-                      example: "2024-03-15T00:00:00.000Z"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                    schoolYear:
-                      type: string
-                      example: "2024"
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - title
-                    - type
-                    - startDate
-                    - endDate
-                    - schoolYear
-                    - org
-        required: true
-
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_gradingPeriod'",         // string - OPTIONAL
+                  "status": "active",                                // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "title": "'$gradingPeriod_title'",                 // string - REQUIRED
+                  "type": "gradingPeriod",                          // string - REQUIRED (must be "gradingPeriod")
+                  "startDate": "2024-01-15",                        // string (ISO 8601) - REQUIRED
+                  "endDate": "2024-03-15",                          // string (ISO 8601) - REQUIRED
+                  "parent": {                                       // object - OPTIONAL
+                      "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent object included
+                  },
+                  "schoolYear": "2024",                             // string - REQUIRED
+                  "org": {                                          // object - REQUIRED
+                      "sourcedId": "'$org_sourcedId'"               // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "startDate", "endDate", "type", "schoolYear", "org.sourcedId"]
+              // Note: type MUST be "gradingPeriod" for this endpoint
   /classes:
     post:
-      operationId: postClass
-      summary: The REST create request message for the postClass() API call.
-      tags:
-        - ClassesManagement
-      description: |
-        To create a new class. The responding system must return the sourcedId that has been allocated to the newly created class record.
-        If the corresponding course, organization, terms, or academic sessions cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/class.createpost
       requestBody:
-        description: |
-          The class record to be created in response to this request. This includes an initial assignment of sourcedId so that the mapping between this and the actually assigned sourcedId can be reported.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                class:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - course.sourcedId
-                    - org.sourcedId
-                    - terms
-                    - academicSessions (min: 1)
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    title:
-                      type: string
-                      example: "Algebra I"
-                    classCode:
-                      type: string
-                      example: "ALG101-01"
-                    classType:
-                      type: string
-                      enum: ["scheduled"]
-                      default: "scheduled"
-                    location:
-                      type: string
-                      example: "Room 204"
-                    grades:
-                      type: array
-                      items:
-                        type: string
-                      example: ["9"]
-                    subjects:
-                      type: array
-                      items:
-                        type: string
-                      example: ["Mathematics"]
-                    subjectCodes:
-                      type: array
-                      items:
-                        type: string
-                      example: ["MATH"]
-                    periods:
-                      type: array
-                      items:
-                        type: string
-                      example: ["1", "2"]
-                    resources:
-                      type: array
-                      items:
-                        type: object
-                        required: ["sourcedId"]
-                        properties:
-                          sourcedId:
-                            type: string
-                    course:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    terms:
-                      type: array
-                      items:
-                        type: object
-                        required: ["sourcedId"]
-                        properties:
-                          sourcedId:
-                            type: string
-                    academicSessions:
-                      type: array
-                      minItems: 1
-                      items:
-                        type: object
-                        properties:
-                          sourcedId:
-                            type: string
-                  required:
-                    - title
-                    - course
-                    - org
-                    - terms
-                    - academicSessions
-        required: true
-
-  /users:
-    post:
-      operationId: postUser
-      summary: The REST create request message for the postUser() API call.
-      tags:
-        - UsersManagement
-      description: |
-        To create a new user. The responding system must return the sourcedId that has been allocated to the newly created user record.
-        If the corresponding organization cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/user.createpost
-      requestBody:
-        description: |
-          The user record to be created in response to this request. This includes an initial assignment of sourcedId so that the mapping between this and the actually assigned sourcedId can be reported.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user:
-                  type: object
-                  description: |
-                    Required fields:
-                    - enabledUser
-                    - givenName
-                    - familyName
-                    - roles (min: 1, must have exactly one primary role per organization)
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    userMasterIdentifier:
-                      type: string
-                      nullable: true
-                    username:
-                      type: string
-                    userIds:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          type:
-                            type: string
-                            example: "district"
-                          identifier:
-                            type: string
-                            example: "12345"
-                    enabledUser:
-                      type: boolean
-                    givenName:
-                      type: string
-                      example: "John"
-                    familyName:
-                      type: string
-                      example: "Smith"
-                    middleName:
-                      type: string
-                      nullable: true
-                      example: "Robert"
-                    roles:
-                      type: array
-                      minItems: 1
-                      items:
-                        type: object
-                        required: ["roleType", "role", "org"]
-                        properties:
-                          roleType:
-                            type: string
-                            enum: ["primary"]
-                          role:
-                            type: string
-                            enum: ["student", "teacher"]
-                          org:
-                            type: object
-                            required: ["sourcedId"]
-                            properties:
-                              sourcedId:
-                                type: string
-                          userProfile:
-                            type: string
-                          beginDate:
-                            type: string
-                            format: date
-                          endDate:
-                            type: string
-                            format: date
-                    primaryOrg:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    email:
-                      type: string
-                      format: email
-                      nullable: true
-                      example: "john.smith@school.edu"
-                    preferredFirstName:
-                      type: string
-                      nullable: true
-                      example: "Johnny"
-                    preferredMiddleName:
-                      type: string
-                      nullable: true
-                      example: "Rob"
-                    preferredLastName:
-                      type: string
-                      nullable: true
-                      example: "Smithy"
-                    pronouns:
-                      type: string
-                      nullable: true
-                      example: "he/him"
-                    grades:
-                      type: array
-                      items:
-                        type: string
-                      example: ["9", "10"]
-                    password:
-                      type: string
-                      nullable: true
-                    sms:
-                      type: string
-                      nullable: true
-                      example: "+1234567890"
-                    phone:
-                      type: string
-                      nullable: true
-                      example: "+1234567890"
-                    userProfiles:
-                      type: array
-                      items:
-                        type: object
-                        required: ["profileId", "profileType", "vendorId"]
-                        properties:
-                          profileId:
-                            type: string
-                            example: "profile-123"
-                          profileType:
-                            type: string
-                            example: "academic"
-                          vendorId:
-                            type: string
-                            example: "vendor-123"
-                          applicationId:
-                            type: string
-                            example: "app-123"
-                          description:
-                            type: string
-                            example: "Academic profile"
-                          credentials:
-                            type: array
-                            items:
-                              type: object
-                  required:
-                    - enabledUser
-                    - givenName
-                    - familyName
-                    - roles
-        required: true
-
-  /orgs:
-    post:
-      operationId: postOrg
-      summary: The REST create request message for the postOrg() API call.
-      tags:
-        - OrgsManagement
-      description: |
-        To create a new organization. The responding system must return the sourcedId that has been allocated to the newly created organization record.
-        If the corresponding parent organization cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/org.createpost
-      requestBody:
-        description: |
-          The organization record to be created in response to this request. This includes an initial assignment of sourcedId so that the mapping between this and the actually assigned sourcedId can be reported.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                org:
-                  type: object
-                  description: |
-                    Required fields:
-                    - name
-                    - type (must be one of OrgType.enumValues)
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    name:
-                      type: string
-                      example: "District 100"
-                    type:
-                      type: string
-                      enum: ["district", "school"]
-                    identifier:
-                      type: string
-                      example: "D100"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - name
-                    - type
-        required: true
-
-  /schools:
-    post:
-      operationId: postSchool
-      summary: The REST create request message for the postSchool() API call.
-      tags:
-        - OrgsManagement
-      description: |
-        To create a new school. The responding system must return the sourcedId that has been allocated to the newly created school record.
-        If the corresponding parent organization cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/org.createpost
-      requestBody:
-        description: |
-          The school record to be created in response to this request. This includes an initial assignment of sourcedId so that the mapping between this and the actually assigned sourcedId can be reported.
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                org:
-                  type: object
-                  description: |
-                    Required fields:
-                    - name
-                    - type (must be "school")
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    name:
-                      type: string
-                      example: "Lincoln High School"
-                    type:
-                      type: string
-                      enum: ["school"]
-                    identifier:
-                      type: string
-                      example: "LHS"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - name
-                    - type
-        required: true
-
+              {
+                "class": {
+                  "sourcedId": "'$sourcedId_class'",              // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",    // string - OPTIONAL (datetime)
+                  "metadata": {                                   // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "title": "Algebra I PUT EDIT",                  // string - REQUIRED
+                  "classCode": "ALG101-01",                      // string - OPTIONAL
+                  "classType": "scheduled",                      // string - OPTIONAL (enum: ClassType.enumValues, default: "scheduled")
+                  "location": "Room 204",                        // string - OPTIONAL
+                  "grades": ["9"],                              // array<string> - OPTIONAL
+                  "subjects": ["Mathematics"],                   // array<string> - OPTIONAL
+                  "subjectCodes": ["MATH"],                     // array<string> - OPTIONAL
+                  "periods": ["1", "2"],                        // array<string> - OPTIONAL
+                  "resources": [                                // array - OPTIONAL
+                    {
+                      "sourcedId": "'$resources_sourcedId'"      // string - REQUIRED if resources included
+                    }
+                  ],
+                  "course": {                                   // object - REQUIRED
+                    "sourcedId": "'$course_sourcedId'"          // string - REQUIRED
+                  },
+                  "org": {                                     // object - REQUIRED
+                    "sourcedId": "'$school_sourcedId'"          // string - REQUIRED
+                  },
+                  "session": {                                 // object - OPTIONAL
+                    "sourcedId": "'$term_sourcedId'"           // string - REQUIRED if session included
+                  },
+                  "academicSessions": [                        // array - REQUIRED (min: 1)
+                    {
+                      "title": "2023-2024 School Year",        // string - REQUIRED
+                      "startDate": "2023-08-15",              // string - REQUIRED (YYYY-MM-DD)
+                      "endDate": "2024-05-30",                // string - REQUIRED (YYYY-MM-DD)
+                      "type": "term",                         // string - REQUIRED (enum: SessionType.enumValues)
+                      "schoolYear": "2023"                    // string - REQUIRED
+                    }
+                  ]
+                }
+              }
+              
+              // Required fields: ["title", "course", "org", "academicSessions"]
+              // Required fields for each academicSession: ["title", "startDate", "endDate", "type", "schoolYear"]
   /classes/{sourcedId_class}:
     put:
-      operationId: putClass
-      summary: The REST update request message for the putClass() API call.
-      tags:
-        - ClassesManagement
-      parameters:
-        - name: sourcedId_class
-          in: path
-          description: The unique identifier for the class.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing class. If the class cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/class.put
       requestBody:
-        description: |
-          The class record to be updated in response to this request.
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ClassDType"
-        required: true
-
+              {
+                "class": {
+                  "sourcedId": "'$sourcedId_class'",              // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",    // string - OPTIONAL (datetime)
+                  "metadata": {                                   // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "title": "Algebra I PUT EDIT",                  // string - REQUIRED
+                  "classCode": "ALG101-01",                      // string - OPTIONAL
+                  "classType": "scheduled",                      // string - OPTIONAL (enum: ClassType.enumValues, default: "scheduled")
+                  "location": "Room 204",                        // string - OPTIONAL
+                  "grades": ["9"],                              // array<string> - OPTIONAL
+                  "subjects": ["Mathematics"],                   // array<string> - OPTIONAL
+                  "subjectCodes": ["MATH"],                     // array<string> - OPTIONAL
+                  "periods": ["1", "2"],                        // array<string> - OPTIONAL
+                  "resources": [                                // array - OPTIONAL
+                    {
+                      "sourcedId": "'$resources_sourcedId'"      // string - REQUIRED if resources included
+                    }
+                  ],
+                  "course": {                                   // object - REQUIRED
+                    "sourcedId": "'$course_sourcedId'"          // string - REQUIRED
+                  },
+                  "org": {                                     // object - REQUIRED
+                    "sourcedId": "'$school_sourcedId'"          // string - REQUIRED
+                  },
+                  "session": {                                 // object - OPTIONAL
+                    "sourcedId": "'$term_sourcedId'"           // string - REQUIRED if session included
+                  },
+                  "academicSessions": [                        // array - REQUIRED (min: 1)
+                    {
+                      "title": "2023-2024 School Year",        // string - REQUIRED
+                      "startDate": "2023-08-15",              // string - REQUIRED (YYYY-MM-DD)
+                      "endDate": "2024-05-30",                // string - REQUIRED (YYYY-MM-DD)
+                      "type": "term",                         // string - REQUIRED (enum: SessionType.enumValues)
+                      "schoolYear": "2023"                    // string - REQUIRED
+                    }
+                  ]
+                }
+              }
+              
+              // Required fields: ["title", "course", "org", "academicSessions"]
+              // Required fields for each academicSession: ["title", "startDate", "endDate", "type", "schoolYear"]
   /classes/{classSourcedId}/students:
     post:
-      operationId: postStudentsForClass
-      summary: The REST create request message for the postStudentsForClass() API call.
-      tags:
-        - ClassesManagement
-      parameters:
-        - name: classSourcedId
-          in: path
-          description: The unique identifier for the class.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To enroll students in a class. The responding system must return the sourcedId that has been allocated to the newly created enrollment records.
-        If the class cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/enrollment.createpost
       requestBody:
-        description: |
-          The enrollment records to be created in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                enrollment:
-                  type: object
-                  description: |
-                    Required fields:
-                    - user.sourcedId
-                    Note: role is implicitly "student" for this endpoint
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    role:
-                      type: string
-                      enum: ["student"]
-                      default: "student"
-                    user:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    primary:
-                      type: boolean
-                      default: false
-                    beginDate:
-                      type: string
-                      format: date
-                      example: "2024-08-26"
-                    endDate:
-                      type: string
-                      format: date
-                      example: "2025-05-15"
-                  required:
-                    - user
-        required: true
-
+              {
+                "enrollment": {
+                  "sourcedId": "'$sourcedId_enrollment'",         // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                   // object - OPTIONAL
+                      "test": "test"
+                  },
+                  "role": "student",                             // string - REQUIRED (must be "student" for this endpoint)
+                  "user": {                                      // object - REQUIRED
+                      "sourcedId": "'$student_sourcedId'"         // string - REQUIRED
+                  },
+                  "primary": true,                               // boolean - OPTIONAL (default: false)
+                  "beginDate": "2024-08-26",                     // string (YYYY-MM-DD) - OPTIONAL
+                  "endDate": "2025-05-15"                        // string (YYYY-MM-DD) - OPTIONAL
+                }
+              }
+              
+              // Required fields: ["user.sourcedId"]
+              // Note: This endpoint specifically enrolls students, so role is implicitly "student"
   /classes/{classSourcedId}/teachers:
     post:
-      operationId: postTeachersForClass
-      summary: The REST create request message for the postTeachersForClass() API call.
-      tags:
-        - ClassesManagement
-      parameters:
-        - name: classSourcedId
-          in: path
-          description: The unique identifier for the class.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To assign teachers to a class. The responding system must return the sourcedId that has been allocated to the newly created enrollment records.
-        If the class cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/enrollment.createpost
       requestBody:
-        description: |
-          The enrollment records to be created in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                enrollment:
-                  type: object
-                  description: |
-                    Required fields:
-                    - user.sourcedId
-                    Note: role is implicitly "teacher" for this endpoint
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    role:
-                      type: string
-                      enum: ["teacher"]
-                      default: "teacher"
-                    user:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    primary:
-                      type: boolean
-                      default: false
-                    beginDate:
-                      type: string
-                      format: date
-                      example: "2024-08-26"
-                    endDate:
-                      type: string
-                      format: date
-                      example: "2025-05-15"
-                  required:
-                    - user
-        required: true
-
+              {
+                "enrollment": {
+                  "sourcedId": "'$sourcedId_enrollment'",         // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                   // object - OPTIONAL
+                      "test": "test"
+                  },
+                  "role": "teacher",                             // string - REQUIRED (must be "teacher" for this endpoint)
+                  "user": {                                      // object - REQUIRED
+                      "sourcedId": "'$teacher_sourcedId'"         // string - REQUIRED
+                  },
+                  "primary": true,                               // boolean - OPTIONAL (default: false)
+                  "beginDate": "2024-08-26",                     // string (YYYY-MM-DD) - OPTIONAL
+                  "endDate": "2025-05-15"                        // string (YYYY-MM-DD) - OPTIONAL
+                }
+              }
+              
+              // Required fields: ["user.sourcedId"]
+              // Note: This endpoint specifically enrolls teachers, so role is implicitly "teacher"
+  /courses:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "course": {
+                  "sourcedId": "'$sourcedId_course'",            // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": { ... },                           // object - OPTIONAL (not shown in example but allowed)
+                  "title": "Algebra I Course",                   // string - REQUIRED
+                  "courseCode": "ALG101",                        // string - OPTIONAL
+                  "grades": "9",                                 // string - OPTIONAL
+                  "subjects": "Mathematics",                     // string - OPTIONAL
+                  "subjectCodes": "MATH",                       // string - OPTIONAL
+                  "org": {                                      // object - REQUIRED
+                      "sourcedId": "'$school_sourcedId'"         // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "org.sourcedId"]
   /courses/{sourcedId_course}:
     put:
-      operationId: putCourse
-      summary: The REST update request message for the putCourse() API call.
-      tags:
-        - CoursesManagement
-      parameters:
-        - name: sourcedId_course
-          in: path
-          description: The unique identifier for the course.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing course. If the course cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/course.put
       requestBody:
-        description: |
-          The course record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                course:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - org.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                    title:
-                      type: string
-                      example: "Algebra I Course"
-                    courseCode:
-                      type: string
-                      example: "ALG101"
-                    grades:
-                      type: string
-                      example: "9"
-                    subjects:
-                      type: string
-                      example: "Mathematics"
-                    subjectCodes:
-                      type: string
-                      example: "MATH"
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - title
-                    - org
-        required: true
-
+              {
+                "course": {
+                  "sourcedId": "'$sourcedId_course'",            // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": { ... },                           // object - OPTIONAL (not shown in example but allowed)
+                  "title": "Algebra I Course",                   // string - REQUIRED
+                  "courseCode": "ALG101",                        // string - OPTIONAL
+                  "grades": "9",                                 // string - OPTIONAL
+                  "subjects": "Mathematics",                     // string - OPTIONAL
+                  "subjectCodes": "MATH",                       // string - OPTIONAL
+                  "org": {                                      // object - REQUIRED
+                      "sourcedId": "'$school_sourcedId'"         // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "org.sourcedId"]
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "user": {
+                  "sourcedId": "'$sourcedId_user'",              // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                  // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "userMasterIdentifier": "12345",              // string - OPTIONAL, nullable
+                  "username": "jsmith",                          // string - OPTIONAL
+                  "userIds": [                                   // array - OPTIONAL
+                    {
+                      "type": "district",
+                      "identifier": "12345"
+                    }
+                  ],
+                  "enabledUser": true,                          // boolean - REQUIRED
+                  "givenName": "John",                          // string - REQUIRED
+                  "familyName": "Smith",                        // string - REQUIRED
+                  "middleName": "Robert",                       // string - OPTIONAL, nullable
+                  "roles": [                                    // array - REQUIRED (min: 1)
+                    {
+                      "roleType": "primary",                    // string - REQUIRED (enum: roleTypeValues)
+                      "role": "student",                        // string - REQUIRED (enum: roleValues)
+                      "org": {                                  // object - REQUIRED
+                        "sourcedId": "'$org_sourcedId'"         // string - REQUIRED
+                      },
+                      "userProfile": "profile-123",             // string - OPTIONAL
+                      "beginDate": "2024-01-15",               // string - OPTIONAL (YYYY-MM-DD)
+                      "endDate": "2024-12-31"                  // string - OPTIONAL (YYYY-MM-DD)
+                    }
+                  ],
+                  "primaryOrg": {                              // object - OPTIONAL
+                    "sourcedId": "'$org_sourcedId'"            // string - REQUIRED if primaryOrg included
+                  },
+                  "email": "john.smith@school.edu",            // string - OPTIONAL, nullable (must be valid email)
+                  "preferredFirstName": "Johnny",              // string - OPTIONAL, nullable
+                  "preferredMiddleName": "Rob",                // string - OPTIONAL, nullable
+                  "preferredLastName": "Smithy",               // string - OPTIONAL, nullable
+                  "pronouns": "he/him",                        // string - OPTIONAL, nullable
+                  "grades": ["9", "10"],                       // string[] - OPTIONAL
+                  "password": "hashedPassword123",             // string - OPTIONAL, nullable
+                  "sms": "+1234567890",                        // string - OPTIONAL, nullable
+                  "phone": "+1234567890",                      // string - OPTIONAL, nullable
+                  "userProfiles": [                            // array - OPTIONAL
+                    {
+                      "profileId": "profile-123",              // string - REQUIRED if userProfiles included
+                      "profileType": "academic",               // string - REQUIRED if userProfiles included
+                      "vendorId": "vendor-123",               // string - REQUIRED if userProfiles included
+                      "applicationId": "app-123",             // string - OPTIONAL
+                      "description": "Academic profile",      // string - OPTIONAL
+                      "credentials": []                       // array - OPTIONAL
+                    }
+                  ]
+                }
+              }
+              
+              // Required fields: ["enabledUser", "givenName", "familyName", "roles"]
+              // Note: Must have exactly one primary role per organization (enforced by schema refinement)
   /users/{sourcedId_user}:
     put:
-      operationId: putUser
-      summary: The REST update request message for the putUser() API call.
-      tags:
-        - UsersManagement
-      parameters:
-        - name: sourcedId_user
-          in: path
-          description: The unique identifier for the user.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing user. If the user cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/user.put
       requestBody:
-        description: |
-          The user record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                user:
-                  type: object
-                  description: |
-                    Required fields:
-                    - enabledUser
-                    - givenName
-                    - familyName
-                    - roles (min: 1, must have exactly one primary role per organization)
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    userMasterIdentifier:
-                      type: string
-                      nullable: true
-                    username:
-                      type: string
-                    userIds:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          type:
-                            type: string
-                            example: "district"
-                          identifier:
-                            type: string
-                            example: "12345"
-                    enabledUser:
-                      type: boolean
-                    givenName:
-                      type: string
-                      example: "John"
-                    familyName:
-                      type: string
-                      example: "Smith"
-                    middleName:
-                      type: string
-                      nullable: true
-                      example: "Robert"
-                    roles:
-                      type: array
-                      minItems: 1
-                      items:
-                        type: object
-                        required: ["roleType", "role", "org"]
-                        properties:
-                          roleType:
-                            type: string
-                            enum: ["primary"]
-                          role:
-                            type: string
-                            enum: ["student", "teacher"]
-                          org:
-                            type: object
-                            required: ["sourcedId"]
-                            properties:
-                              sourcedId:
-                                type: string
-                          userProfile:
-                            type: string
-                          beginDate:
-                            type: string
-                            format: date
-                          endDate:
-                            type: string
-                            format: date
-                    email:
-                      type: string
-                      format: email
-                      nullable: true
-                      example: "john.smith@school.edu"
-                    grades:
-                      type: array
-                      items:
-                        type: string
-                      example: ["9", "10"]
-                  required:
-                    - enabledUser
-                    - givenName
-                    - familyName
-                    - roles
-        required: true
-
+              {
+                "user": {
+                  "sourcedId": "'$sourcedId_user'",              // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                  // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "userMasterIdentifier": "12345",              // string - OPTIONAL, nullable
+                  "username": "jsmith",                          // string - OPTIONAL
+                  "userIds": [                                   // array - OPTIONAL
+                    {
+                      "type": "district",
+                      "identifier": "12345"
+                    }
+                  ],
+                  "enabledUser": true,                          // boolean - REQUIRED
+                  "givenName": "John",                          // string - REQUIRED
+                  "familyName": "Smith",                        // string - REQUIRED
+                  "middleName": "Robert",                       // string - OPTIONAL, nullable
+                  "roles": [                                    // array - REQUIRED (min: 1)
+                    {
+                      "roleType": "primary",                    // string - REQUIRED (enum: roleTypeValues)
+                      "role": "student",                        // string - REQUIRED (enum: roleValues)
+                      "org": {                                  // object - REQUIRED
+                        "sourcedId": "'$org_sourcedId'"         // string - REQUIRED
+                      },
+                      "userProfile": "profile-123",             // string - OPTIONAL
+                      "beginDate": "2024-01-15",               // string - OPTIONAL (YYYY-MM-DD)
+                      "endDate": "2024-12-31"                  // string - OPTIONAL (YYYY-MM-DD)
+                    }
+                  ],
+                  "primaryOrg": {                              // object - OPTIONAL
+                    "sourcedId": "'$org_sourcedId'"            // string - REQUIRED if primaryOrg included
+                  },
+                  "email": "john.smith@school.edu",            // string - OPTIONAL, nullable (must be valid email)
+                  "preferredFirstName": "Johnny",              // string - OPTIONAL, nullable
+                  "preferredMiddleName": "Rob",                // string - OPTIONAL, nullable
+                  "preferredLastName": "Smithy",               // string - OPTIONAL, nullable
+                  "pronouns": "he/him",                        // string - OPTIONAL, nullable
+                  "grades": ["9", "10"],                       // string[] - OPTIONAL
+                  "password": "hashedPassword123",             // string - OPTIONAL, nullable
+                  "sms": "+1234567890",                        // string - OPTIONAL, nullable
+                  "phone": "+1234567890",                      // string - OPTIONAL, nullable
+                  "userProfiles": [                            // array - OPTIONAL
+                    {
+                      "profileId": "profile-123",              // string - REQUIRED if userProfiles included
+                      "profileType": "academic",               // string - REQUIRED if userProfiles included
+                      "vendorId": "vendor-123",               // string - REQUIRED if userProfiles included
+                      "applicationId": "app-123",             // string - OPTIONAL
+                      "description": "Academic profile",      // string - OPTIONAL
+                      "credentials": []                       // array - OPTIONAL
+                    }
+                  ]
+                }
+              }
+              
+              // Required fields: ["enabledUser", "givenName", "familyName", "roles"]
+              // Note: Must have exactly one primary role per organization (enforced by schema refinement)
+  /orgs:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "org": {
+                  "sourcedId": "'$sourcedId_org'",              // string - OPTIONAL
+                  "status": "active",                           // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                 // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "name": "District 100",                       // string - REQUIRED
+                  "type": "district",                          // string - REQUIRED (enum: orgTypeValues)
+                  "identifier": "D100",                        // string - OPTIONAL
+                  "parent": {                                  // object - OPTIONAL
+                    "sourcedId": "'$org_sourcedId'"            // string - REQUIRED if parent included
+                  }
+                }
+              }
+              
+              // Required fields: ["name", "type"]
+              // Note: type must be one of OrgType.enumValues (e.g., "district", "school", etc.)
   /orgs/{sourcedId_org}:
     put:
-      operationId: putOrg
-      summary: The REST update request message for the putOrg() API call.
-      tags:
-        - OrgsManagement
-      parameters:
-        - name: sourcedId_org
-          in: path
-          description: The unique identifier for the organization.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing organization. If the organization cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/org.put
       requestBody:
-        description: |
-          The organization record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                org:
-                  type: object
-                  description: |
-                    Required fields:
-                    - name
-                    - type (must be one of OrgType.enumValues)
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    name:
-                      type: string
-                      example: "District 100"
-                    type:
-                      type: string
-                      enum: ["district", "school"]
-                    identifier:
-                      type: string
-                      example: "D100"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - name
-                    - type
-        required: true
-
+              {
+                "org": {
+                  "sourcedId": "'$sourcedId_org'",              // string - OPTIONAL
+                  "status": "active",                           // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                 // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "name": "District 100",                       // string - REQUIRED
+                  "type": "district",                          // string - REQUIRED (enum: orgTypeValues)
+                  "identifier": "D100",                        // string - OPTIONAL
+                  "parent": {                                  // object - OPTIONAL
+                    "sourcedId": "'$org_sourcedId'"            // string - REQUIRED if parent included
+                  }
+                }
+              }
+              
+              // Required fields: ["name", "type"]
+              // Note: type must be one of OrgType.enumValues (e.g., "district", "school", etc.)
+  /schools:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "org": {
+                  "sourcedId": "'$sourcedId_school'",           // string - OPTIONAL
+                  "status": "active",                           // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                 // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "name": "Lincoln High School",                // string - REQUIRED
+                  "type": "school",                            // string - REQUIRED (must be "school")
+                  "identifier": "LHS",                         // string - OPTIONAL
+                  "parent": {                                  // object - OPTIONAL
+                    "sourcedId": "'$org_sourcedId'"            // string - REQUIRED if parent included
+                  }
+                }
+              }
+              
+              // Required fields: ["name", "type"]
+              // Note: type MUST be "school" for this endpoint
   /schools/{sourcedId_school}:
     put:
-      operationId: putSchool
-      summary: The REST update request message for the putSchool() API call.
-      tags:
-        - OrgsManagement
-      parameters:
-        - name: sourcedId_school
-          in: path
-          description: The unique identifier for the school.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing school. If the school cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/org.put
       requestBody:
-        description: |
-          The school record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                org:
-                  type: object
-                  description: |
-                    Required fields:
-                    - name
-                    - type (must be "school")
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    name:
-                      type: string
-                      example: "Lincoln High School"
-                    type:
-                      type: string
-                      enum: ["school"]
-                    identifier:
-                      type: string
-                      example: "LHS"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - name
-                    - type
-        required: true
-
+              {
+                "org": {
+                  "sourcedId": "'$sourcedId_school'",           // string - OPTIONAL
+                  "status": "active",                           // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                 // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "name": "Lincoln High School",                // string - REQUIRED
+                  "type": "school",                            // string - REQUIRED (must be "school")
+                  "identifier": "LHS",                         // string - OPTIONAL
+                  "parent": {                                  // object - OPTIONAL
+                    "sourcedId": "'$org_sourcedId'"            // string - REQUIRED if parent included
+                  }
+                }
+              }
+              
+              // Required fields: ["name", "type"]
+              // Note: type MUST be "school" for this endpoint
+  /enrollments:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "enrollment": {
+                  "sourcedId": "'$sourcedId_enrollment'",         // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                   // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "role": "student",                             // string - REQUIRED (enum: enrollmentRoleValues)
+                  "primary": true,                               // boolean - OPTIONAL (default: false)
+                  "beginDate": "2024-08-26",                     // string - OPTIONAL (YYYY-MM-DD)
+                  "endDate": "2025-05-15",                       // string - OPTIONAL (YYYY-MM-DD)
+                  "user": {                                      // object - REQUIRED
+                    "sourcedId": "'$student_sourcedId'"          // string - REQUIRED
+                  },
+                  "class": {                                     // object - REQUIRED
+                    "sourcedId": "'$class_sourcedId'"            // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["role", "user.sourcedId", "class.sourcedId"]
+              // Note: dates must be in YYYY-MM-DD format (validated by dateSchema)
+              // Note: role must be one of enrollmentRoleValues (e.g., "student", "teacher", etc.)
   /enrollments/{sourcedId_enrollment}:
     put:
-      operationId: putEnrollment
-      summary: The REST update request message for the putEnrollment() API call.
-      tags:
-        - EnrollmentsManagement
-      parameters:
-        - name: sourcedId_enrollment
-          in: path
-          description: The unique identifier for the enrollment.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing enrollment. If the enrollment cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/enrollment.put
       requestBody:
-        description: |
-          The enrollment record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                enrollment:
-                  type: object
-                  description: |
-                    Required fields:
-                    - role
-                    - user.sourcedId
-                    - class.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    metadata:
-                      type: object
-                      example:
-                        test: "test"
-                    role:
-                      type: string
-                      enum: ["student", "teacher"]
-                    primary:
-                      type: boolean
-                      default: false
-                    beginDate:
-                      type: string
-                      format: date
-                      example: "2024-08-26"
-                    endDate:
-                      type: string
-                      format: date
-                      example: "2025-05-15"
-                    user:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                    class:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - role
-                    - user
-                    - class
-        required: true
-
+              {
+                "enrollment": {
+                  "sourcedId": "'$sourcedId_enrollment'",         // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                   // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "role": "student",                             // string - REQUIRED (enum: enrollmentRoleValues)
+                  "primary": true,                               // boolean - OPTIONAL (default: false)
+                  "beginDate": "2024-08-26",                     // string - OPTIONAL (YYYY-MM-DD)
+                  "endDate": "2025-05-15",                       // string - OPTIONAL (YYYY-MM-DD)
+                  "user": {                                      // object - REQUIRED
+                    "sourcedId": "'$student_sourcedId'"          // string - REQUIRED
+                  },
+                  "class": {                                     // object - REQUIRED
+                    "sourcedId": "'$class_sourcedId'"            // string - REQUIRED
+                  }
+                }
+              }
+              
+              // Required fields: ["role", "user.sourcedId", "class.sourcedId"]
+              // Note: dates must be in YYYY-MM-DD format
+              // Note: role must be one of enrollmentRoleValues (e.g., "student", "teacher", etc.)
+  /gradingPeriods:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_gradingPeriod'",     // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                   // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "title": "Q1 2024",                            // string - REQUIRED
+                  "type": "gradingPeriod",                       // string - REQUIRED (must be "gradingPeriod")
+                  "startDate": "2024-01-15",                     // string - REQUIRED (ISO date string)
+                  "endDate": "2024-03-15",                       // string - REQUIRED (ISO date string)
+                  "parent": {                                    // object - OPTIONAL
+                    "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent included
+                  },
+                  "schoolYear": "2024",                          // string - REQUIRED
+                  "org": {                                       // object - REQUIRED
+                    "sourcedId": "'$org_sourcedId'"              // string - REQUIRED
+                  },
+                  "class": {                                     // object - OPTIONAL
+                    "sourcedId": "class123"                      // string - REQUIRED if class included
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "type", "startDate", "endDate", "schoolYear", "org.sourcedId"]
+              // Note: type MUST be "gradingPeriod" for this endpoint
+              // Note: dates must be in ISO date string format
   /gradingPeriods/{sourcedId}:
     put:
-      operationId: putGradingPeriod
-      summary: The REST update request message for the putGradingPeriod() API call.
-      tags:
-        - AcademicSessionsManagement
-      parameters:
-        - name: sourcedId
-          in: path
-          description: The unique identifier for the grading period.
-          required: true
-          schema:
-            type: string
-          style: simple
-      description: |
-        To update an existing grading period. If the grading period cannot be located then an 'unknown' error code is returned.
-      security:
-        - OAuth2CC:
-            - https://purl.imsglobal.org/spec/or/v1p2/scope/academicsession.put
       requestBody:
-        description: |
-          The grading period record to be updated in response to this request.
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                academicSession:
-                  type: object
-                  description: |
-                    Required fields:
-                    - title
-                    - type (must be "gradingPeriod")
-                    - startDate (ISO 8601)
-                    - endDate (ISO 8601)
-                    - schoolYear
-                    - org.sourcedId
-                  properties:
-                    sourcedId:
-                      type: string
-                    status:
-                      type: string
-                      enum: ["active", "tobedeleted"]
-                      default: "active"
-                    title:
-                      type: string
-                      example: "Q1 2024"
-                    type:
-                      type: string
-                      enum: ["gradingPeriod"]
-                    startDate:
-                      type: string
-                      format: date-time
-                      example: "2024-01-15T00:00:00.000Z"
-                    endDate:
-                      type: string
-                      format: date-time
-                      example: "2024-03-15T00:00:00.000Z"
-                    parent:
-                      type: object
-                      properties:
-                        sourcedId:
-                          type: string
-                    schoolYear:
-                      type: string
-                      example: "2024"
-                    org:
-                      type: object
-                      required: ["sourcedId"]
-                      properties:
-                        sourcedId:
-                          type: string
-                  required:
-                    - title
-                    - type
-                    - startDate
-                    - endDate
-                    - schoolYear
-                    - org
-        required: true
+              {
+                "academicSession": {
+                  "sourcedId": "'$sourcedId_gradingPeriod'",     // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: ["active", "tobedeleted"], default: "active")
+                  "metadata": {                                   // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "title": "Q1 2024",                            // string - REQUIRED
+                  "type": "gradingPeriod",                       // string - REQUIRED (must be "gradingPeriod")
+                  "startDate": "2024-01-15",                     // string - REQUIRED (ISO date string)
+                  "endDate": "2024-03-15",                       // string - REQUIRED (ISO date string)
+                  "parent": {                                    // object - OPTIONAL
+                    "sourcedId": "'$parent_academicSession_sourcedId'" // string - REQUIRED if parent included
+                  },
+                  "schoolYear": "2024",                          // string - REQUIRED
+                  "org": {                                       // object - REQUIRED
+                    "sourcedId": "'$org_sourcedId'"              // string - REQUIRED
+                  },
+                  "class": {                                     // object - OPTIONAL
+                    "sourcedId": "class123"                      // string - REQUIRED if class included
+                  }
+                }
+              }
+              
+              // Required fields: ["title", "type", "startDate", "endDate", "schoolYear", "org.sourcedId"]
+              // Note: type MUST be "gradingPeriod" for this endpoint
+              // Note: dates must be in ISO date string format
+  /resources:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "resource": {
+                  "sourcedId": "'$resources_sourcedId'",         // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2025-01-11T00:33:43.629Z", // string - OPTIONAL (datetime)
+                  "metadata": {                                  // object - OPTIONAL, nullable
+                    "format": "digits",
+                    "type": "textbook",
+                    "accessHistory": {
+                      "totalAccesses": 1250,
+                      "averageTimeSpent": "30 minutes",
+                      "lastUpdated": "2025-01-11T00:33:43.629Z"
+                    }
+                  },
+                  "title": "Algebra I Textbook",                 // string - REQUIRED
+                  "roles": ["primary"],                          // array - OPTIONAL (enum: ["primary", "secondary"])
+                  "importance": "primary",                       // string - OPTIONAL (enum: ["primary", "secondary"])
+                  "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785", // string - REQUIRED
+                  "vendorId": "pearson_ed",                     // string - OPTIONAL
+                  "applicationId": "digital_textbook"            // string - OPTIONAL
+                }
+              }
+              
+              // Required fields: ["title", "vendorResourceId"]
+  /resources/{resources_sourcedId}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "resource": {
+                  "sourcedId": "'$resources_sourcedId'",         // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2025-01-11T00:33:43.629Z", // string - OPTIONAL (datetime)
+                  "metadata": {                                  // object - OPTIONAL, nullable
+                    "format": "digits",
+                    "type": "textbook",
+                    "accessHistory": {
+                      "totalAccesses": 1250,
+                      "averageTimeSpent": "30 minutes",
+                      "lastUpdated": "2025-01-11T00:33:43.629Z"
+                    }
+                  },
+                  "title": "Algebra I Textbook",                 // string - REQUIRED
+                  "roles": ["primary"],                          // array - OPTIONAL (enum: ["primary", "secondary"])
+                  "importance": "primary",                       // string - OPTIONAL (enum: ["primary", "secondary"])
+                  "vendorResourceId": "ee42cb40-35b2-4092-8ae8-c5e6f07ac785", // string - REQUIRED
+                  "vendorId": "pearson_ed",                     // string - OPTIONAL
+                  "applicationId": "digital_textbook"            // string - OPTIONAL
+                }
+              }
+              
+              // Required fields: ["title", "vendorResourceId"]
+  /assessmentLineItems/{sourcedId_assessmentLineItem}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "assessmentLineItem": {
+                  "sourcedId": "'$sourcedId_assessmentLineItem'",  // string - OPTIONAL
+                  "status": "active",                              // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",     // string - OPTIONAL (datetime)
+                  "metadata": {                                    // object - OPTIONAL
+                    "weight": "30",
+                    "duration": "120",
+                    "allowCalculator": true
+                  },
+                  "title": "Chapter 1 Test",                       // string - REQUIRED
+                  "description": "End of chapter test",            // string - OPTIONAL
+                  "class": {                                      // object - OPTIONAL
+                    "sourcedId": "'$class_sourcedId'"             // string - REQUIRED if class included
+                  },
+                  "parentAssessmentLineItem": {                   // object - OPTIONAL
+                    "sourcedId": "'$assessmentLineItem_sourcedId'" // string - REQUIRED if parentAssessmentLineItem included
+                  },
+                  "scoreScale": {                                 // object - OPTIONAL
+                    "sourcedId": "'$scoreScale_sourcedId'"        // string - REQUIRED if scoreScale included
+                  },
+                  "resultValueMin": 0,                            // number - OPTIONAL
+                  "resultValueMax": 100,                          // number - OPTIONAL
+                  "learningObjectiveSet": [                       // array - OPTIONAL
+                    {
+                      "source": "Common Core",                    // string - REQUIRED if learningObjectiveSet included
+                      "learningObjectiveIds": [                   // array - REQUIRED if learningObjectiveSet included
+                        {
+                          "learningObjectiveId": "12345",         // string - REQUIRED
+                          "score": 89,                            // number - OPTIONAL
+                          "textScore": "89"                       // string - OPTIONAL
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+              
+              // Required fields: ["title"]
+  /assessmentResults/{sourcedId_assessmentResults}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "assessmentResult": {
+                  "sourcedId": "'$sourcedId_assessmentResults'",    // string - OPTIONAL
+                  "status": "active",                               // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",      // string - OPTIONAL (datetime)
+                  "metadata": {                                     // object - OPTIONAL
+                    "weight": "30",
+                    "duration": "120",
+                    "allowCalculator": true
+                  },
+                  "assessmentLineItemSourcedId": {                  // object - REQUIRED
+                    "sourcedId": "'$assessmentLineItem_sourcedId'"  // string - REQUIRED
+                  },
+                  "studentSourcedId": {                            // object - REQUIRED
+                    "sourcedId": "'$student_sourcedId'"            // string - REQUIRED
+                  },
+                  "score": 90,                                     // number - OPTIONAL, nullable
+                  "textScore": "90",                               // string - OPTIONAL, nullable
+                  "scoreDate": "2023-12-15T00:00:00.000Z",        // string - REQUIRED (datetime)
+                  "scoreScaleSourcedId": {                         // object - OPTIONAL
+                    "sourcedId": "'$scoreScale_sourcedId'"         // string - REQUIRED if scoreScaleSourcedId included
+                  },
+                  "scorePercentile": 85,                          // number - OPTIONAL, nullable
+                  "scoreStatus": "fully graded",                  // string - REQUIRED (enum: ScoreStatus.enumValues)
+                  "comment": "Good work!",                        // string - OPTIONAL, nullable
+                  "learningObjectiveSet": [                       // array - OPTIONAL
+                    {
+                      "source": "Common Core",                    // string - REQUIRED if learningObjectiveSet included
+                      "learningObjectiveIds": [                   // array - REQUIRED if learningObjectiveSet included
+                        {
+                          "learningObjectiveId": "12345",         // string - REQUIRED
+                          "score": 88,                            // number - OPTIONAL
+                          "textScore": "88"                       // string - OPTIONAL
+                        }
+                      ]
+                    }
+                  ],
+                  "inProgress": true,                             // boolean - OPTIONAL, nullable
+                  "incomplete": false,                            // boolean - OPTIONAL, nullable
+                  "late": false,                                  // boolean - OPTIONAL, nullable
+                  "missing": false                                // boolean - OPTIONAL, nullable
+                }
+              }
+              
+              // Required fields: ["assessmentLineItemSourcedId", "studentSourcedId", "scoreDate", "scoreStatus"]
+  /categories/{sourcedId_categories}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "category": {
+                  "sourcedId": "'$sourcedId_categories'",         // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",    // string - OPTIONAL (datetime)
+                  "metadata": {                                   // object - OPTIONAL
+                    "type": "category",
+                    "weight": 0.5
+                  },
+                  "title": "Participation",                       // string - REQUIRED
+                  "weight": 0.5                                   // number - OPTIONAL, nullable
+                }
+              }
+              
+              // Required fields: ["title"]
+  /lineItems/{sourcedId_lineItem}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "lineItems": [{
+                  "sourcedId": "'$sourcedId_lineItems'",          // string - OPTIONAL
+                  "status": "active",                             // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",    // string - OPTIONAL (datetime)
+                  "metadata": {                                   // object - OPTIONAL
+                    "weight": "10",
+                    "isExtraCredit": false
+                  },
+                  "title": "Homework 3: Inequalities",            // string - REQUIRED
+                  "description": "Practice problems on...",       // string - OPTIONAL
+                  "assignDate": "2023-09-19T00:00:00.000Z",      // string - REQUIRED (ISO date)
+                  "dueDate": "2023-09-21T00:00:00.000Z",        // string - REQUIRED (ISO date)
+                  "class": {                                     // object - REQUIRED
+                    "sourcedId": "'$class_sourcedId'"            // string - REQUIRED
+                  },
+                  "school": {                                    // object - REQUIRED
+                    "sourcedId": "'$school_sourcedId'"           // string - REQUIRED
+                  },
+                  "category": {                                  // object - REQUIRED
+                    "sourcedId": "'$category_sourcedId'"         // string - REQUIRED
+                  },
+                  "gradingPeriod": {                            // object - OPTIONAL
+                    "sourcedId": "'$gradingPeriod_sourcedId'"    // string - REQUIRED if gradingPeriod included
+                  },
+                  "academicSession": {                          // object - OPTIONAL
+                    "sourcedId": "'$academicSession_sourcedId'"  // string - REQUIRED if academicSession included
+                  },
+                  "resultValueMin": 0,                          // number - OPTIONAL
+                  "resultValueMax": 100,                        // number - OPTIONAL
+                  "learningObjectiveSet": [                     // array - OPTIONAL
+                    {
+                      "source": "State Standards",              // string - REQUIRED if learningObjectiveSet included
+                      "learningObjectiveIds": [                 // array - REQUIRED if learningObjectiveSet included
+                        {
+                          "learningObjectiveId": "MA.ALG.1",    // string - REQUIRED
+                          "score": 74,                          // number - OPTIONAL
+                          "textScore": "28"                     // string - OPTIONAL
+                        }
+                      ]
+                    }
+                  ]
+                }]
+              }
+              
+              // Required fields: ["title", "assignDate", "dueDate", "class", "school", "category"]
+  /results/{sourcedId_results}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "result": {
+                  "sourcedId": "'$sourcedId_results'",           // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",   // string - OPTIONAL (datetime)
+                  "metadata": {                                  // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "lineItem": {                                  // object - REQUIRED
+                    "sourcedId": "'$lineItem_sourcedId'"         // string - REQUIRED
+                  },
+                  "student": {                                   // object - REQUIRED
+                    "sourcedId": "'$student_sourcedId'"          // string - REQUIRED
+                  },
+                  "class": {                                     // object - OPTIONAL
+                    "sourcedId": "'$class_sourcedId'"            // string - REQUIRED if class included
+                  },
+                  "scoreScale": {                               // object - OPTIONAL
+                    "sourcedId": "scale123"                     // string - REQUIRED if scoreScale included
+                  },
+                  "scoreStatus": "fully graded",                // string - REQUIRED (enum: ScoreStatus.enumValues)
+                  "score": 85,                                  // number - OPTIONAL, nullable
+                  "textScore": "B+",                           // string - OPTIONAL, nullable
+                  "scoreDate": "2023-09-10T00:00:00.000Z",     // string - REQUIRED (datetime)
+                  "comment": "Good work!",                      // string - OPTIONAL, nullable
+                  "learningObjectiveSet": [],                   // array - OPTIONAL, nullable
+                  "inProgress": false,                          // boolean - OPTIONAL
+                  "incomplete": false,                          // boolean - OPTIONAL
+                  "late": false,                               // boolean - OPTIONAL
+                  "missing": false                             // boolean - OPTIONAL
+                }
+              }
+              
+              // Required fields: ["lineItem", "student", "scoreStatus", "scoreDate"]
+  /scoreScales/{sourcedId_scoreScales}:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              {
+                "scoreScale": {
+                  "sourcedId": "'$sourcedId_scoreScales'",       // string - OPTIONAL
+                  "status": "active",                            // string - OPTIONAL (enum: StatusType.enumValues, default: "active")
+                  "dateLastModified": "2024-01-15T12:00:00Z",   // string - OPTIONAL (datetime)
+                  "metadata": {                                  // object - OPTIONAL
+                    "test": "test"
+                  },
+                  "title": "Standard Letter Grades",             // string - REQUIRED
+                  "type": "letter",                             // string - REQUIRED
+                  "class": {                                    // object - REQUIRED
+                    "sourcedId": "'$class_sourcedId'"           // string - REQUIRED
+                  },
+                  "course": {                                   // object - OPTIONAL
+                    "sourcedId": "'$course_sourcedId'"          // string - REQUIRED if course included
+                  },
+                  "scoreScaleValue": [                          // array - REQUIRED
+                    {
+                      "itemValueLHS": "90",                     // string - REQUIRED
+                      "itemValueRHS": "100",                    // string - REQUIRED
+                      "value": "A",                             // string - OPTIONAL
+                      "description": "Excellent"                // string - OPTIONAL
+                    },
+                    {
+                      "itemValueLHS": "80",
+                      "itemValueRHS": "89"
+                    }
+                    // ... additional scale values
+                  ]
+                }
+              }
+              
+              // Required fields: ["title", "type", "class", "scoreScaleValue"]
