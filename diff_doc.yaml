@@ -981,3 +981,31 @@ paths:
               }
               
               // Required fields: ["title", "type", "class", "scoreScaleValue"]
+              
+components:
+  responses:
+    StandardErrors:
+      description: Standard error responses for all endpoints
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "400":
+        description: |
+          An invalid selection field was supplied and data filtering on the selection criteria was not possible i.e. 'invalid_selection_field'. This is accompanied by the 'codeMajor/severity' values of 'failure/error'.
+      "401":
+        description: |
+          The request was not correctly authorised i.e. 'unauthorisedrequest'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'.
+      "403":
+        description: |
+          This is used to indicate that the server can be reached and process the request but refuses to take any further action i.e. 'forbidden'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'.
+      "422":
+        description: |
+          This error condition may occur if a JSON request body contains well-formed (i.e. syntactically correct), but semantically erroneous, JSON instructions. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'.
+      "429":
+        description: |
+          The server is receiving too many requests i.e. 'server_busy'. Retry at a later time. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'.
+      "500":
+        description: |
+          This code should be used only if there is catastrophic error and there is not a more appropriate code i.e. 'internal_server_error'. This would be accompanied by the 'codeMajor/severity' values of 'failure/error'.
+              
