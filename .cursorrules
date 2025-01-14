@@ -16,6 +16,9 @@ The objective is to build a fully functional, deployable Next.js application int
     ```bash
     npm install && npm run build && npm run start
     ```
+  - CRITICAL: GET endpoints: MUST reference oneroster.yaml
+  - CRITICAL: POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml
+  - Always use correct payload structure from the yaml file
 
 ---
 
@@ -23,24 +26,10 @@ The objective is to build a fully functional, deployable Next.js application int
 
 1. You MUST read and follow ALL patterns and examples provided in this document.
 2. You MUST NOT create your own patterns or "improve" existing ones.
-3. Validate each code block against the patterns shown in this document before including it.
-4. If a pattern needs clarification, ASK instead of improvising.
+3. Validate each code block against the patterns shown in this document.
+4. Validate data schemas with their corresponding yaml files.
 5. EVERY response MUST start by checking compliance with these rules.
 6. If a pattern exists in these rules, you MUST use it verbatim.
-
----
-
-1. For ALL endpoints:
-
-   - GET endpoints: MUST reference oneroster.yaml
-   - POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml first
-   - NEVER attempt to guess payload structure
-   - NEVER proceed without checking the relevant yaml file
-
-2. When implementing endpoints:
-   - First state which yaml file and section you're referencing
-   - Copy the exact schema from the yaml file
-   - Implement based on that schema only
 
 ---
 
@@ -199,7 +188,7 @@ The project MUST include the following files and adhere to their defined structu
 
 ## Response Handling Rules
 
-### "Users" Response Structure:
+### "Users" Response Structure for GET requests:
 
 - Example:
   ```json
@@ -208,8 +197,9 @@ The project MUST include the following files and adhere to their defined structu
   }
   ```
 - ALWAYS access data using `.users` regardless of endpoint (e.g., `/students`).
+- Check the `users` schema in the `oneroster.yaml` file.
 
-### "Orgs" Response Structure:
+### "Orgs" Response Structure for GET requests:
 
 - Example:
   ```json
@@ -218,6 +208,7 @@ The project MUST include the following files and adhere to their defined structu
   }
   ```
 - ALWAYS access data using `.orgs` regardless of endpoint (e.g., `/schools`).
+- Check the `orgs` schema in the `oneroster.yaml` file.
 
 - Example implementation:
 
@@ -289,57 +280,6 @@ The project MUST include the following files and adhere to their defined structu
 
 ---
 
-## Edit Endpoint Rules
-
-### General Requirements
-
-1. **Validation**:
-
-   - Ensure all required fields are present and valid for `POST`, `PUT`, and `DELETE` requests.
-   - Ensure all GET requests filter out toBeDeleted status.
-   - Optional fields must be correctly formatted if provided.
-   - OneRoster extended ednpoints can be found in diff_doc.yaml file.
-
-2. **Field-Level Rules**:
-
-   - **Dates**:
-     - Must be in ISO 8601 format.
-     - For `startDate` and `endDate`, ensure logical order if both are provided.
-   - **IDs**:
-     - `sourcedId` values must reference existing objects where required.
-     - If `sourcedId` is missing for a POST/PUT request, give the user an option to select an entity by gathering
-
-3. **Response Handling**:
-
-   - Return appropriate HTTP status codes:
-     - `200` for success with the expected response body.
-     - `400` for validation errors with details.
-     - `404` if referenced resources are missing.
-     - `500` for server errors.
-
-4. **Patterns**:
-   - Follow the JSON structures in the OneRoster spec and extended specification verbatim.
-
-### Specific Rules for `POST`
-
-- Always create new resources.
-- Auto-generate `sourcedId` if not provided.
-- Validate references to dependent objects (e.g., `orgSourcedId`) with `GET` requests.
-
-### Specific Rules for `PUT`
-
-- Update resources identified by `sourcedId` in the URL.
-- Merge the provided data with existing resource fields.
-- Required fields must remain valid even in partial updates.
-
-### Specific Rules for `DELETE`
-
-- Ensure the `sourcedId` exists before deletion.
-- For soft-deletes, update the `status` field to `"tobedeleted"`.
-- Return `204` for successful deletions and `404` if the resource does not exist.
-
----
-
 ## OneRoster Integration Rules
 
 ### 1. Nested Object Rule
@@ -361,10 +301,8 @@ CORRECT: {
 
 ### 2. Entity Reference Rule
 
-When a field requires a sourcedId reference to another entity:
+When a field with a sourcedId is REQUIRED to reference another entity in a POST request:
 
-- ALWAYS provide a dropdown/select input populated with existing entities
-- NEVER allow free-form text input for sourcedId fields
 - ALWAYS fetch the referenced entities before rendering the form
   Example:
 
