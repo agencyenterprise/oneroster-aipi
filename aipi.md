@@ -20,7 +20,6 @@ The objective is to build a fully functional, deployable Next.js application int
   - CRITICAL: POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml
   - Always use correct payload structure from the yaml file
   - Always rely on the API server for error handling. Do not generate custom error codes; instead, accept and process the error responses as returned by the API.
-  - When updating the app, always check the entire codebase.
 
 ---
 
@@ -224,33 +223,6 @@ The project MUST include the following files and adhere to their defined structu
   }
 
   const schools = await fetchAnyOrgType("schools");
-  ```
-
-### "Academic Sessions" Response Structure for GET requests:
-
-- Example:
-  ```json
-  {
-    "academicSessions": [{}, {}]
-  }
-  ```
-- ALWAYS access data using `.academicSessions` regardless of endpoint (e.g., `/terms`, `/gradingPeriods`, `/academicSessions`).
-- Check the `academicSessions` schema in the `oneroster.yaml` file.
-
-- Example implementation:
-
-  ```typescript
-  async function fetchAcademicSessionType(endpoint: string) {
-    const response = await fetch(
-      `/api/proxy/ims/oneroster/rostering/v1p2/${endpoint}`
-    );
-    const data = await response.json();
-    return data.academicSessions; // Always access data.academicSessions
-  }
-
-  const terms = await fetchAcademicSessionType("terms");
-  const gradingPeriods = await fetchAcademicSessionType("gradingPeriods");
-  const academicSessions = await fetchAcademicSessionType("academicSessions");
   ```
 
 ---
