@@ -34,7 +34,6 @@ The objective is to build a fully functional, deployable Next.js application int
 
 - **Framework:** Next.js (v13+) with React 18.x.
 - **Environment:** Node.js v20 is assumed.
-- The app must be fully functional, deployable, and free of version conflicts or startup-preventing configurations.
 
 ---
 
@@ -283,8 +282,9 @@ The project MUST include the following files and adhere to their defined structu
 1. **Validation**:
 
    - Ensure all required fields are present and valid for `POST`, `PUT`, and `DELETE` requests.
+   - Ensure all GET requests filter out toBeDeleted status.
    - Optional fields must be correctly formatted if provided.
-   - Validate values against enumerations when applicable.
+   - OneRoster extended ednpoints can be found in diff_doc.yaml file.
 
 2. **Field-Level Rules**:
 
@@ -293,7 +293,7 @@ The project MUST include the following files and adhere to their defined structu
      - For `startDate` and `endDate`, ensure logical order if both are provided.
    - **IDs**:
      - `sourcedId` values must reference existing objects where required.
-     - If `sourcedId` is missing, suggest resolving it through a `GET` request.
+     - If `sourcedId` is missing for a POST/PUT request, give the user an option to select an entity by gathering
 
 3. **Response Handling**:
 
@@ -342,9 +342,6 @@ CORRECT: {
   course: {
     sourcedId: value;
   }
-}
-INCORRECT: {
-  courseId: value;
 }
 ```
 
