@@ -16,7 +16,7 @@ The objective is to build a fully functional, deployable Next.js application int
     ```bash
     npm install && npm run build && npm run start
     ```
-  - CRITICAL: GET endpoints: MUST reference oneroster.yaml
+  - CRITICAL: GET endpoints: MUST reference the correct endpoint for gradebookservice.yaml, rostersservice.yaml, or resourceservice.yaml
   - CRITICAL: POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml
   - Always use correct payload structure from the yaml file
   - Always rely on the API server for error handling. Do not generate custom error codes; instead, accept and process the error responses as returned by the API.
@@ -199,7 +199,7 @@ The project MUST include the following files and adhere to their defined structu
   }
   ```
 - ALWAYS access data using `.users` regardless of endpoint (e.g., `/students`).
-- Check the `users` schema in the `oneroster.yaml` file.
+- Check the `users` schema in the `rostersservice.yaml` file.
 
 ### "Orgs" Response Structure for GET requests:
 
@@ -210,7 +210,7 @@ The project MUST include the following files and adhere to their defined structu
   }
   ```
 - ALWAYS access data using `.orgs` regardless of endpoint (e.g., `/schools`).
-- Check the `orgs` schema in the `oneroster.yaml` file.
+- Check the `orgs` schema in the `rostersservice.yaml` file.
 
 - Example implementation:
 
@@ -235,7 +235,7 @@ The project MUST include the following files and adhere to their defined structu
   }
   ```
 - ALWAYS access data using `.academicSessions` regardless of endpoint (e.g., `/terms`, `/gradingPeriods`, `/academicSessions`).
-- Check the `academicSessions` schema in the `oneroster.yaml` file.
+- Check the `academicSessions` schema in the `rostersservice.yaml` file.
 
 - Example implementation:
 
