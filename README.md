@@ -12,11 +12,17 @@ This API was built and tested with **Cursor**. The `.cursorrules` file provided 
    - `diff_doc.yaml`
    - `oneroster.yaml`
 
-At this point, you can make any prompt. It's suggested to keep prompts simple and follow examples similar to those below.
+Suggested Prompts:
+
+- Please build me an app that allows me to view student data.
+- Please build me a sis that allows me to view and edit classes and teachers.
+- Please build me an app that allows me to view, edit, and delete classes and teachers.
 
 ---
 
-## Prompt Examples - copy and paste into cursor if you run into similar issues
+## Prompts to solve known issues:
+
+Copy and paste into cursor if you run into similar issues
 
 ### 1. **First Prompt to Create the App**
 
@@ -111,8 +117,4 @@ I can see `[related-entity]` now, but when I try to save the class, I get this e
 ```markdown
 Can you analyze our conversation? What kinds of rules would you establish to avoid running into similar errors again?
 I want **three rules** that any Large Language Model can understand.
-```
-
-```
-
 ```

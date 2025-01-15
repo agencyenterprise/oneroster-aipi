@@ -19,7 +19,7 @@ The objective is to build a fully functional, deployable Next.js application int
   - CRITICAL: GET endpoints: MUST reference the correct endpoint for gradebookservice.yaml, rostersservice.yaml, or resourceservice.yaml
   - CRITICAL: POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml
   - Always use correct payload structure from the yaml file
-  - Always rely on the API server for error handling. Do not generate custom error codes; instead, accept and process the error responses as returned by the API.
+  - Always rely on the API server for error handling. Accept and process the error responses as returned by the API.
   - When updating the app, always check the entire codebase.
 
 ---
@@ -95,7 +95,6 @@ The project MUST include the following files and adhere to their defined structu
 
      ```typescript
      import type { NextApiRequest, NextApiResponse } from "next";
-
      export default async function handler(
        req: NextApiRequest,
        res: NextApiResponse
@@ -103,7 +102,6 @@ The project MUST include the following files and adhere to their defined structu
        const { path } = req.query;
        const apiPath = Array.isArray(path) ? path.join("/") : path;
        const baseUrl = process.env.NEXT_PUBLIC_ONEROSTER_BASE_URL;
-
        try {
          const response = await fetch(`${baseUrl}/${apiPath}`, {
            method: req.method,
@@ -112,11 +110,32 @@ The project MUST include the following files and adhere to their defined structu
            },
            body: req.method !== "GET" ? JSON.stringify(req.body) : undefined,
          });
-
-         const data = await response.json();
-         res.status(response.status).json(data);
+         // Check if there's actually content before trying to parse JSON
+         const contentType = response.headers.get("content-type");
+         let data;
+         if (contentType?.includes("application/json")) {
+           const text = await response.text();
+           data = text ? JSON.parse(text) : null;
+         } else {
+           data = null;
+         }
+         if (!response.ok) {
+           return res.status(response.status).json({
+             error: data?.error || "API request failed",
+             details: data || "No response data",
+           });
+         }
+         // Handle empty responses
+         if (!data) {
+           return res.status(response.status).json({ success: true });
+         }
+         return res.status(response.status).json(data);
        } catch (error) {
-         res.status(500).json({ error: "Failed to fetch data" });
+         console.error("Proxy error:", error);
+         return res.status(500).json({
+           error: "Internal server error",
+           details: error instanceof Error ? error.message : "Unknown error",
+         });
        }
      }
      ```
@@ -332,7 +351,8 @@ CORRECT: {
 
 When a field with a sourcedId is REQUIRED to reference another entity in a POST request:
 
-- ALWAYS fetch the referenced entities before rendering the form
+- ALWAYS fetch the referenced entities before rendering the form UNLESS they already exist on the object.
+
   Example:
 
 ```typescript
@@ -360,5 +380,3 @@ Before sending any PUT/POST request:
   }
 }
 ```
-
----
