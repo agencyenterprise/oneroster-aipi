@@ -1,0 +1,1294 @@
+  openapi: 3.0.0
+  info:
+    title: OneRoster API Extensions
+    version: 1.0.0
+    description: OneRoster API extensions for managing academic sessions, terms, classes, users, organizations, schools, and enrollments.
+
+  tags:
+    - name: Academic
+      description: Endpoints for managing academic sessions and terms
+    - name: Classes
+      description: Endpoints for managing classes and enrollments
+    - name: Users
+      description: Endpoints for managing users
+    - name: Organizations
+      description: Endpoints for managing organizations and schools
+
+  paths:
+    /academicSessions:
+      post:
+        tags:
+          - Academic
+        operationId: createAcademicSession
+        summary: Create a new academic session
+        description: Creates a new academic session such as a school year, term, semester, or grading period
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicSessionRequest'
+
+    /academicSessions/{sourcedId_academicSession}:
+      put:
+        tags:
+          - Academic
+        operationId: updateAcademicSession
+        summary: Update an academic session
+        description: Updates an existing academic session
+        parameters:
+          - name: sourcedId_academicSession
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademicSessionRequest'
+
+    /terms:
+      post:
+        tags:
+          - Academic
+        operationId: createTerm
+        summary: Create a new term
+        description: Creates a new academic term within a school year
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermRequest'
+
+    /terms/{sourcedId_term}:
+      put:
+        tags:
+          - Academic
+        operationId: updateTerm
+        summary: Update a term
+        description: Updates an existing term
+        parameters:
+          - name: sourcedId_term
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermRequest'
+
+    /terms/{termSourcedId}/gradingPeriods:
+      post:
+        tags:
+          - Academic
+        operationId: createGradingPeriod
+        summary: Create a grading period within a term
+        description: Creates a new grading period associated with a specific term
+        parameters:
+          - name: termSourcedId
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradingPeriodRequest'
+
+    /gradingPeriods/{sourcedId}:
+      put:
+        tags:
+          - Academic
+        operationId: updateGradingPeriod
+        summary: Update a grading period
+        description: Updates an existing grading period
+        parameters:
+          - name: sourcedId
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradingPeriodRequest'
+
+    /classes:
+      post:
+        tags:
+          - Classes
+        operationId: createClass
+        summary: Create a new class
+        description: Creates a new class with associated course, organization, and academic sessions
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassRequest'
+
+    /classes/{sourcedId_class}:
+      put:
+        tags:
+          - Classes
+        operationId: updateClass
+        summary: Update a class
+        description: Updates an existing class
+        parameters:
+          - name: sourcedId_class
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassRequest'
+
+    /classes/{classSourcedId}/students:
+      post:
+        tags:
+          - Classes
+        operationId: enrollStudent
+        summary: Enroll a student in a class
+        description: Creates a new student enrollment in a specific class
+        parameters:
+          - name: classSourcedId
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentEnrollmentRequest'
+
+    /classes/{classSourcedId}/teachers:
+      post:
+        tags:
+          - Classes
+        operationId: assignTeacher
+        summary: Assign a teacher to a class
+        description: Creates a new teacher assignment to a specific class
+        parameters:
+          - name: classSourcedId
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherEnrollmentRequest'
+
+    /users:
+      post:
+        tags:
+          - Users
+        operationId: createUser
+        summary: Create a new user
+        description: Creates a new user with specified roles and organization affiliations
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRequest'
+
+    /users/{sourcedId_user}:
+      put:
+        tags:
+          - Users
+        operationId: updateUser
+        summary: Update a user
+        description: Updates an existing user
+        parameters:
+          - name: sourcedId_user
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRequest'
+
+    /orgs:
+      post:
+        tags:
+          - Organizations
+        operationId: createOrganization
+        summary: Create a new organization
+        description: Creates a new organization (district, school, or department)
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationRequest'
+
+    /orgs/{sourcedId_org}:
+      put:
+        tags:
+          - Organizations
+        operationId: updateOrganization
+        summary: Update an organization
+        description: Updates an existing organization
+        parameters:
+          - name: sourcedId_org
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationRequest'
+
+    /schools:
+      post:
+        tags:
+          - Organizations
+        operationId: createSchool
+        summary: Create a new school
+        description: Creates a new school organization
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolRequest'
+
+    /schools/{sourcedId_school}:
+      put:
+        tags:
+          - Organizations
+        operationId: updateSchool
+        summary: Update a school
+        description: Updates an existing school
+        parameters:
+          - name: sourcedId_school
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolRequest'
+
+    /enrollments:
+      post:
+        tags:
+          - Classes
+        operationId: createEnrollment
+        summary: Create a new enrollment
+        description: Creates a new enrollment linking a user to a class
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentRequest'
+
+    /enrollments/{sourcedId_enrollment}:
+      put:
+        tags:
+          - Classes
+        operationId: updateEnrollment
+        summary: Update an enrollment
+        description: Updates an existing enrollment
+        parameters:
+          - name: sourcedId_enrollment
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentRequest'
+
+    /assessmentLineItems/{sourcedId_assessmentLineItem}:
+      put:
+        tags:
+          - Assessments
+        operationId: updateAssessmentLineItem
+        summary: Update an assessment line item
+        description: Updates an existing assessment line item
+        parameters:
+          - name: sourcedId_assessmentLineItem
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentLineItemRequest'
+
+    /assessmentResults/{sourcedId_assessmentResults}:
+      put:
+        tags:
+          - Assessments
+        operationId: updateAssessmentResult
+        summary: Update an assessment result
+        description: Updates an existing assessment result
+        parameters:
+          - name: sourcedId_assessmentResults
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentResultRequest'
+
+    /categories/{sourcedId_categories}:
+      put:
+        tags:
+          - Assessments
+        operationId: updateCategory
+        summary: Update a category
+        description: Updates an existing category
+        parameters:
+          - name: sourcedId_categories
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRequest'
+
+    /lineItems/{sourcedId_lineItem}:
+      put:
+        tags:
+          - Assessments
+        operationId: updateLineItem
+        summary: Update a line item
+        description: Updates an existing line item
+        parameters:
+          - name: sourcedId_lineItem
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineItemRequest'
+
+    /results/{sourcedId_results}:
+      put:
+        tags:
+          - Assessments
+        operationId: updateResult
+        summary: Update a result
+        description: Updates an existing result
+        parameters:
+          - name: sourcedId_results
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultRequest'
+
+    /scoreScales/{sourcedId_scoreScales}:
+      put:
+        tags:
+          - Assessments
+        operationId: updateScoreScale
+        summary: Update a score scale
+        description: Updates an existing score scale
+        parameters:
+          - name: sourcedId_scoreScales
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreScaleRequest'
+
+    /resources:
+      post:
+        tags:
+          - Resources
+        operationId: createResource
+        summary: Create a new resource
+        description: Creates a new resource
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceRequest'
+
+    /resources/{resources_sourcedId}:
+      put:
+        tags:
+          - Resources
+        operationId: updateResource
+        summary: Update a resource
+        description: Updates an existing resource
+        parameters:
+          - name: resources_sourcedId
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceRequest'
+
+  components:
+    schemas:
+      SourcedId:
+        type: object
+        required:
+          - sourcedId
+        properties:
+          sourcedId:
+            type: string
+            description: Unique identifier for the resource
+
+      StatusType:
+        type: string
+        enum:
+          - active
+          - tobedeleted
+        default: active
+        description: Status of the resource
+
+      MetadataObject:
+        type: object
+        description: Additional metadata for the resource
+
+      DateTimeRange:
+        type: object
+        required:
+          - startDate
+          - endDate
+        properties:
+          startDate:
+            type: string
+            format: date-time
+            description: Start date and time in ISO 8601 format
+          endDate:
+            type: string
+            format: date-time
+            description: End date and time in ISO 8601 format
+
+      imsx_StatusInfoDType:
+        type: object
+        properties:
+          imsx_codeMajor:
+            type: string
+            enum:
+              - success
+              - failure
+              - unsupported
+              - processing
+          imsx_severity:
+            type: string
+            enum:
+              - status
+              - warning
+              - error
+          imsx_messageRefIdentifier:
+            type: string
+          imsx_operationRefIdentifier:
+            type: string
+          imsx_description:
+            type: string
+        required:
+          - imsx_codeMajor
+          - imsx_severity
+          - imsx_description
+
+      AcademicSession:
+        type: object
+        required:
+          - title
+          - startDate
+          - endDate
+          - type
+          - schoolYear
+          - org
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          title:  # REQUIRED
+            type: string
+            example: "2023-2024 School Year"
+          startDate:  # REQUIRED - ISO 8601
+            type: string
+            format: date-time
+            example: "2023-08-15T00:00:00.000Z"
+          endDate:  # REQUIRED - ISO 8601
+            type: string
+            format: date-time
+            example: "2024-05-30T00:00:00.000Z"
+          type:  # REQUIRED
+            type: string
+            enum: 
+              - schoolYear
+              - term
+              - semester
+              - gradingPeriod
+          schoolYear:  # REQUIRED
+            type: string
+            example: "2023"
+          org:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          class:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          parent:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+
+      Term:
+        type: object
+        required:
+          - title
+          - type
+          - startDate
+          - endDate
+          - schoolYear
+          - org
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+            example: "Term 1 2024"
+          type:  # REQUIRED - must be "term"
+            type: string
+            enum:
+              - term
+          startDate:  # REQUIRED
+            type: string
+            format: date
+            example: "2024-01-15"
+          endDate:  # REQUIRED
+            type: string
+            format: date
+            example: "2024-05-30"
+          parent:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          schoolYear:  # REQUIRED
+            type: string
+            example: "2024"
+          org:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+
+      Class:
+        type: object
+        required:
+          - title
+          - course
+          - org
+          - academicSessions
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          dateLastModified:  # OPTIONAL
+            type: string
+            format: date-time
+          metadata:  # OPTIONAL
+            $ref: '#/components/schemas/MetadataObject'
+          title:  # REQUIRED
+            type: string
+            example: "Algebra I"
+          classCode:  # OPTIONAL
+            type: string
+            example: "ALG101-01"
+          classType:  # OPTIONAL
+            type: string
+            enum:
+              - scheduled
+            default: scheduled
+          location:  # OPTIONAL
+            type: string
+          grades:  # OPTIONAL
+            type: array
+            items:
+              type: string
+          subjects:  # OPTIONAL
+            type: array
+            items:
+              type: string
+          subjectCodes:  # OPTIONAL
+            type: array
+            items:
+              type: string
+          periods:  # OPTIONAL
+            type: array
+            items:
+              type: string
+          resources:  # OPTIONAL
+            type: array
+            items:
+              $ref: '#/components/schemas/SourcedId'
+          course:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          org:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          session:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          academicSessions:  # REQUIRED
+            type: array
+            minItems: 1
+            items:
+              $ref: '#/components/schemas/AcademicSession'
+
+      User:
+        type: object
+        required:
+          - enabledUser
+          - givenName
+          - familyName
+          - roles
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          metadata:  # OPTIONAL
+            $ref: '#/components/schemas/MetadataObject'
+          userMasterIdentifier:  # OPTIONAL
+            type: string
+            nullable: true
+          username:  # OPTIONAL
+            type: string
+          userIds:  # OPTIONAL
+            type: array
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+                identifier:
+                  type: string
+          enabledUser:  # REQUIRED
+            type: boolean
+          givenName:  # REQUIRED
+            type: string
+          familyName:  # REQUIRED
+            type: string
+          middleName:  # OPTIONAL
+            type: string
+            nullable: true
+          roles:  # REQUIRED
+            type: array
+            minItems: 1
+            items:
+              type: object
+              required:
+                - roleType
+                - role
+                - org
+              properties:
+                roleType:
+                  type: string
+                  enum:
+                    - primary
+                    - secondary
+                role:
+                  type: string
+                  enum:
+                    - student
+                    - teacher
+                    - administrator
+                org:
+                  $ref: '#/components/schemas/SourcedId'
+                userProfile:
+                  type: string
+                beginDate:
+                  type: string
+                  format: date
+                endDate:
+                  type: string
+                  format: date
+          primaryOrg:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          email:  # OPTIONAL
+            type: string
+            format: email
+            nullable: true
+          preferredFirstName:  # OPTIONAL
+            type: string
+            nullable: true
+          preferredMiddleName:  # OPTIONAL
+            type: string
+            nullable: true
+          preferredLastName:  # OPTIONAL
+            type: string
+            nullable: true
+          pronouns:  # OPTIONAL
+            type: string
+            nullable: true
+          grades:  # OPTIONAL
+            type: array
+            items:
+              type: string
+          password:  # OPTIONAL
+            type: string
+            nullable: true
+          sms:  # OPTIONAL
+            type: string
+            nullable: true
+          phone:  # OPTIONAL
+            type: string
+            nullable: true
+          userProfiles:  # OPTIONAL
+            type: array
+            items:
+              type: object
+              required:
+                - profileId
+                - profileType
+                - vendorId
+              properties:
+                profileId:
+                  type: string
+                profileType:
+                  type: string
+                vendorId:
+                  type: string
+                applicationId:
+                  type: string
+                description:
+                  type: string
+                credentials:
+                  type: array
+                  items:
+                    type: string
+
+      Organization:
+        type: object
+        required:
+          - name
+          - type
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          metadata:  # OPTIONAL
+            $ref: '#/components/schemas/MetadataObject'
+          name:  # REQUIRED
+            type: string
+          type:  # REQUIRED
+            type: string
+            enum:
+              - district
+              - school
+              - department
+          identifier:  # OPTIONAL
+            type: string
+          parent:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+
+      School:
+        type: object
+        required:
+          - name
+          - type
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          metadata:  # OPTIONAL
+            $ref: '#/components/schemas/MetadataObject'
+          name:  # REQUIRED
+            type: string
+          type:  # REQUIRED - must be "school"
+            type: string
+            enum:
+              - school
+          identifier:  # OPTIONAL
+            type: string
+          parent:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+
+      Enrollment:
+        type: object
+        required:
+          - role
+          - user
+          - class
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          metadata:  # OPTIONAL
+            $ref: '#/components/schemas/MetadataObject'
+          role:  # REQUIRED
+            type: string
+            enum:
+              - student
+              - teacher
+          primary:  # OPTIONAL
+            type: boolean
+            default: false
+          beginDate:  # OPTIONAL
+            type: string
+            format: date
+          endDate:  # OPTIONAL
+            type: string
+            format: date
+          user:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          class:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+
+      AcademicSessionRequest:
+        type: object
+        properties:
+          academicSession:
+            $ref: '#/components/schemas/AcademicSession'
+
+      TermRequest:
+        type: object
+        properties:
+          academicSession:
+            $ref: '#/components/schemas/Term'
+
+      ClassRequest:
+        type: object
+        properties:
+          class:
+            $ref: '#/components/schemas/Class'
+
+      UserRequest:
+        type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+
+      OrganizationRequest:
+        type: object
+        properties:
+          org:
+            $ref: '#/components/schemas/Organization'
+
+      SchoolRequest:
+        type: object
+        properties:
+          org:
+            $ref: '#/components/schemas/School'
+
+      EnrollmentRequest:
+        type: object
+        properties:
+          enrollment:
+            $ref: '#/components/schemas/Enrollment'
+
+      GradingPeriod:
+        type: object
+        required:
+          - title
+          - type
+          - startDate
+          - endDate
+          - schoolYear
+          - org
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+            example: "Q1 2024"
+          type:  # REQUIRED - must be "gradingPeriod"
+            type: string
+            enum:
+              - gradingPeriod
+          startDate:  # REQUIRED
+            type: string
+            format: date
+          endDate:  # REQUIRED
+            type: string
+            format: date
+          parent:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          schoolYear:  # REQUIRED
+            type: string
+          org:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+
+      AssessmentLineItem:
+        type: object
+        required:
+          - title
+          - assignDate
+          - dueDate
+          - class
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+          assignDate:  # REQUIRED
+            type: string
+            format: date-time
+          dueDate:  # REQUIRED
+            type: string
+            format: date-time
+          class:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          category:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          resultValueMin:  # OPTIONAL
+            type: number
+          resultValueMax:  # OPTIONAL
+            type: number
+          scoreScale:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+
+      AssessmentResult:
+        type: object
+        required:
+          - lineItem
+          - student
+          - score
+          - scoreDate
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          lineItem:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          student:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          score:  # REQUIRED
+            type: number
+          scoreDate:  # REQUIRED
+            type: string
+            format: date-time
+          comment:  # OPTIONAL
+            type: string
+
+      Category:
+        type: object
+        required:
+          - title
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+          weight:  # OPTIONAL
+            type: number
+
+      LineItem:
+        type: object
+        required:
+          - title
+          - assignDate
+          - dueDate
+          - class
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+          description:  # OPTIONAL
+            type: string
+          assignDate:  # REQUIRED
+            type: string
+            format: date-time
+          dueDate:  # REQUIRED
+            type: string
+            format: date-time
+          class:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          category:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          gradingPeriod:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+          resultValueMin:  # OPTIONAL
+            type: number
+          resultValueMax:  # OPTIONAL
+            type: number
+          scoreScale:  # OPTIONAL
+            $ref: '#/components/schemas/SourcedId'
+
+      Result:
+        type: object
+        required:
+          - lineItem
+          - student
+          - score
+          - scoreDate
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          lineItem:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          student:  # REQUIRED
+            $ref: '#/components/schemas/SourcedId'
+          score:  # REQUIRED
+            type: number
+          scoreDate:  # REQUIRED
+            type: string
+            format: date-time
+          comment:  # OPTIONAL
+            type: string
+
+      ScoreScale:
+        type: object
+        required:
+          - title
+          - minScore
+          - maxScore
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+          minScore:  # REQUIRED
+            type: number
+          maxScore:  # REQUIRED
+            type: number
+          levels:  # OPTIONAL
+            type: array
+            items:
+              type: object
+              required:
+                - title
+                - score
+              properties:
+                title:
+                  type: string
+                score:
+                  type: number
+
+      Resource:
+        type: object
+        required:
+          - title
+          - type
+        properties:
+          sourcedId:  # OPTIONAL
+            type: string
+          status:  # OPTIONAL
+            $ref: '#/components/schemas/StatusType'
+          title:  # REQUIRED
+            type: string
+          type:  # REQUIRED
+            type: string
+            enum:
+              - document
+              - webpage
+              - video
+              - audio
+              - image
+              - other
+          url:  # OPTIONAL
+            type: string
+            format: uri
+          metadata:  # OPTIONAL
+            $ref: '#/components/schemas/MetadataObject'
+
+      StudentEnrollmentRequest:
+        type: object
+        properties:
+          enrollment:
+            allOf:
+              - $ref: '#/components/schemas/Enrollment'
+              - type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                      - student
+
+      TeacherEnrollmentRequest:
+        type: object
+        properties:
+          enrollment:
+            allOf:
+              - $ref: '#/components/schemas/Enrollment'
+              - type: object
+                properties:
+                  role:
+                    type: string
+                    enum:
+                      - teacher
+
+      GradingPeriodRequest:
+        type: object
+        properties:
+          academicSession:
+            $ref: '#/components/schemas/GradingPeriod'
+
+      AssessmentLineItemRequest:
+        type: object
+        properties:
+          assessmentLineItem:
+            $ref: '#/components/schemas/AssessmentLineItem'
+
+      AssessmentResultRequest:
+        type: object
+        properties:
+          assessmentResult:
+            $ref: '#/components/schemas/AssessmentResult'
+
+      CategoryRequest:
+        type: object
+        properties:
+          category:
+            $ref: '#/components/schemas/Category'
+
+      LineItemRequest:
+        type: object
+        properties:
+          lineItem:
+            $ref: '#/components/schemas/LineItem'
+
+      ResultRequest:
+        type: object
+        properties:
+          result:
+            $ref: '#/components/schemas/Result'
+
+      ScoreScaleRequest:
+        type: object
+        properties:
+          scoreScale:
+            $ref: '#/components/schemas/ScoreScale'
+
+      ResourceRequest:
+        type: object
+        properties:
+          resource:
+            $ref: '#/components/schemas/Resource'
+
+    responses:
+      StandardErrors:
+        description: Standard error responses for all endpoints
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "400":
+        description: >
+          An invalid selection field was supplied and data filtering on the selection criteria
+          was not possible i.e. 'invalid_selection_field'.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "401":
+        description: >
+          The request was not correctly authorised i.e. 'unauthorisedrequest'.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "403":
+        description: >
+          This is used to indicate that the server can be reached and process the request
+          but refuses to take any further action i.e. 'forbidden'.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "422":
+        description: >
+          This error condition may occur if a JSON request body contains well-formed
+          (i.e. syntactically correct), but semantically erroneous, JSON instructions.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "429":
+        description: >
+          The server is receiving too many requests i.e. 'server_busy'. Retry at a later time.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+      "500":
+        description: >
+          This code should be used only if there is catastrophic error and there is not
+          a more appropriate code i.e. 'internal_server_error'.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/imsx_StatusInfoDType"
+
+    securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+
+  security:
+    - bearerAuth: []
+                

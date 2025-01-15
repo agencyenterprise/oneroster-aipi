@@ -16,9 +16,9 @@ The objective is to build a fully functional, deployable Next.js application int
     ```bash
     npm install && npm run build && npm run start
     ```
-  - CRITICAL: GET endpoints: MUST reference the correct endpoint for gradebookservice.yaml, rostersservice.yaml, or resourceservice.yaml
-  - CRITICAL: POST/PUT/DELETE endpoints: MUST reference diff_doc.yaml
-  - Always use correct payload structure from the yaml file
+  - CRITICAL: GET endpoints: MUST reference the correct endpoint gradebookservice.yaml, rostersservice.yaml, or resourceservice.yaml
+  - CRITICAL: Check extensions.yaml for endpoints that extend the OneRoster v1.2 api spec
+  - Always use correct payload structure from the yaml files
   - Always rely on the API server for error handling. Accept and process the error responses as returned by the API.
   - When updating the app, always check the entire codebase.
 
@@ -253,7 +253,7 @@ The project MUST include the following files and adhere to their defined structu
     "academicSessions": [{}, {}]
   }
   ```
-- ALWAYS access data using `.academicSessions` regardless of endpoint (e.g., `/terms`, `/gradingPeriods`, `/academicSessions`).
+- ALWAYS access data using `.academicSessions` for (e.g., `/terms`, `/gradingPeriods`, `/academicSessions`).
 - Check the `academicSessions` schema in the `rostersservice.yaml` file.
 
 - Example implementation:
