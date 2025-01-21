@@ -2,9 +2,9 @@
 
 This API was built and tested with **Cursor**. The `.cursorrules` file provided should be used when prompting Cursor. Below are the steps and examples to ensure successful API usage:
 
-## Setup Instructions
+## Setup Instructions (Speciic if you are testing in a Cursor environment)
 
-1. Open **Composer** and switch to **Agent mode**.
+1. Open **Composer** and switch to **Agent mode** 
 2. Ensure you are using the latest Claude model (`claude-3-5-sonnet-20241022` was used during testing).
 3. Add the following files to the context:
    - `.cursorrules`
